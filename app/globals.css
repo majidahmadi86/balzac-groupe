@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply bg-cream;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-cream font-serif text-navy;
+    font-feature-settings: "kern", "liga", "onum";
+  }
+
+  ::selection {
+    @apply bg-gold-light text-navy;
+  }
+
+  :focus-visible {
+    outline: 1px solid theme("colors.gold.DEFAULT");
+    outline-offset: 4px;
+  }
+}
+
+@layer components {
+  /* Letterspaced small-caps label: BALZAC CAFÉ, NOTRE VISION. */
+  .label-caps {
+    @apply font-serif text-[0.6875rem] font-medium uppercase leading-none tracking-caps;
+    font-feature-settings: "kern", "lnum";
+  }
+
+  .site-gutter {
+    @apply mx-auto w-full max-w-site px-5 sm:px-8 lg:px-12;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
