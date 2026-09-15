@@ -85,7 +85,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
     <>
       <a
         href="#main"
-        className="label-caps sr-only z-[60] bg-navy px-4 py-3 text-cream focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+        className="label-caps sr-only z-[60] bg-navy text-cream focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:inline-flex focus:min-h-[44px] focus:items-center focus:px-5"
       >
         {t.header.skip}
       </a>
@@ -98,7 +98,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
 
           <div className="hidden items-center gap-8 lg:flex xl:gap-10">
             <nav aria-label={t.header.primaryNav}>
-              <ul className="flex items-center gap-7 xl:gap-9">
+              <ul className="flex items-center gap-6 xl:gap-8">
                 {mainNav.map((page) => {
                   const active = isActive(pathname, locale, page);
                   return (
@@ -106,13 +106,17 @@ export function SiteHeader({ locale }: { locale: Locale }) {
                       <Link
                         href={pathFor(locale, page)}
                         aria-current={active ? "page" : undefined}
-                        className={`relative block py-2 text-[15px] leading-none tracking-[0.01em] transition-colors duration-300 after:absolute after:inset-x-0 after:bottom-0 after:h-px after:origin-left after:bg-navy after:transition-transform after:duration-500 after:ease-editorial ${
-                          active
-                            ? "text-navy after:scale-x-100"
-                            : "text-navy/75 after:scale-x-0 hover:text-navy hover:after:scale-x-100"
+                        className={`group/nav flex min-h-[44px] min-w-[44px] items-center justify-center text-[15px] leading-none tracking-[0.01em] transition-colors duration-300 ${
+                          active ? "text-navy" : "text-navy/75 hover:text-navy"
                         }`}
                       >
-                        {t.nav[page]}
+                        <span
+                          className={`relative after:absolute after:inset-x-0 after:-bottom-2 after:h-px after:origin-left after:bg-navy after:transition-transform after:duration-500 after:ease-editorial ${
+                            active ? "after:scale-x-100" : "after:scale-x-0 group-hover/nav:after:scale-x-100"
+                          }`}
+                        >
+                          {t.nav[page]}
+                        </span>
                       </Link>
                     </li>
                   );
@@ -233,7 +237,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
         >
           <div className="flex items-center justify-between gap-6 border-t border-gold/40 pt-5">
             <LanguageToggle locale={locale} pathname={pathname} label={t.header.language} tone="light" />
-            <SocialLinks label={t.footer.social} className="gap-5" itemClassName="text-cream/80 hover:text-gold-light" />
+            <SocialLinks label={t.footer.social} className="gap-2" itemClassName="text-cream/80 hover:text-gold-light" />
           </div>
           <p className="mt-6 font-display text-xl italic text-cream/80">{t.motto}</p>
           <p className="label-caps mt-3 text-[0.625rem] text-gold">{t.tagline}</p>

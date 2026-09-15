@@ -38,17 +38,23 @@ export const DPO_NAME: string | null = null;
 /** How long form submissions are kept before deletion. */
 export const FORM_RETENTION_PERIOD: Record<Locale, string | null> = { en: null, fr: null };
 
+/**
+ * Public group email shown on /contact and as the fallback when a form cannot be sent.
+ * Not yet supplied: while null, the page shows a "to be confirmed" marker instead.
+ */
+export const GROUP_EMAIL: string | null = null;
+
 /** Email delivery processor used by the Contact and Franchise forms. */
 export const FORM_EMAIL_PROCESSOR = "Resend";
 
 /** Fields collected by the two site forms. Keep in step with the forms themselves. */
 export const FORM_FIELDS: Record<Locale, { contact: string[]; franchise: string[] }> = {
   en: {
-    contact: ["name", "email address", "message"],
-    franchise: ["name", "email address", "country or city of the project", "message"],
+    contact: ["name", "email address", "subject", "message"],
+    franchise: ["name", "email address", "city and country", "message"],
   },
   fr: {
-    contact: ["nom", "adresse email", "message"],
-    franchise: ["nom", "adresse email", "pays ou ville du projet", "message"],
+    contact: ["nom", "adresse email", "objet", "message"],
+    franchise: ["nom", "adresse email", "ville et pays", "message"],
   },
 };

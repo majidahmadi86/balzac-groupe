@@ -10,13 +10,15 @@
     "assets:brand": "node scripts/generate-brand-assets.mjs",
     "check:copy": "node scripts/check-copy.mjs",
     "check:site": "node scripts/check-site.mjs",
-    "check:overflow": "node scripts/check-overflow.mjs",
-    "verify": "npm run lint && npm run check:copy && npm run check:site && npm run check:overflow"
+    "verify": "npm run lint && npm run check:copy && npm run check:site && npm run check:responsive && npm run check:forms",
+    "check:responsive": "node scripts/check-responsive.mjs",
+    "check:forms": "node scripts/check-forms.mjs"
   },
   "dependencies": {
     "next": "14.2.35",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "resend": "^4.8.0"
   },
   "devDependencies": {
     "@types/node": "^20",

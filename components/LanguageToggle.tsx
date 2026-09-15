@@ -21,16 +21,16 @@ export function LanguageToggle({ locale, pathname, label, tone = "dark", classNa
   const rule = tone === "dark" ? "bg-navy/25" : "bg-cream/30";
 
   return (
-    <div role="group" aria-label={label} className={`flex items-center gap-3 ${className}`}>
+    <div role="group" aria-label={label} className={`flex items-center ${className}`}>
       {options.map((o, idx) => (
-        <span key={o.code} className="flex items-center gap-3">
+        <span key={o.code} className="flex items-center">
           {idx > 0 && <span aria-hidden="true" className={`h-3 w-px ${rule}`} />}
           <a
             href={switchLocalePath(pathname, o.code)}
             hrefLang={o.code}
             lang={o.code}
             aria-current={o.code === locale ? "true" : undefined}
-            className={`label-caps py-2 transition-colors duration-300 ${o.code === locale ? current : idle}`}
+            className={`label-caps inline-flex min-h-[44px] min-w-[44px] items-center justify-center transition-colors duration-300 ${o.code === locale ? current : idle}`}
           >
             {o.text}
           </a>

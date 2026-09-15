@@ -21,7 +21,7 @@ const CANDIDATES = [
  */
 export async function openBrowser() {
   if (process.env.CDP_URL) {
-    const browser = await puppeteer.connect({ browserURL: process.env.CDP_URL });
+    const browser = await puppeteer.connect({ browserURL: process.env.CDP_URL, protocolTimeout: 60000 });
     return { browser, close: () => browser.disconnect() };
   }
 
@@ -34,7 +34,21 @@ export async function openBrowser() {
   const profile = mkdtempSync(join(tmpdir(), "balzac-check-"));
   spawn(
     executable,
-    ["--headless=new", "--disable-gpu", "--no-sandbox", "--no-first-run", `--remote-debugging-port=${port}`, `--user-data-dir=${profile}`, "about:blank"],
+    [
+      "--headless=new",
+      "--disable-gpu",
+      "--no-sandbox",
+      "--no-first-run",
+      // Same as puppeteer's own launcher: never throttle timers or rendering in unfocused pages.
+      "--disable-background-timer-throttling",
+      "--disable-backgrounding-occluded-windows",
+      "--disable-renderer-backgrounding",
+      "--disable-extensions",
+      "--disable-component-extensions-with-background-pages",
+      `--remote-debugging-port=${port}`,
+      `--user-data-dir=${profile}`,
+      "about:blank",
+    ],
     { stdio: "ignore", detached: false },
   ).unref();
 
@@ -43,7 +57,7 @@ export async function openBrowser() {
   let browser;
   while (!browser) {
     try {
-      browser = await puppeteer.connect({ browserURL });
+      browser = await puppeteer.connect({ browserURL, protocolTimeout: 60000 });
     } catch (error) {
       if (Date.now() > deadline) throw new Error(`Browser did not start on ${browserURL}: ${error.message}`);
       await new Promise((r) => setTimeout(r, 250));
@@ -54,4 +68,15 @@ export async function openBrowser() {
     browser,
     close: () => browser.close().catch(() => {}),
   };
+}
+
+/**
+ * The foreground tab. Background tabs get their timers and animation frames throttled,
+ * which stalls puppeteer's waits, so reuse the launcher's first tab and bring it to front.
+ */
+export async function foregroundPage(browser) {
+  const [first] = await browser.pages();
+  const page = first ?? (await browser.newPage());
+  await page.bringToFront();
+  return page;
 }

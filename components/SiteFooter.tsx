@@ -26,10 +26,10 @@ export function SiteFooter({ locale }: { locale: Locale }) {
         <nav aria-label={t.footer.footerNav} className="hidden lg:order-2 lg:block">
           <ul className="flex items-center">
             {mainNav.map((page) => (
-              <li key={page} className="border-l border-cream/20 px-3.5 first:border-l-0 first:pl-0 xl:px-5">
+              <li key={page} className="relative px-3.5 before:absolute before:left-0 before:top-1/2 before:h-4 before:w-px before:-translate-y-1/2 before:bg-cream/20 first:pl-0 first:before:hidden xl:px-5">
                 <Link
                   href={pathFor(locale, page)}
-                  className="whitespace-nowrap text-[14px] leading-none text-cream/85 xl:text-[15px] transition-colors duration-300 hover:text-gold-light"
+                  className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center whitespace-nowrap text-[14px] leading-none text-cream/85 transition-colors duration-300 hover:text-gold-light xl:text-[15px]"
                 >
                   {t.nav[page]}
                 </Link>
@@ -39,7 +39,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
         </nav>
 
         <div className="order-3 col-span-2 justify-self-center min-[520px]:order-2 min-[520px]:col-span-1 lg:order-3">
-          <SocialLinks label={t.footer.social} className="gap-7 sm:gap-8" itemClassName="text-cream hover:text-gold-light" />
+          <SocialLinks label={t.footer.social} className="gap-3 sm:gap-4" itemClassName="text-cream hover:text-gold-light" />
         </div>
 
         <p className="order-2 justify-self-end text-right font-display text-[15px] italic leading-[1.3] text-cream/90 min-[520px]:order-3 sm:text-lg lg:hidden">
@@ -57,7 +57,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
             {legalNav.map((page, idx) => (
               <li key={page} className="flex items-center gap-4">
                 {idx > 0 && <span aria-hidden="true" className="h-3 w-px bg-cream/25" />}
-                <Link href={pathFor(locale, page)} className="block py-2 transition-colors duration-300 hover:text-gold-light">
+                <Link href={pathFor(locale, page)} className="flex min-h-[44px] items-center transition-colors duration-300 hover:text-gold-light">
                   {t.legalNav[page]}
                 </Link>
               </li>

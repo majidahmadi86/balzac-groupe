@@ -31,6 +31,7 @@ export function Hero({ titleLines, image, label, intro, tagline, cta, compact = 
           fill
           priority
           sizes="100vw"
+          data-crop="art-directed"
           className={`hero-settle object-cover ${image.position ?? "object-center"}`}
         />
         <div

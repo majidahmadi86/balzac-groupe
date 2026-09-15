@@ -8,7 +8,7 @@ import { pathFor } from "@/lib/routes";
 
 const pendingLabel: Record<Locale, string> = { en: "To be confirmed", fr: "À compléter" };
 
-function InlineParts({ parts, locale }: { parts: Inline[]; locale: Locale }) {
+function InlineParts({ parts, locale, standalone = false }: { parts: Inline[]; locale: Locale; standalone?: boolean }) {
   return (
     <>
       {parts.map((part, idx) => {
@@ -28,7 +28,7 @@ function InlineParts({ parts, locale }: { parts: Inline[]; locale: Locale }) {
           <Link
             key={idx}
             href={pathFor(locale, part.link)}
-            className="border-b border-navy/30 text-navy transition-colors duration-300 hover:border-navy"
+            className={`text-navy underline decoration-navy/30 underline-offset-4 transition-colors duration-300 hover:decoration-navy ${standalone ? "-my-3 inline-flex min-h-[44px] items-center" : ""}`}
           >
             {part.text}
           </Link>
@@ -66,7 +66,7 @@ export function LegalPage({ locale, doc }: { locale: Locale; doc: LegalDoc }) {
                 className={`scroll-mt-[96px] lg:scroll-mt-[128px] ${idx > 0 ? "mt-12 border-t border-navy/10 pt-12 lg:mt-14 lg:pt-14" : ""}`}
               >
                 <Reveal>
-                  <p className="label-caps tracking-caps-lg text-navy/60 lg:text-xs">{String(idx + 1).padStart(2, "0")}</p>
+                  <p className="label-caps leading-normal tracking-caps-lg text-navy/60 lg:text-xs">{String(idx + 1).padStart(2, "0")}</p>
                   <h2
                     id={`${section.id}-title`}
                     className="mt-3 text-balance font-display text-[1.75rem] font-semibold leading-[1.1] sm:text-[2rem] lg:text-[2.375rem]"
@@ -88,7 +88,7 @@ export function LegalPage({ locale, doc }: { locale: Locale; doc: LegalDoc }) {
                             >
                               <dt className="label-caps self-center leading-[1.5] tracking-caps-sm text-navy/70">{item.label}</dt>
                               <dd className="text-navy">
-                                <InlineParts parts={item.value} locale={locale} />
+                                <InlineParts parts={item.value} locale={locale} standalone />
                               </dd>
                             </div>
                           ))}

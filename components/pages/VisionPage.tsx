@@ -110,7 +110,7 @@ export function VisionPage({ locale }: { locale: Locale }) {
             <CtaLink href={pathFor(locale, "franchise")}>{page.closing.franchiseCta}</CtaLink>
             <Link
               href={pathFor(locale, "contact")}
-              className="label-caps border-b border-navy/30 pb-2 text-navy transition-colors duration-300 hover:border-navy"
+              className="label-caps inline-flex min-h-[44px] items-center text-navy underline decoration-navy/30 underline-offset-[6px] transition-colors duration-300 hover:decoration-navy"
             >
               {page.closing.contactCta}
             </Link>

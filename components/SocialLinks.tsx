@@ -38,15 +38,15 @@ const socials = [
 
 export function SocialLinks({ label, className = "", itemClassName = "" }: SocialLinksProps) {
   return (
-    <ul aria-label={label} className={`flex items-center gap-6 ${className}`}>
+    <ul aria-label={label} className={`flex items-center gap-1 ${className}`}>
       {socials.map((s) => (
         <li key={s.name}>
           <a
             href={s.href}
             aria-label={s.name}
-            className={`block h-[22px] w-[22px] transition-colors duration-300 ${itemClassName}`}
+            className={`flex h-11 w-11 items-center justify-center transition-colors duration-300 ${itemClassName}`}
           >
-            {s.icon}
+            <span className="block h-[22px] w-[22px]">{s.icon}</span>
           </a>
         </li>
       ))}

@@ -183,6 +183,113 @@ const fr = {
       contactCta: "Nous contacter",
     },
   },
+  franchisePage: {
+    hero: {
+      label: "Franchise",
+      title: "Une maison française, dans votre ville.",
+      intro: "Balzac Café s’ouvre à des partenaires qui partagent son goût pour la culture et l’art de vivre.",
+      imageAlt: "Globe ancien et pile de livres marqués Paris, Bangkok, New York, Tokyo",
+    },
+    proposition: {
+      label: "Franchise internationale",
+      paragraphs: [
+        "Rejoignez l’aventure et développez une maison française dans votre ville.",
+        "Balzac Café a vocation à voyager. La franchise permet de faire vivre, ailleurs, un lieu de culture, de rencontres et d’art de vivre, fidèle à l’esprit de la maison.",
+      ],
+    },
+    concept: {
+      label: "Le concept",
+      paragraphs: [
+        "Librairie, galerie, café : Balzac Café réunit sous un même toit les livres, les images et le goût d’une maison française.",
+        "Un lieu où l’on vient lire, regarder, goûter et prendre le temps, pensé pour devenir un repère dans sa ville.",
+      ],
+    },
+    profile: {
+      label: "Le partenaire",
+      title: "Un projet porté par des passionnés.",
+      intro: "La franchise Balzac Café s’adresse à celles et ceux qui se reconnaissent dans ces quelques traits.",
+      traits: [
+        { title: "Le goût de la culture", body: "Les livres, les images et la conversation font partie de votre quotidien." },
+        { title: "Le sens de l’accueil", body: "Vous aimez recevoir et faire d’un lieu un endroit où l’on revient." },
+        { title: "Un ancrage local", body: "Vous connaissez votre ville et ce qui peut y prendre sens." },
+        { title: "L’envie d’entreprendre", body: "Vous souhaitez porter un projet durable, fidèle à l’esprit d’une maison." },
+      ],
+    },
+    steps: {
+      label: "Le parcours",
+      title: "Du premier échange à l’ouverture.",
+      items: [
+        { title: "Premier contact", body: "Vous nous présentez votre projet et votre ville grâce au formulaire ci-dessous." },
+        { title: "Rencontre", body: "Nous faisons connaissance et vous présentons le concept Balzac Café." },
+        { title: "Étude du projet", body: "Ensemble, nous examinons le lieu, la ville et la manière d’y faire vivre la maison." },
+        { title: "Ouverture", body: "Nous vous accompagnons dans la préparation de l’ouverture de votre Balzac Café." },
+      ],
+    },
+    form: {
+      label: "Manifester votre intérêt",
+      title: "Parlons de votre projet.",
+      intro: "Quelques mots suffisent pour commencer. Nous vous répondrons par email.",
+    },
+  },
+  contactPage: {
+    hero: {
+      label: "Contact",
+      title: "Écrivez-nous.",
+      intro: "Une question, un projet, une rencontre : nous lisons chaque message.",
+      imageAlt: "Livre Balzac, buste en marbre et vase d’olivier sur une cheminée",
+    },
+    form: {
+      label: "Formulaire",
+      title: "Votre message.",
+    },
+    aside: {
+      label: "Groupe Balzac",
+      emailTitle: "Nous écrire directement",
+      housesTitle: "Nos maisons",
+      cafeNote: "Nos maisons",
+      antiquesNote: "balzacantiques.ch",
+      immobilierNote: "Nos maisons",
+    },
+  },
+  forms: {
+    required: "Tous les champs sont obligatoires.",
+    fields: {
+      name: "Nom",
+      email: "Adresse email",
+      location: "Ville et pays",
+      subject: "Objet",
+      message: "Message",
+    },
+    hints: {
+      location: "Par exemple : Lyon, France",
+    },
+    submit: {
+      contact: "Envoyer le message",
+      franchise: "Envoyer ma demande",
+    },
+    submitting: "Envoi en cours…",
+    errors: {
+      required: "Ce champ est obligatoire.",
+      email: "Saisissez une adresse email valide.",
+      tooShort: "Un peu plus de détails, s’il vous plaît.",
+      tooLong: "Ce texte est trop long.",
+    },
+    invalid: "Merci de vérifier les champs signalés.",
+    success: {
+      contact: { title: "Merci, votre message est bien parti.", body: "Nous vous répondrons à l’adresse" },
+      franchise: { title: "Merci pour votre intérêt.", body: "Nous étudions chaque demande et vous répondrons à l’adresse" },
+      again: "Envoyer un autre message",
+    },
+    failure: {
+      title: "Votre message n’a pas pu être envoyé.",
+      body: "Rien n’est perdu, votre texte est conservé ci-dessous. Réessayez dans un instant, ou écrivez-nous directement à",
+    },
+    limited: {
+      title: "Trop d’envois en peu de temps.",
+      body: "Réessayez dans quelques minutes, ou écrivez-nous directement à",
+    },
+    honeypot: "Ne pas remplir ce champ",
+  },
 };
 
 export type Dictionary = typeof fr;
@@ -361,6 +468,113 @@ const en: Dictionary = {
       franchiseCta: "Discover the franchise",
       contactCta: "Contact us",
     },
+  },
+  franchisePage: {
+    hero: {
+      label: "Franchise",
+      title: "A French house, in your city.",
+      intro: "Balzac Café is opening to partners who share its taste for culture and the art of living.",
+      imageAlt: "An antique globe beside books marked Paris, Bangkok, New York, Tokyo",
+    },
+    proposition: {
+      label: "International franchise",
+      paragraphs: [
+        "Join the adventure and bring a French house to your city.",
+        "Balzac Café is made to travel. The franchise brings a place of culture, encounters and the art of living to new cities, true to the spirit of the house.",
+      ],
+    },
+    concept: {
+      label: "The concept",
+      paragraphs: [
+        "Bookshop, gallery, café: Balzac Café gathers under one roof books, images and the pleasures of a French house.",
+        "A place to read, to look, to taste and to take one’s time, designed to become a landmark in its city.",
+      ],
+    },
+    profile: {
+      label: "The partner",
+      title: "A project carried by people who care.",
+      intro: "The Balzac Café franchise is for those who recognise themselves in a few simple traits.",
+      traits: [
+        { title: "A taste for culture", body: "Books, images and conversation are part of your everyday life." },
+        { title: "A sense of welcome", body: "You love to receive guests and make a place somewhere people return to." },
+        { title: "Local roots", body: "You know your city and what can take on meaning there." },
+        { title: "The wish to build", body: "You want to carry a lasting project, true to the spirit of a house." },
+      ],
+    },
+    steps: {
+      label: "The path",
+      title: "From first conversation to opening.",
+      items: [
+        { title: "First contact", body: "Tell us about your project and your city through the form below." },
+        { title: "Meeting", body: "We get to know each other and introduce you to the Balzac Café concept." },
+        { title: "Project study", body: "Together we look at the premises, the city and how the house can live there." },
+        { title: "Opening", body: "We support you as you prepare to open your Balzac Café." },
+      ],
+    },
+    form: {
+      label: "Express your interest",
+      title: "Let’s talk about your project.",
+      intro: "A few words are enough to begin. We will reply by email.",
+    },
+  },
+  contactPage: {
+    hero: {
+      label: "Contact",
+      title: "Write to us.",
+      intro: "A question, a project, a meeting: we read every message.",
+      imageAlt: "A Balzac book, a marble bust and an olive branch in a vase on a mantelpiece",
+    },
+    form: {
+      label: "Form",
+      title: "Your message.",
+    },
+    aside: {
+      label: "Groupe Balzac",
+      emailTitle: "Write to us directly",
+      housesTitle: "Our houses",
+      cafeNote: "Our houses",
+      antiquesNote: "balzacantiques.ch",
+      immobilierNote: "Our houses",
+    },
+  },
+  forms: {
+    required: "All fields are required.",
+    fields: {
+      name: "Name",
+      email: "Email address",
+      location: "City and country",
+      subject: "Subject",
+      message: "Message",
+    },
+    hints: {
+      location: "For example: Lyon, France",
+    },
+    submit: {
+      contact: "Send message",
+      franchise: "Send my enquiry",
+    },
+    submitting: "Sending…",
+    errors: {
+      required: "This field is required.",
+      email: "Enter a valid email address.",
+      tooShort: "A little more detail, please.",
+      tooLong: "This text is too long.",
+    },
+    invalid: "Please check the highlighted fields.",
+    success: {
+      contact: { title: "Thank you, your message is on its way.", body: "We will reply to" },
+      franchise: { title: "Thank you for your interest.", body: "We review every enquiry and will reply to" },
+      again: "Send another message",
+    },
+    failure: {
+      title: "Your message could not be sent.",
+      body: "Nothing is lost, your text is kept below. Try again in a moment, or write to us directly at",
+    },
+    limited: {
+      title: "Too many messages in a short time.",
+      body: "Try again in a few minutes, or write to us directly at",
+    },
+    honeypot: "Leave this field empty",
   },
 };
 

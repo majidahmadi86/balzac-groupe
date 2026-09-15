@@ -24,7 +24,7 @@ export function TitleBand({ locale, eyebrow, title, body }: TitleBandProps) {
         <p className="mx-auto mt-8 max-w-xl text-lg leading-relaxed text-navy/75">{body}</p>
         <Link
           href={pathFor(locale, "home")}
-          className="label-caps mt-10 inline-block border-b border-navy/30 pb-2 text-navy transition-colors duration-300 hover:border-navy"
+          className="label-caps mt-8 inline-flex min-h-[44px] items-center text-navy underline decoration-navy/30 underline-offset-[6px] transition-colors duration-300 hover:decoration-navy"
         >
           {t.stub.back}
         </Link>

@@ -32,7 +32,7 @@ export function SplitBand({
   image,
   imageSide,
   tone = "cream",
-  aspect = "aspect-[5/4] sm:aspect-[16/10]",
+  aspect = "aspect-[5/4]",
   imagePosition = "object-center",
   compact = false,
   bodyStyle = "lines",

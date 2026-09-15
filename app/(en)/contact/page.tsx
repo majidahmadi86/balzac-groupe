@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { StubPage } from "@/components/StubPage";
+import { ContactPage } from "@/components/pages/ContactPage";
+import { getDictionary } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = pageMetadata("en", "contact");
+export const metadata: Metadata = pageMetadata("en", "contact", getDictionary("en").contactPage.hero.intro);
 
 export default function Page() {
-  return <StubPage locale="en" page="contact" />;
+  return <ContactPage locale="en" />;
 }
