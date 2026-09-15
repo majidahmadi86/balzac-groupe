@@ -39,7 +39,7 @@ const config: Config = {
         },
       },
       fontFamily: {
-        display: ["var(--font-display)", "Georgia", "Times New Roman", "serif"],
+        display: ["var(--font-text)", "Georgia", "Times New Roman", "serif"],
         serif: ["var(--font-text)", "Georgia", "Times New Roman", "serif"],
       },
       // Letterspacing scale for the small-caps label style.
