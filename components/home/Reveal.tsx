@@ -12,7 +12,7 @@ type MotionWindow = Window & { __bzMotion?: boolean };
 
 // Scroll reveal (fade and rise), after the Antiques pattern but fail-open:
 // content is only hidden while the parent carries data-motion="on", which the
-// inline gate in HomePage sets before paint and removes again if JS never boots.
+// inline gate in MotionScope sets before paint and removes again if JS never boots.
 export function Reveal({ children, delay = 0, className = "" }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [revealed, setRevealed] = useState(false);
@@ -51,4 +51,3 @@ export function Reveal({ children, delay = 0, className = "" }: RevealProps) {
   );
 }
 
-export const motionGateScript = `(function(){try{var s=document.currentScript,el=s&&s.parentElement;if(!el||!("IntersectionObserver" in window)||window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;el.setAttribute("data-motion","on");setTimeout(function(){if(!window.__bzMotion)el.removeAttribute("data-motion")},3000)}catch(e){}})();`;

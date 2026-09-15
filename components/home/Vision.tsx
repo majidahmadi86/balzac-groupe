@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { getDictionary, type Locale } from "@/lib/i18n";
 import { Reveal } from "./Reveal";
 
-type PillarKey = "culture" | "heritage" | "artDeVivre" | "international";
+export type PillarKey = "culture" | "heritage" | "artDeVivre" | "international";
 
 const iconProps = {
   viewBox: "0 0 24 24",
@@ -15,7 +15,7 @@ const iconProps = {
   className: "mx-auto h-10 w-10 lg:h-11 lg:w-11",
 };
 
-const icons: Record<PillarKey, ReactNode> = {
+export const pillarIcons: Record<PillarKey, ReactNode> = {
   // Open book
   culture: (
     <svg {...iconProps}>
@@ -51,7 +51,7 @@ const icons: Record<PillarKey, ReactNode> = {
   ),
 };
 
-const order: PillarKey[] = ["culture", "heritage", "artDeVivre", "international"];
+export const pillarOrder: PillarKey[] = ["culture", "heritage", "artDeVivre", "international"];
 
 export function Vision({ locale }: { locale: Locale }) {
   const t = getDictionary(locale).home.vision;
@@ -73,7 +73,7 @@ export function Vision({ locale }: { locale: Locale }) {
         </Reveal>
 
         <ul className="mx-auto mt-12 grid max-w-6xl grid-cols-2 lg:mt-16 lg:grid-cols-4">
-          {order.map((key, idx) => {
+          {pillarOrder.map((key, idx) => {
             const pillar = t.pillars[key];
             const borders = [
               idx % 2 === 1 ? "border-l" : "",
@@ -83,7 +83,7 @@ export function Vision({ locale }: { locale: Locale }) {
             return (
               <li key={key} className={`border-navy/15 px-2 py-8 text-center sm:px-6 lg:py-3 ${borders}`}>
                 <Reveal delay={idx * 90}>
-                  <span className="block text-navy">{icons[key]}</span>
+                  <span className="block text-navy">{pillarIcons[key]}</span>
                   <h3 className="label-caps mt-5 tracking-caps-lg text-navy lg:text-xs">{pillar.title}</h3>
                   <p className="mt-3 text-[0.9375rem] leading-[1.45] text-navy/85 lg:text-base">
                     {pillar.caption.map((line) => (

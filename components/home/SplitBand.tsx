@@ -16,6 +16,9 @@ type SplitBandProps = {
   /** object-position utilities for the image. */
   imagePosition?: string;
   compact?: boolean;
+  /** "lines" keeps the mockup's short stacked lines; "paragraphs" is for longer page copy. */
+  bodyStyle?: "lines" | "paragraphs";
+  details?: { title: string; items: string[] };
 };
 
 // Full-width editorial band. Mobile: text then image. From md: 50/50 split,
@@ -32,6 +35,8 @@ export function SplitBand({
   aspect = "aspect-[5/4] sm:aspect-[16/10]",
   imagePosition = "object-center",
   compact = false,
+  bodyStyle = "lines",
+  details,
 }: SplitBandProps) {
   const forest = tone === "forest";
   const titleId = `${id}-title`;
@@ -48,7 +53,7 @@ export function SplitBand({
     <section
       id={id}
       aria-labelledby={titleId}
-      className={`group/band relative overflow-hidden md:grid md:grid-cols-2 ${
+      className={`group/band relative scroll-mt-[76px] overflow-hidden md:grid lg:scroll-mt-[104px] md:grid-cols-2 ${
         compact ? "md:min-h-[22rem] lg:min-h-[28rem] xl:min-h-[31rem]" : "md:min-h-[26rem] lg:min-h-[32rem] xl:min-h-[36rem]"
       } ${
         forest ? "bg-forest-900 text-cream" : "bg-cream text-navy"
@@ -66,17 +71,49 @@ export function SplitBand({
             >
               {title}
             </h2>
-            <p
-              className={`mt-5 text-[1.0625rem] leading-[1.5] lg:mt-6 lg:text-[1.1875rem] ${
-                forest ? "text-cream/85" : "text-navy/85"
-              }`}
-            >
-              {body.map((sentence) => (
-                <span key={sentence} className="block text-pretty">
-                  {sentence}
-                </span>
-              ))}
-            </p>
+            {bodyStyle === "lines" ? (
+              <p
+                className={`mt-5 text-[1.0625rem] leading-[1.5] lg:mt-6 lg:text-[1.1875rem] ${
+                  forest ? "text-cream/85" : "text-navy/85"
+                }`}
+              >
+                {body.map((sentence) => (
+                  <span key={sentence} className="block text-pretty">
+                    {sentence}
+                  </span>
+                ))}
+              </p>
+            ) : (
+              <div
+                className={`mt-5 space-y-4 text-[1.0625rem] leading-[1.6] lg:mt-6 lg:text-[1.125rem] ${
+                  forest ? "text-cream/85" : "text-navy/85"
+                }`}
+              >
+                {body.map((paragraph) => (
+                  <p key={paragraph} className="text-pretty">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+            )}
+            {details && (
+              <div className="mt-8 lg:mt-10">
+                <p className={`label-caps tracking-caps-lg lg:text-xs ${forest ? "text-gold-light" : "text-navy/70"}`}>
+                  {details.title}
+                </p>
+                <ul className="mt-4 grid grid-cols-2 gap-x-6 border-t border-navy/15">
+                  {details.items.map((item) => (
+                    <li
+                      key={item}
+                      className="flex items-center gap-3 border-b border-navy/15 py-3 text-[0.9375rem] leading-snug lg:text-base"
+                    >
+                      <span aria-hidden="true" className="h-px w-3 shrink-0 bg-gold" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
             <div className="mt-8 lg:mt-10">{cta}</div>
           </div>
         </Reveal>

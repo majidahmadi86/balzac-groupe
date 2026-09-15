@@ -2,7 +2,7 @@ import { getDictionary, type Locale } from "@/lib/i18n";
 import { pathFor } from "@/lib/routes";
 import { CtaLink } from "./CtaLink";
 import { Hero } from "./Hero";
-import { motionGateScript } from "./Reveal";
+import { MotionScope } from "./MotionScope";
 import { SplitBand } from "./SplitBand";
 import { Vision } from "./Vision";
 
@@ -15,11 +15,22 @@ export function HomePage({ locale }: { locale: Locale }) {
   const houses = pathFor(locale, "houses");
 
   return (
-    // data-motion is toggled by the inline gate before paint, so React must not flag it.
-    <div className="flex flex-1 flex-col" suppressHydrationWarning>
-      <script dangerouslySetInnerHTML={{ __html: motionGateScript }} />
-
-      <Hero locale={locale} />
+    <MotionScope>
+      <Hero
+        titleLines={t.motto.split(", ").map((line, idx, all) => (idx < all.length - 1 ? `${line},` : line))}
+        tagline={t.tagline}
+        // TEMP mockup crop, replace with client photography.
+        image={{
+          src: "/images/temp/temp-hero-storefront.jpg",
+          alt: t.home.hero.imageAlt,
+          position: "object-[56%_50%] lg:object-[50%_12%]",
+        }}
+        cta={
+          <CtaLink href={pathFor(locale, "vision")} variant="hero">
+            {t.home.hero.cta}
+          </CtaLink>
+        }
+      />
 
       <SplitBand
         id="cafe"
@@ -81,6 +92,6 @@ export function HomePage({ locale }: { locale: Locale }) {
       />
 
       <Vision locale={locale} />
-    </div>
+    </MotionScope>
   );
 }

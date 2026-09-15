@@ -110,6 +110,80 @@ const fr = {
     },
     newTab: "(s’ouvre dans un nouvel onglet)",
   },
+  housesPage: {
+    hero: {
+      label: "Nos maisons",
+      title: "Trois maisons, un même art de vivre.",
+      intro: "Groupe Balzac réunit des activités complémentaires autour d’une même conviction.",
+      imageAlt: "Une tasse Balzac Café, une commode ancienne et une maison de pierre sous la neige",
+    },
+    contactCta: "Prendre contact",
+    cafe: {
+      paragraphs: [
+        "Librairie, galerie, café : Balzac Café réunit sous un même toit ce qui fait le charme d’une maison française. Un lieu où l’on vient lire, regarder, goûter et prendre le temps.",
+        "Les livres et les affiches y côtoient les vins fins, le cinéma et la littérature. Chaque visite est une invitation à la rencontre et à la conversation.",
+        "Un lieu de culture, de rencontres et d’art de vivre, pensé pour être partagé.",
+      ],
+      details: {
+        title: "Dans la maison",
+        items: ["Librairie", "Galerie", "Café", "Vins fins", "Cinéma et littérature"],
+      },
+    },
+    antiques: {
+      paragraphs: [
+        "Balzac Antiques rassemble du mobilier, des objets d’art et des collections choisis pour leur caractère et pour ce qu’ils racontent.",
+        "Chaque pièce porte la trace d’une époque et d’un savoir-faire. Elle trouve sa place dans des intérieurs d’exception, où le patrimoine se vit au quotidien.",
+      ],
+      details: {
+        title: "La sélection",
+        items: ["Mobilier", "Objets d’art", "Collections"],
+      },
+    },
+    immobilier: {
+      paragraphs: [
+        "Spécialiste de la région de Pontarlier, Balzac Immobilier se consacre à l’immobilier de caractère, à ces lieux qui ont une âme.",
+        "Nous proposons un accompagnement complet, de la recherche à la signature, avec l’attention que mérite chaque projet.",
+      ],
+      details: {
+        title: "L’accompagnement",
+        items: ["Recherche", "Accompagnement", "Signature", "Région de Pontarlier"],
+      },
+    },
+  },
+  visionPage: {
+    hero: {
+      label: "Notre vision",
+      title: "Une même conviction.",
+      intro: "Ce qui relie nos maisons, d’un lieu à l’autre.",
+      imageAlt: "Livre Balzac, buste en marbre et vase d’olivier sur une cheminée",
+    },
+    statement: {
+      label: "Groupe Balzac",
+      paragraphs: [
+        "La beauté, la culture et le patrimoine créent des liens durables entre les hommes et les lieux. C’est cette conviction qui relie chacune de nos maisons.",
+        "Nous choisissons des objets et des lieux qui traversent le temps, pour les faire vivre et les transmettre à leur tour.",
+        "Une certaine idée du beau et du bon guide notre manière d’accueillir, de choisir et d’accompagner.",
+        "Présent en France, en Suisse et à l’international, cet art de vivre a vocation à voyager : aujourd’hui ici, et demain ailleurs.",
+      ],
+    },
+    pillars: {
+      label: "Nos piliers",
+      title: "Quatre idées qui nous guident.",
+      body: {
+        culture: "La culture est au cœur de chaque maison : un lieu de partage, de curiosité et de conversation.",
+        heritage: "Nous les choisissons pour leur caractère et nous attachons à les transmettre.",
+        artDeVivre: "Elle se retrouve dans une tasse de café, un meuble ancien ou une maison de pierre.",
+        international: "Balzac Café a vocation à s’ouvrir dans d’autres pays, portée par la franchise internationale.",
+      },
+    },
+    closing: {
+      label: "Poursuivre",
+      title: "Partager cette vision.",
+      body: "Ouvrir Balzac Café dans votre pays, ou simplement nous écrire.",
+      franchiseCta: "Découvrir la franchise",
+      contactCta: "Nous contacter",
+    },
+  },
 };
 
 export type Dictionary = typeof fr;
@@ -215,6 +289,80 @@ const en: Dictionary = {
       },
     },
     newTab: "(opens in a new tab)",
+  },
+  housesPage: {
+    hero: {
+      label: "Our houses",
+      title: "Three houses, one art of living.",
+      intro: "Groupe Balzac brings together complementary activities around a single conviction.",
+      imageAlt: "A Balzac Café cup, an antique chest and a stone house in the snow",
+    },
+    contactCta: "Get in touch",
+    cafe: {
+      paragraphs: [
+        "Bookshop, gallery, café: Balzac Café gathers under one roof what gives a French house its charm. A place to read, to look, to taste and to take one’s time.",
+        "Books and posters sit alongside fine wines, cinema and literature. Every visit is an invitation to meet and to talk.",
+        "A place of culture, encounters and the art of living, made to be shared.",
+      ],
+      details: {
+        title: "In the house",
+        items: ["Bookshop", "Gallery", "Café", "Fine wines", "Cinema and literature"],
+      },
+    },
+    antiques: {
+      paragraphs: [
+        "Balzac Antiques brings together furniture, works of art and collections chosen for their character and for the stories they tell.",
+        "Each piece carries the mark of an era and of a craft. It finds its place in exceptional interiors, where heritage becomes part of everyday life.",
+      ],
+      details: {
+        title: "The selection",
+        items: ["Furniture", "Works of art", "Collections"],
+      },
+    },
+    immobilier: {
+      paragraphs: [
+        "Specialists in the Pontarlier region, Balzac Immobilier is devoted to property of character, to places with a soul.",
+        "We offer complete guidance, from the first search to the signing, with the care every project deserves.",
+      ],
+      details: {
+        title: "Our guidance",
+        items: ["Search", "Guidance", "Signing", "Pontarlier region"],
+      },
+    },
+  },
+  visionPage: {
+    hero: {
+      label: "Our vision",
+      title: "A single conviction.",
+      intro: "What connects our houses, from one place to the next.",
+      imageAlt: "A Balzac book, a marble bust and an olive branch in a vase on a mantelpiece",
+    },
+    statement: {
+      label: "Groupe Balzac",
+      paragraphs: [
+        "Beauty, culture and heritage create lasting bonds between people and places. This conviction is what connects each of our houses.",
+        "We choose objects and places that stand the test of time, so that they can live on and be passed on in turn.",
+        "A certain idea of the beautiful and the good shapes the way we welcome, choose and guide.",
+        "Present in France, in Switzerland and around the world, this art of living is made to travel: here today, elsewhere tomorrow.",
+      ],
+    },
+    pillars: {
+      label: "Our pillars",
+      title: "Four ideas that guide us.",
+      body: {
+        culture: "Culture sits at the heart of each house: a place for sharing, curiosity and conversation.",
+        heritage: "We choose them for their character and take care to pass them on.",
+        artDeVivre: "It lives in a cup of coffee, an antique piece of furniture or a stone house.",
+        international: "Balzac Café is set to open in other countries through its international franchise.",
+      },
+    },
+    closing: {
+      label: "Continue",
+      title: "Share this vision.",
+      body: "Open a Balzac Café in your country, or simply write to us.",
+      franchiseCta: "Discover the franchise",
+      contactCta: "Contact us",
+    },
   },
 };
 

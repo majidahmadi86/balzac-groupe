@@ -18,14 +18,15 @@ export function localeLayoutMetadata(locale: Locale): Metadata {
   };
 }
 
-export function pageMetadata(locale: Locale, page: PageKey): Metadata {
+export function pageMetadata(locale: Locale, page: PageKey, description?: string): Metadata {
   const t = getDictionary(locale);
   const path = pathFor(locale, page);
+  const summary = description ?? t.heroLead;
   const title = page === "home" ? `${t.siteName} · ${t.motto}` : `${t.pages[page].title} · ${t.siteName}`;
 
   return {
     title: page === "home" ? { absolute: title } : t.pages[page].title,
-    description: t.heroLead,
+    description: summary,
     alternates: {
       canonical: path,
       languages: {
@@ -41,12 +42,12 @@ export function pageMetadata(locale: Locale, page: PageKey): Metadata {
       alternateLocale: [getDictionary(locale === "fr" ? "en" : "fr").ogLocale],
       url: path,
       title,
-      description: t.heroLead,
+      description: summary,
     },
     twitter: {
       card: "summary",
       title,
-      description: t.heroLead,
+      description: summary,
     },
   };
 }
