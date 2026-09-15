@@ -7,14 +7,23 @@
 //   tap       an interactive target under 44x44px (links inside running text are exempt, per WCAG)
 //   aspect    below 768px, an image whose box aspect is more than 25% off its source
 //             (hero images marked data-crop="art-directed" are exempt)
+//   contrast  text, input values and placeholders in [data-contrast] regions (heroes, forms, bands,
+//             pillars) under 4.5:1 against the pixels actually rendered behind them
+//   signs     HTML text over baked-in sign text of a photo (img[data-text-zones])
+//   reach     from 1024px, a page's form whose first field is not visible in a 768px-tall window
 // Runs with prefers-reduced-motion so entrance transforms never skew measurements.
 // Uses a local Chrome/Edge (or BROWSER_PATH), or attaches to CDP_URL.
 import { foregroundPage, openBrowser } from "./lib/browser.mjs";
+import { CONTRAST_MIN, measureContrast, signsAudit } from "./lib/contrast.mjs";
 import { BASE_URL, routePairs } from "./lib/site.mjs";
 
 const WIDTHS = [320, 360, 375, 390, 414, 600, 768, 820, 1024, 1280, 1440, 1920];
-const CHECKS = ["overflow", "overlap", "clipped", "tap", "aspect"];
-const pages = routePairs().flatMap((pair) => [
+const CHECKS = ["overflow", "overlap", "clipped", "tap", "aspect", "contrast", "signs", "reach"];
+// GATE_ONLY=home,contact limits a run to some routes while iterating; the full gate runs without it.
+const only = process.env.GATE_ONLY ? process.env.GATE_ONLY.split(",") : null;
+const pages = routePairs()
+  .filter((pair) => !only || only.includes(pair.slug || "home"))
+  .flatMap((pair) => [
   { path: pair.en, lang: "en", slug: pair.slug || "home" },
   { path: pair.fr, lang: "fr", slug: pair.slug || "home" },
 ]);
@@ -22,7 +31,7 @@ const pages = routePairs().flatMap((pair) => [
 function audit() {
   const doc = document.documentElement;
   const vw = doc.clientWidth;
-  const out = { overflow: [], overlap: [], clipped: [], tap: [], aspect: [] };
+  const out = { overflow: [], overlap: [], clipped: [], tap: [], aspect: [], contrast: [], signs: [], reach: [] };
   const describe = (el) => {
     const id = el.id ? `#${el.id}` : "";
     const label = el.getAttribute("aria-labelledby") ? `[${el.getAttribute("aria-labelledby")}]` : "";
@@ -47,8 +56,21 @@ function audit() {
   const blocks = [...document.querySelectorAll("body > header, main section, body > footer")].filter(shown);
   for (const block of blocks) {
     const box = block.getBoundingClientRect();
-    if (block.scrollHeight > block.clientHeight + 2) {
-      out.clipped.push(`${describe(block)} content ${block.scrollHeight}px > box ${block.clientHeight}px`);
+    // Real content (text, controls, images in flow) reaching past the section box. Decorative layers
+    // (pseudo-element scrims, aria-hidden art, fill images) may overflow a clipped section by design.
+    for (const el of block.querySelectorAll("*")) {
+      if (el.closest('[aria-hidden="true"]')) continue;
+      const tag = el.tagName;
+      const ownText = [...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim());
+      const control = /^(A|BUTTON|INPUT|SELECT|TEXTAREA|LABEL)$/.test(tag);
+      const inFlowImage = tag === "IMG" && getComputedStyle(el).position !== "absolute";
+      if (!ownText && !control && !inFlowImage) continue;
+      const r = el.getBoundingClientRect();
+      if (r.width <= 1 || r.height <= 1) continue;
+      if (r.bottom > box.bottom + 2 || r.top < box.top - 2) {
+        out.clipped.push(`${describe(el).slice(0, 60)} extends past ${describe(block).split(" ")[0]} (${Math.round(r.top - box.top)}..${Math.round(r.bottom - box.top)} in ${Math.round(box.height)}px)`);
+        break;
+      }
     }
     const walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT, {
       acceptNode: (n) => (n.textContent.trim() && n.parentElement && shown(n.parentElement) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT),
@@ -107,6 +129,7 @@ function audit() {
 const { browser, close } = await openBrowser();
 const table = [];
 const details = [];
+let worstContrast = Infinity;
 try {
   const page = await foregroundPage(browser);
   await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]);
@@ -128,6 +151,22 @@ try {
       await page.setViewport({ width, height: 900, deviceScaleFactor: 1 });
       await new Promise((r) => setTimeout(r, 120));
       const found = await page.evaluate(audit);
+      found.signs = await page.evaluate(signsAudit);
+      const contrast = await measureContrast(page);
+      found.contrast = contrast.failures;
+      if (contrast.worst !== null) worstContrast = Math.min(worstContrast, contrast.worst);
+      if (width >= 1024 && (await page.$("form[data-form]"))) {
+        await page.setViewport({ width, height: 768, deviceScaleFactor: 1 });
+        await new Promise((r) => setTimeout(r, 150));
+        const bottom = await page.evaluate(() => {
+          window.scrollTo(0, 0);
+          const first = document.querySelector("form[data-form] input:not([type=hidden]):not([tabindex='-1'])");
+          return first ? Math.round(first.getBoundingClientRect().bottom) : null;
+        });
+        if (bottom === null || bottom > 768) found.reach = [`first form field ends at ${bottom}px, below a 768px window`];
+        await page.setViewport({ width, height: 900, deviceScaleFactor: 1 });
+        await new Promise((r) => setTimeout(r, 120));
+      }
       for (const check of CHECKS) {
         if (found[check].length) {
           row.counts[check] += 1;
@@ -147,6 +186,7 @@ const rule = `|${" --- |".repeat(CHECKS.length + 1)}`;
 const lines = table.map((row) => `| ${row.page} | ${CHECKS.map((c) => cell(row.counts[c])).join(" | ")} |`);
 console.log(`Responsive gate · ${pages.length} pages x ${WIDTHS.length} widths (${WIDTHS.join(", ")})\n`);
 console.log([header, rule, ...lines].join("\n"));
+if (Number.isFinite(worstContrast)) console.log(`\nlowest measured contrast anywhere: ${worstContrast.toFixed(2)}:1 (minimum ${CONTRAST_MIN}:1)`);
 
 const failed = table.some((row) => CHECKS.some((c) => row.counts[c] > 0));
 if (failed) {

@@ -62,10 +62,10 @@ export function AboutPage({ locale }: { locale: Locale }) {
         body={cafe.paragraphs}
         bodyStyle="paragraphs"
         imageSide="right"
-        aspect="aspect-[4/5]"
-        // Landscape band on desktop: start below the upper sign so no lettering is cut mid-word.
-        imagePosition="object-[50%_50%]"
-        image={{ src: "/images/balzacgroupe-hero.jpg", alt: cafe.imageAlt }}
+        aspect="aspect-square"
+        // Storefront crop without the upper band, so BALZAC reads once (on the awning).
+        imagePosition="object-[50%_20%]"
+        image={{ src: "/images/balzacgroupe-hero-storefront.jpg", alt: cafe.imageAlt }}
       />
 
       <SplitBand

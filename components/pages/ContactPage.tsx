@@ -2,7 +2,6 @@ import Link from "next/link";
 import { InquiryForm } from "@/components/forms/InquiryForm";
 import { Hero } from "@/components/home/Hero";
 import { MotionScope } from "@/components/home/MotionScope";
-import { Reveal } from "@/components/home/Reveal";
 import { getDictionary, type Locale } from "@/lib/i18n";
 import { GROUP_EMAIL } from "@/lib/legal";
 import { pathFor, SHOW_IMMOBILIER } from "@/lib/routes";
@@ -26,79 +25,75 @@ export function ContactPage({ locale }: { locale: Locale }) {
   return (
     <MotionScope>
       <Hero
-        compact
+        tight
+        scrim="light"
         label={page.hero.label}
         titleLines={[page.hero.title]}
-        intro={page.hero.intro}
-        scrim="light"
         // TEMP mockup crop, replace with client photography.
         image={{ src: "/images/temp/temp-vision-interior.jpg", alt: page.hero.imageAlt, position: "object-[18%_50%] lg:object-[50%_60%]" }}
       />
 
-      <section aria-labelledby="contact-form-title" className="bg-cream py-16 text-navy sm:py-20 lg:py-24">
-        <div className="site-gutter grid gap-14 lg:grid-cols-12 lg:gap-12">
-          <div className="lg:col-span-7">
-            <Reveal>
-              <p className="label-caps tracking-caps-lg text-navy/80 lg:text-xs">{page.form.label}</p>
-              <h2
-                id="contact-form-title"
-                className="mt-4 font-display text-[2rem] font-semibold leading-[1.08] sm:text-[2.5rem] lg:mt-5 lg:text-[3rem]"
-              >
-                {page.form.title}
-              </h2>
-            </Reveal>
-            <div className="mt-8 lg:mt-10">
-              <InquiryForm kind="contact" locale={locale} groupEmail={GROUP_EMAIL} />
-            </div>
+      {/* Intro beside the form from 1024px (first field visible without scrolling); on mobile intro, form, then details. */}
+      <section aria-labelledby="contact-intro-title" className="bg-cream pb-16 pt-8 text-navy sm:pb-20 sm:pt-10 lg:pb-24 lg:pt-12">
+        <div className="site-gutter grid gap-8 lg:grid-cols-12 lg:gap-x-12 lg:gap-y-10">
+          <div data-contrast="" className="lg:col-span-5 lg:row-start-1 lg:pt-2">
+            <p className="label-caps tracking-caps-lg text-navy lg:text-xs">{page.aside.label}</p>
+            <h2
+              id="contact-intro-title"
+              className="mt-3 text-balance font-display text-[2rem] font-semibold leading-[1.06] sm:text-[2.5rem] lg:mt-4 lg:text-[3rem]"
+            >
+              {page.intro.title}
+            </h2>
+            <p className="mt-4 text-pretty text-[1.0625rem] leading-[1.6] text-navy lg:mt-6 lg:text-[1.125rem]">{page.intro.body}</p>
           </div>
 
-          <aside aria-label={page.aside.label} className="lg:col-span-4 lg:col-start-9 lg:pt-3">
-            <Reveal delay={120} className="border-t border-navy/15 pt-8">
-              <p className="label-caps tracking-caps-lg text-navy/70 lg:text-xs">{page.aside.label}</p>
-              <h3 className="mt-4 font-display text-[1.5rem] font-semibold leading-[1.15]">{page.aside.emailTitle}</h3>
-              <p className="mt-2 text-[1.0625rem]">
-                {GROUP_EMAIL ? (
-                  <a
-                    href={`mailto:${GROUP_EMAIL}`}
-                    className="inline-flex min-h-[44px] items-center text-navy underline decoration-navy/30 underline-offset-[6px] transition-colors duration-300 hover:decoration-navy"
-                  >
-                    {GROUP_EMAIL}
-                  </a>
-                ) : (
-                  <span data-pending="GROUP_EMAIL" className="border-b border-dotted border-gold-dark italic text-navy/60">
-                    {pendingLabel}
-                  </span>
-                )}
-              </p>
+          <div className="lg:col-span-7 lg:col-start-6 lg:row-span-2 lg:row-start-1">
+            <InquiryForm kind="contact" locale={locale} groupEmail={GROUP_EMAIL} label={page.form.label} />
+          </div>
 
-              <h3 className="mt-10 font-display text-[1.5rem] font-semibold leading-[1.15]">{page.aside.maisonsTitle}</h3>
-              <ul className="mt-3 border-t border-navy/15">
-                {houseLinks.map((house) => {
-                  const inner = (
-                    <>
-                      <span className="text-[1.0625rem] text-navy">{house.name}</span>
-                      <span className="label-caps text-[0.625rem] tracking-caps-sm text-navy/60">{house.note}</span>
-                    </>
-                  );
-                  const className =
-                    "flex min-h-[56px] items-center justify-between gap-4 py-3 transition-colors duration-300 hover:text-forest";
-                  return (
-                    <li key={house.name} className="border-b border-navy/15">
-                      {house.external ? (
-                        <a href={house.href} target="_blank" rel="noopener noreferrer" className={className}>
-                          {inner}
-                          <span className="sr-only">{t.home.newTab}</span>
-                        </a>
-                      ) : (
-                        <Link href={house.href} className={className}>
-                          {inner}
-                        </Link>
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
-            </Reveal>
+          <aside data-contrast="" aria-label={page.aside.label} className="border-t border-navy/15 pt-8 lg:col-span-5 lg:row-start-2 lg:self-start">
+            <h3 className="font-display text-[1.5rem] font-semibold leading-[1.15]">{page.aside.emailTitle}</h3>
+            <p className="mt-2 text-[1.0625rem]">
+              {GROUP_EMAIL ? (
+                <a
+                  href={`mailto:${GROUP_EMAIL}`}
+                  className="inline-flex min-h-[44px] items-center text-navy underline decoration-navy/40 underline-offset-[6px] transition-colors duration-300 hover:decoration-navy"
+                >
+                  {GROUP_EMAIL}
+                </a>
+              ) : (
+                <span data-pending="GROUP_EMAIL" className="border-b border-dotted border-gold-dark italic text-navy">
+                  {pendingLabel}
+                </span>
+              )}
+            </p>
+
+            <h3 className="mt-10 font-display text-[1.5rem] font-semibold leading-[1.15]">{page.aside.maisonsTitle}</h3>
+            <ul className="mt-3 border-t border-navy/15">
+              {houseLinks.map((house) => {
+                const inner = (
+                  <>
+                    <span className="text-[1.0625rem] text-navy">{house.name}</span>
+                    <span className="label-caps text-[0.625rem] tracking-caps-sm text-navy">{house.note}</span>
+                  </>
+                );
+                const className = "flex min-h-[56px] items-center justify-between gap-4 py-3 transition-colors duration-300 hover:text-forest";
+                return (
+                  <li key={house.name} className="border-b border-navy/15">
+                    {house.external ? (
+                      <a href={house.href} target="_blank" rel="noopener noreferrer" className={className}>
+                        {inner}
+                        <span className="sr-only">{t.home.newTab}</span>
+                      </a>
+                    ) : (
+                      <Link href={house.href} className={className}>
+                        {inner}
+                      </Link>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
           </aside>
         </div>
       </section>

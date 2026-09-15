@@ -66,7 +66,7 @@ export function VisionPage({ locale }: { locale: Locale }) {
             </h2>
           </Reveal>
 
-          <ul className="mx-auto mt-12 grid max-w-6xl sm:grid-cols-2 lg:mt-16 lg:grid-cols-4">
+          <ul data-contrast="" className="mx-auto mt-12 grid max-w-6xl sm:grid-cols-2 lg:mt-16 lg:grid-cols-4">
             {pillarOrder.map((key, idx) => {
               const pillar = home.pillars[key];
               const borders = [

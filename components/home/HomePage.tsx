@@ -1,7 +1,7 @@
 import { getDictionary, type Locale } from "@/lib/i18n";
 import { pathFor, SHOW_IMMOBILIER } from "@/lib/routes";
 import { CtaLink } from "./CtaLink";
-import { Hero } from "./Hero";
+import { StorefrontHero } from "./StorefrontHero";
 import { MotionScope } from "./MotionScope";
 import { SplitBand } from "./SplitBand";
 import { Vision } from "./Vision";
@@ -18,17 +18,10 @@ export function HomePage({ locale }: { locale: Locale }) {
 
   return (
     <MotionScope>
-      <Hero
-        layout="split"
+      <StorefrontHero
         titleLines={t.motto.split(", ").map((line, idx, all) => (idx < all.length - 1 ? `${line},` : line))}
         tagline={t.tagline}
-        // Storefront signage is baked into the photo, so the type sits beside it, never on it.
-        // Mobile square: crops the upper sign out cleanly and keeps the awning, window, terrace and A-board whole.
-        image={{
-          src: "/images/balzacgroupe-hero.jpg",
-          alt: t.home.hero.imageAlt,
-          position: "object-[50%_85%] sm:object-[50%_45%] lg:object-[50%_30%]",
-        }}
+        imageAlt={t.home.hero.imageAlt}
         cta={
           <CtaLink href={pathFor(locale, "vision")} variant="hero">
             {t.home.hero.cta}

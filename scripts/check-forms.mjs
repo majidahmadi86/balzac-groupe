@@ -8,12 +8,14 @@
 //   failure      Resend returning 500 renders the failure state, keeps the typed values, shows the fallback
 //   honeypot     a filled honeypot shows success but sends nothing
 //   rate limit   repeated sends from one IP render the limited state
+//   contrast     every state (validation, success, failure, limited) keeps its text at 4.5:1 or better
 // CHECK_ARTIFACTS_DIR=path saves screenshots of each state and the rendered email HTML.
 import { spawn } from "node:child_process";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { createServer } from "node:http";
 import { join } from "node:path";
 import { foregroundPage, openBrowser } from "./lib/browser.mjs";
+import { measureContrast } from "./lib/contrast.mjs";
 import { root } from "./lib/site.mjs";
 
 const TEST_KEY = "re_test_balzac_groupe_check";
@@ -139,6 +141,8 @@ try {
       );
       const got = await page.evaluate(() => document.querySelector("[data-form-state]")?.dataset.formState ?? "idle");
       if (got !== state) throw new Error(`expected the ${state} state, got ${got}`);
+      const { failures: low } = await measureContrast(page);
+      expect(low.length === 0, `${kind} ${state} state: all text at 4.5:1 or better${low.length ? ` (${low.slice(0, 3).join("; ")})` : ""}`);
     };
 
     const forms = [
@@ -224,6 +228,10 @@ try {
       await page.click('form[data-form="contact"] button[type="submit"]');
       await page.waitForFunction(() => Number(document.querySelector("[data-form-nonce]")?.dataset.formNonce ?? 0) > 0, { timeout: 15000, polling: "mutation" });
       limited = await page.evaluate(() => Boolean(document.querySelector('[data-form-state="limited"]')));
+      if (limited) {
+        const { failures: low } = await measureContrast(page);
+        expect(low.length === 0, `contact limited state: all text at 4.5:1 or better${low.length ? ` (${low.slice(0, 3).join("; ")})` : ""}`);
+      }
     }
     expect(limited, `contact: repeated sends from one IP hit the rate limit (${RATE_LIMIT} per window)`);
     if (limited) await snap("contact-en-limited");

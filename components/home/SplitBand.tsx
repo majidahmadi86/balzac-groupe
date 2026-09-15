@@ -66,7 +66,7 @@ export function SplitBand({
     >
       <div className={`flex items-center ${imageSide === "left" ? "md:order-2" : ""}`}>
         <Reveal className={`w-full px-5 py-14 sm:px-8 sm:py-16 md:py-16 lg:py-24 ${textPadding}`}>
-          <div className="max-w-[34rem]">
+          <div data-contrast="" className="max-w-[34rem]">
             <p className={`label-caps tracking-caps-lg lg:text-xs ${forest ? "text-gold-light" : "text-navy/80"}`}>{label}</p>
             <h2
               id={titleId}

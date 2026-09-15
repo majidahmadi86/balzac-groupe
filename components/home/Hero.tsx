@@ -10,6 +10,8 @@ type HeroProps = {
   cta?: ReactNode;
   /** Page hero for inner pages (~45vh). The homepage uses the full-height hero. */
   compact?: boolean;
+  /** Shortest page hero, for pages whose content (a form) should start near the top. Implies compact type. */
+  tight?: boolean;
   /**
    * overlay: type set on the photo behind a scrim (photos with a quiet area for text).
    * split: type on navy beside the photo, stacked on mobile (photos with signage or text baked in).
@@ -28,13 +30,26 @@ const SCRIMS = {
     "bg-gradient-to-t from-navy-950 from-15% via-navy-950/80 via-45% to-navy-950/0 to-80% lg:bg-gradient-to-r lg:from-navy-950 lg:from-10% lg:via-navy-950/85 lg:via-40% lg:to-navy-950/0 lg:to-70%",
 };
 
-function HeroText({ titleLines, label, intro, tagline, cta, compact }: Omit<HeroProps, "image" | "layout" | "scrim">) {
+// Scrim tied to the type block itself: whatever the title length or hero height, the navy backing reaches
+// 6rem beyond the text (above it on mobile, to its right on desktop) before fading, so every line holds 4.5:1.
+const TEXT_SCRIM =
+  "relative z-0 before:pointer-events-none before:absolute before:-bottom-24 before:-left-[50vw] before:-right-[50vw] before:-top-24 before:-z-10 before:bg-[linear-gradient(to_top,rgba(0,15,23,0.9)_0%,rgba(0,15,23,0.8)_78%,rgba(0,15,23,0)_100%)] lg:before:-bottom-[50vh] lg:before:-right-40 lg:before:-top-[50vh] lg:before:bg-[linear-gradient(to_right,rgba(0,15,23,0.9)_0%,rgba(0,15,23,0.8)_75%,rgba(0,15,23,0)_100%)]";
+
+function HeroText({
+  titleLines,
+  label,
+  intro,
+  tagline,
+  cta,
+  compact,
+  overlay = false,
+}: Omit<HeroProps, "image" | "layout" | "scrim"> & { overlay?: boolean }) {
   const titleSize = compact
     ? "text-[clamp(2.25rem,10vw,3.5rem)] leading-[1.02] lg:text-[4rem] xl:text-[4.5rem]"
     : "text-[clamp(2.6rem,13vw,4.5rem)] leading-[0.98] lg:text-[5.5rem] xl:text-[6.25rem]";
 
   return (
-    <div className="max-w-2xl">
+    <div data-contrast="" className={`max-w-2xl ${overlay ? TEXT_SCRIM : ""}`}>
       {label && <p className="rise-in label-caps mb-5 tracking-caps-lg text-gold-light lg:mb-6 lg:text-xs">{label}</p>}
       <h1
         id="hero-title"
@@ -78,7 +93,8 @@ function HeroText({ titleLines, label, intro, tagline, cta, compact }: Omit<Hero
 }
 
 // Photographic hero. The image source and its art direction come from the caller.
-export function Hero({ image, compact = false, layout = "overlay", scrim = "dark", ...text }: HeroProps) {
+export function Hero({ image, compact = false, tight = false, layout = "overlay", scrim = "dark", ...text }: HeroProps) {
+  if (tight) compact = true;
   if (layout === "split") {
     const height = compact ? "lg:h-[55vh] lg:min-h-[28rem] lg:max-h-[40rem]" : "lg:h-[85vh] lg:min-h-[40rem] lg:max-h-[64rem]";
     return (
@@ -112,7 +128,9 @@ export function Hero({ image, compact = false, layout = "overlay", scrim = "dark
     );
   }
 
-  const height = compact
+  const height = tight
+    ? "h-[34svh] min-h-[15rem] lg:h-[30vh] lg:min-h-[15rem] lg:max-h-[19rem]"
+    : compact
     ? "h-[45svh] min-h-[24rem] lg:h-[45vh] lg:min-h-[26rem] lg:max-h-[36rem]"
     : "h-[calc(100svh-76px)] min-h-[32rem] lg:h-[85vh] lg:min-h-[40rem] lg:max-h-[64rem]";
 
@@ -132,10 +150,10 @@ export function Hero({ image, compact = false, layout = "overlay", scrim = "dark
 
         <div
           className={`site-gutter relative flex h-full flex-col justify-end lg:justify-center lg:pb-0 ${
-            compact ? "pb-10 sm:pb-14" : "pb-14 sm:pb-20"
+            tight ? "pb-7 sm:pb-9" : compact ? "pb-10 sm:pb-14" : "pb-14 sm:pb-20"
           }`}
         >
-          <HeroText compact={compact} {...text} />
+          <HeroText compact={compact} overlay {...text} />
         </div>
       </div>
     </section>

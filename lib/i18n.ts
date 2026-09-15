@@ -242,7 +242,7 @@ const fr = {
       label: "Le parcours",
       title: "Du premier échange à l’ouverture.",
       items: [
-        { title: "Premier contact", body: "Vous nous présentez votre projet et votre ville grâce au formulaire ci-dessous." },
+        { title: "Premier contact", body: "Vous nous présentez votre projet et votre ville grâce au formulaire de cette page." },
         { title: "Rencontre", body: "Nous faisons connaissance et vous présentons le concept Balzac Café." },
         { title: "Étude du projet", body: "Ensemble, nous examinons le lieu, la ville et la manière d’y faire vivre la maison." },
         { title: "Ouverture", body: "Nous vous accompagnons dans la préparation de l’ouverture de votre Balzac Café." },
@@ -250,7 +250,6 @@ const fr = {
     },
     form: {
       label: "Manifester votre intérêt",
-      title: "Parlons de votre projet.",
       intro: "Quelques mots suffisent pour commencer. Nous vous répondrons par email.",
     },
   },
@@ -261,9 +260,12 @@ const fr = {
       intro: "Une question, un projet, une rencontre : nous lisons chaque message.",
       imageAlt: "Livre Balzac, buste en marbre et vase d’olivier sur une cheminée",
     },
+    intro: {
+      title: "Une question, un projet, une rencontre.",
+      body: "Nous lisons chaque message et vous répondons par email.",
+    },
     form: {
-      label: "Formulaire",
-      title: "Votre message.",
+      label: "Votre message",
     },
     aside: {
       label: "Groupe Balzac",
@@ -551,7 +553,7 @@ const en: Dictionary = {
       label: "The path",
       title: "From first conversation to opening.",
       items: [
-        { title: "First contact", body: "Tell us about your project and your city through the form below." },
+        { title: "First contact", body: "Tell us about your project and your city through the form on this page." },
         { title: "Meeting", body: "We get to know each other and introduce you to the Balzac Café concept." },
         { title: "Project study", body: "Together we look at the premises, the city and how the house can live there." },
         { title: "Opening", body: "We support you as you prepare to open your Balzac Café." },
@@ -559,7 +561,6 @@ const en: Dictionary = {
     },
     form: {
       label: "Express your interest",
-      title: "Let’s talk about your project.",
       intro: "A few words are enough to begin. We will reply by email.",
     },
   },
@@ -570,9 +571,12 @@ const en: Dictionary = {
       intro: "A question, a project, a meeting: we read every message.",
       imageAlt: "A Balzac book, a marble bust and an olive branch in a vase on a mantelpiece",
     },
+    intro: {
+      title: "A question, a project, a meeting.",
+      body: "We read every message and reply by email.",
+    },
     form: {
-      label: "Form",
-      title: "Your message.",
+      label: "Your message",
     },
     aside: {
       label: "Groupe Balzac",

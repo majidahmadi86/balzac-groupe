@@ -7,6 +7,8 @@
 // 5. Favicon, apple icon and Open Graph image are referenced in the HTML and served correctly.
 // 6. Retired URLs answer 301 to their replacement; nothing links to or routes through "houses".
 // 7. While SHOW_IMMOBILIER is false, no page says "Immobilier" anywhere in its rendered text.
+// 8. /robots.txt allows crawling and points at /sitemap.xml; the sitemap lists every live route in
+//    both languages with hreflang alternates, and nothing hidden by a flag.
 // Reports (without failing) which temporary mockup crops are still in use.
 import { BASE_URL, flags, hiddenSlugs, routePairs } from "./lib/site.mjs";
 
@@ -189,6 +191,32 @@ if (!flagState.immobilier) {
   }
 }
 
+// 8
+const SITE = "https://balzacgroupe.com";
+const robots = await fetch(`${BASE_URL}/robots.txt`);
+const robotsText = robots.ok ? await robots.text() : "";
+if (!robots.ok) fail(`/robots.txt returned ${robots.status}`);
+if (!/User-Agent:\s*\*/i.test(robotsText) || !/Allow:\s*\//i.test(robotsText)) fail("/robots.txt does not allow all user agents");
+if (!robotsText.includes(`Sitemap: ${SITE}/sitemap.xml`)) fail("/robots.txt does not point at the sitemap");
+
+const sitemap = await fetch(`${BASE_URL}/sitemap.xml`);
+const sitemapXml = sitemap.ok ? await sitemap.text() : "";
+if (!sitemap.ok) fail(`/sitemap.xml returned ${sitemap.status}`);
+const entries = [...sitemapXml.matchAll(/<url>([\s\S]*?)<\/url>/g)].map((m) => m[1]);
+const listed = entries.map((e) => (e.match(/<loc>([^<]+)<\/loc>/) || [])[1]).filter(Boolean);
+const expected = pairs
+  .filter((pair) => !hidden.includes(pair.slug))
+  .flatMap((pair) => [pair.en, pair.fr])
+  .map((path) => `${SITE}${path === "/" ? "/" : path}`);
+for (const url of expected) if (!listed.includes(url)) fail(`sitemap is missing ${url}`);
+for (const url of listed) if (!expected.includes(url)) fail(`sitemap lists ${url}, which is not a live route`);
+for (const entry of entries) {
+  const loc = (entry.match(/<loc>([^<]+)<\/loc>/) || [])[1];
+  for (const lang of ["en", "fr", "x-default"]) {
+    if (!new RegExp(`hreflang="${lang}"`).test(entry)) fail(`sitemap entry ${loc} has no ${lang} alternate`);
+  }
+}
+
 const tempInUse = new Set();
 for (const pair of pairs) {
   for (const path of [pair.en, pair.fr]) {
@@ -202,6 +230,6 @@ if (failures.length) {
   process.exit(1);
 }
 console.log(
-  `check:site ok · ${pairs.length} routes x 2 languages · ${seen.size} crawled pages, ${anchors.length} anchors · hidden: ${hidden.join(", ") || "none"} · parity ok · icons + OG ok · redirects 301 ok · immobilier ${flagState.immobilier ? "shown" : "hidden everywhere"}`,
+  `check:site ok · ${pairs.length} routes x 2 languages · ${seen.size} crawled pages, ${anchors.length} anchors · hidden: ${hidden.join(", ") || "none"} · parity ok · icons + OG ok · redirects 301 ok · immobilier ${flagState.immobilier ? "shown" : "hidden everywhere"} · sitemap ${listed.length} urls + robots ok`,
 );
 console.log(`temporary crops still in use: ${[...tempInUse].sort().join(", ") || "none"}`);

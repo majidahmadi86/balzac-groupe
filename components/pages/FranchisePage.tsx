@@ -15,36 +15,39 @@ export function FranchisePage({ locale }: { locale: Locale }) {
   return (
     <MotionScope>
       <Hero
-        compact
+        tight
+        // A tight hero fills with type, so the scrim must hold from the label down.
+        scrim="light"
         label={page.hero.label}
         titleLines={[page.hero.title]}
-        intro={page.hero.intro}
         // TEMP mockup crop, replace with client photography.
-        image={{ src: "/images/temp/temp-franchise-globe.jpg", alt: page.hero.imageAlt, position: "object-[70%_50%] lg:object-center" }}
+        image={{ src: "/images/temp/temp-franchise-globe.jpg", alt: page.hero.imageAlt, position: "object-[70%_50%] lg:object-[50%_55%]" }}
       />
 
-      {/* Proposition */}
-      <section aria-labelledby="proposition-title" className="bg-cream py-16 text-navy sm:py-20 lg:py-28">
+      {/* Proposition beside the interest form: the form's first field shows without scrolling from 1024px. */}
+      <section
+        id="form"
+        aria-labelledby="proposition-title"
+        className="scroll-mt-[76px] bg-cream pb-16 pt-8 text-navy sm:pb-20 sm:pt-10 lg:scroll-mt-[104px] lg:pb-24 lg:pt-12"
+      >
         <div className="site-gutter grid gap-8 lg:grid-cols-12 lg:gap-12">
-          <Reveal className="lg:col-span-5">
-            <p className="label-caps tracking-caps-lg text-navy/80 lg:text-xs">{page.proposition.label}</p>
+          <div data-contrast="" className="lg:col-span-5 lg:pt-2">
+            <p className="label-caps tracking-caps-lg text-navy lg:text-xs">{page.proposition.label}</p>
             <h2
               id="proposition-title"
-              className="mt-4 text-balance font-display text-[2.25rem] font-semibold leading-[1.04] sm:text-[2.75rem] lg:mt-5 lg:text-[3.5rem]"
+              className="mt-3 text-balance font-display text-[2rem] font-semibold leading-[1.06] sm:text-[2.5rem] lg:mt-4 lg:text-[3rem]"
             >
               {t.home.franchise.title}
             </h2>
-            <span aria-hidden="true" className="mt-7 block h-px w-14 bg-gold lg:mt-9" />
-          </Reveal>
-          <Reveal delay={120} className="lg:col-span-6 lg:col-start-7 lg:pt-10">
-            <div className="space-y-5 text-[1.0625rem] leading-[1.65] text-navy/85 lg:text-[1.1875rem]">
-              {page.proposition.paragraphs.map((paragraph) => (
-                <p key={paragraph} className="text-pretty">
-                  {paragraph}
-                </p>
-              ))}
+            <div className="mt-4 space-y-4 text-[1.0625rem] leading-[1.6] text-navy lg:mt-6 lg:text-[1.125rem]">
+              <p className="text-pretty">{page.proposition.paragraphs[0]}</p>
+              <p className="hidden text-pretty lg:block">{page.proposition.paragraphs[1]}</p>
+              <p className="hidden text-pretty lg:block">{page.form.intro}</p>
             </div>
-          </Reveal>
+          </div>
+          <div className="lg:col-span-7">
+            <InquiryForm kind="franchise" locale={locale} groupEmail={GROUP_EMAIL} label={page.form.label} />
+          </div>
         </div>
       </section>
 
@@ -119,28 +122,6 @@ export function FranchisePage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      {/* Interest form */}
-      <section
-        id="form"
-        aria-labelledby="form-title"
-        className="scroll-mt-[76px] bg-cream py-16 text-navy sm:py-20 lg:scroll-mt-[104px] lg:py-28"
-      >
-        <div className="site-gutter grid gap-10 lg:grid-cols-12 lg:gap-12">
-          <Reveal className="lg:col-span-4">
-            <p className="label-caps tracking-caps-lg text-navy/80 lg:text-xs">{page.form.label}</p>
-            <h2
-              id="form-title"
-              className="mt-4 text-balance font-display text-[2rem] font-semibold leading-[1.08] sm:text-[2.5rem] lg:mt-5 lg:text-[3rem]"
-            >
-              {page.form.title}
-            </h2>
-            <p className="mt-4 text-pretty text-[1.0625rem] leading-[1.6] text-navy/85 lg:mt-6">{page.form.intro}</p>
-          </Reveal>
-          <div className="lg:col-span-7 lg:col-start-6">
-            <InquiryForm kind="franchise" locale={locale} groupEmail={GROUP_EMAIL} />
-          </div>
-        </div>
-      </section>
     </MotionScope>
   );
 }
