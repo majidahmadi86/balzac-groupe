@@ -51,6 +51,9 @@ Contact and Franchise forms post to server actions (`lib/form-actions.ts`) and s
 - `npm run assets:brand` regenerates `app/icon.svg`, `app/apple-icon.png`, `app/favicon.ico` and the EN/FR Open Graph cards from the plaque design.
 - `lib/legal.ts` holds the legal entity and every legal fact. Unknown facts are `null` constants and show as "to be confirmed" on /legal and /privacy until filled.
 - News is hidden from navigation by `SHOW_NEWS` in `lib/routes.ts`; the route stays live.
+- Balzac Immobilier is hidden by `SHOW_IMMOBILIER` in `lib/routes.ts` (homepage band, About chapter, contact link, legal mentions). Setting it to true restores everything with no other edit.
+- `/houses` and `/fr/houses` answer 301 to `/about` and `/fr/about` (see `next.config.mjs`).
+- Photography lives in `public/images/balzacgroupe-*.jpg`. Sections without client photos still use `public/images/temp/` mockup crops, each marked with a TEMP comment.
 
 Copy `.env.example` to `.env.local` and fill it in for the forms to send.
 

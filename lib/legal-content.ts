@@ -1,4 +1,5 @@
 import type { Locale, PageKey } from "./i18n";
+import { SHOW_IMMOBILIER } from "./routes";
 import {
   APPLICABLE_LAW,
   DPO_NAME,
@@ -29,6 +30,9 @@ const fact = (value: string | null, name: string): Inline[] => [value ?? { pendi
 const p = (...parts: Inline[]): LegalBlock => ({ type: "p", parts });
 const list = (items: string[], locale: Locale) =>
   items.length < 2 ? items.join("") : `${items.slice(0, -1).join(", ")} ${locale === "fr" ? "et" : "and"} ${items[items.length - 1]}`;
+
+const brandNames = (locale: Locale) =>
+  list(["Groupe Balzac", "Balzac Café", "Balzac Antiques", ...(SHOW_IMMOBILIER ? ["Balzac Immobilier"] : [])], locale);
 
 const imageAlt = {
   en: "A Balzac book, a marble bust and an olive branch in a vase on a mantelpiece",
@@ -78,7 +82,7 @@ export function legalNotice(locale: Locale): LegalDoc {
               "L’ensemble des contenus de ce site, notamment les textes, les images, les logotypes et les éléments graphiques, est protégé par le droit de la propriété intellectuelle.",
             ),
             p(
-              `Toute reproduction, représentation ou adaptation, totale ou partielle, sans l’autorisation écrite préalable de ${LEGAL_ENTITY_NAME} est interdite. Les noms et logotypes Groupe Balzac, Balzac Café, Balzac Antiques et Balzac Immobilier ne peuvent être utilisés sans cette autorisation.`,
+              `Toute reproduction, représentation ou adaptation, totale ou partielle, sans l’autorisation écrite préalable de ${LEGAL_ENTITY_NAME} est interdite. Les noms et logotypes ${brandNames("fr")} ne peuvent être utilisés sans cette autorisation.`,
             ),
           ],
         },
@@ -143,7 +147,7 @@ export function legalNotice(locale: Locale): LegalDoc {
         blocks: [
           p("All content on this site, including text, images, logos and graphic elements, is protected by intellectual property law."),
           p(
-            `Any reproduction, representation or adaptation, in whole or in part, without the prior written permission of ${LEGAL_ENTITY_NAME} is prohibited. The names and logos Groupe Balzac, Balzac Café, Balzac Antiques and Balzac Immobilier may not be used without that permission.`,
+            `Any reproduction, representation or adaptation, in whole or in part, without the prior written permission of ${LEGAL_ENTITY_NAME} is prohibited. The names and logos ${brandNames("en")} may not be used without that permission.`,
           ),
         ],
       },

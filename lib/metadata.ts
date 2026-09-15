@@ -1,8 +1,14 @@
 import type { Metadata } from "next";
 import { getDictionary, type Locale, type PageKey } from "./i18n";
-import { pathFor } from "./routes";
+import { pathFor, SHOW_IMMOBILIER } from "./routes";
 
 export const siteUrl = "https://balzacgroupe.com";
+
+/** The site description, without the property business while SHOW_IMMOBILIER is false. */
+export const siteLead = (locale: Locale) => {
+  const t = getDictionary(locale);
+  return SHOW_IMMOBILIER ? t.heroLead : t.heroLeadCore;
+};
 
 export function localeLayoutMetadata(locale: Locale): Metadata {
   const t = getDictionary(locale);
@@ -12,7 +18,7 @@ export function localeLayoutMetadata(locale: Locale): Metadata {
       default: `${t.siteName} · ${t.motto}`,
       template: `%s · ${t.siteName}`,
     },
-    description: t.heroLead,
+    description: siteLead(locale),
     applicationName: t.siteName,
     formatDetection: { telephone: false, email: false, address: false },
   };
@@ -21,7 +27,7 @@ export function localeLayoutMetadata(locale: Locale): Metadata {
 export function pageMetadata(locale: Locale, page: PageKey, description?: string): Metadata {
   const t = getDictionary(locale);
   const path = pathFor(locale, page);
-  const summary = description ?? t.heroLead;
+  const summary = description ?? siteLead(locale);
   // Explicit per locale: a page-level openGraph object replaces the one Next derives
   // from app/opengraph-image.png, so the card must be named here to reach every route.
   const cardBase = locale === "fr" ? "/fr" : "";

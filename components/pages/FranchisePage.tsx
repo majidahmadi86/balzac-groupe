@@ -52,13 +52,14 @@ export function FranchisePage({ locale }: { locale: Locale }) {
       <SplitBand
         id="concept"
         label={page.concept.label}
-        title={t.home.houses.cafe.title}
+        title={t.home.bands.cafe.title}
         body={page.concept.paragraphs}
         bodyStyle="paragraphs"
-        details={t.housesPage.cafe.details}
+        details={page.concept.details}
         imageSide="right"
-        // TEMP mockup crop, replace with client photography.
-        image={{ src: "/images/temp/temp-cafe.jpg", alt: t.home.houses.cafe.imageAlt }}
+        aspect="aspect-[3/4] sm:aspect-[4/5]"
+        imagePosition="object-[50%_66%]"
+        image={{ src: "/images/balzacgroupe-cafe-interior.jpg", alt: t.home.bands.cafe.imageAlt }}
         cta={<CtaLink href={`${pathFor(locale, "franchise")}#form`}>{page.form.label}</CtaLink>}
       />
 

@@ -5,20 +5,22 @@ import { MotionScope } from "@/components/home/MotionScope";
 import { Reveal } from "@/components/home/Reveal";
 import { getDictionary, type Locale } from "@/lib/i18n";
 import { GROUP_EMAIL } from "@/lib/legal";
-import { pathFor } from "@/lib/routes";
+import { pathFor, SHOW_IMMOBILIER } from "@/lib/routes";
 
 const ANTIQUES_URL = "https://balzacantiques.ch";
 
 export function ContactPage({ locale }: { locale: Locale }) {
   const t = getDictionary(locale);
   const page = t.contactPage;
-  const houses = pathFor(locale, "houses");
+  const about = pathFor(locale, "about");
   const pendingLabel = locale === "fr" ? "À compléter" : "To be confirmed";
 
   const houseLinks = [
-    { name: t.home.houses.cafe.label, note: page.aside.cafeNote, href: `${houses}#cafe`, external: false },
-    { name: t.home.houses.antiques.label, note: page.aside.antiquesNote, href: ANTIQUES_URL, external: true },
-    { name: t.home.houses.immobilier.label, note: page.aside.immobilierNote, href: `${houses}#immobilier`, external: false },
+    { name: t.home.bands.cafe.label, note: page.aside.cafeNote, href: `${about}#cafe`, external: false },
+    { name: t.home.bands.antiques.label, note: page.aside.antiquesNote, href: ANTIQUES_URL, external: true },
+    ...(SHOW_IMMOBILIER
+      ? [{ name: t.home.bands.immobilier.label, note: page.aside.immobilierNote, href: `${about}#immobilier`, external: false }]
+      : []),
   ];
 
   return (
@@ -28,6 +30,7 @@ export function ContactPage({ locale }: { locale: Locale }) {
         label={page.hero.label}
         titleLines={[page.hero.title]}
         intro={page.hero.intro}
+        scrim="light"
         // TEMP mockup crop, replace with client photography.
         image={{ src: "/images/temp/temp-vision-interior.jpg", alt: page.hero.imageAlt, position: "object-[18%_50%] lg:object-[50%_60%]" }}
       />
@@ -68,7 +71,7 @@ export function ContactPage({ locale }: { locale: Locale }) {
                 )}
               </p>
 
-              <h3 className="mt-10 font-display text-[1.5rem] font-semibold leading-[1.15]">{page.aside.housesTitle}</h3>
+              <h3 className="mt-10 font-display text-[1.5rem] font-semibold leading-[1.15]">{page.aside.maisonsTitle}</h3>
               <ul className="mt-3 border-t border-navy/15">
                 {houseLinks.map((house) => {
                   const inner = (

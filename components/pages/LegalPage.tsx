@@ -47,6 +47,7 @@ export function LegalPage({ locale, doc }: { locale: Locale; doc: LegalDoc }) {
         label={doc.hero.label}
         titleLines={[doc.hero.title]}
         intro={doc.hero.intro}
+        scrim="light"
         // TEMP mockup crop, replace with client photography.
         image={{
           src: "/images/temp/temp-vision-interior.jpg",

@@ -7,7 +7,7 @@ type SplitBandProps = {
   label: string;
   title: string;
   body: string[];
-  cta: ReactNode;
+  cta?: ReactNode;
   image: { src: string; alt: string };
   imageSide: "left" | "right";
   tone?: "cream" | "forest";
@@ -15,7 +15,8 @@ type SplitBandProps = {
   aspect?: string;
   /** object-position utilities for the image. */
   imagePosition?: string;
-  compact?: boolean;
+  /** Band height: compact for secondary bands, feature when a band carries more of the page. */
+  size?: "compact" | "default" | "feature";
   /** "lines" keeps the mockup's short stacked lines; "paragraphs" is for longer page copy. */
   bodyStyle?: "lines" | "paragraphs";
   details?: { title: string; items: string[] };
@@ -34,7 +35,7 @@ export function SplitBand({
   tone = "cream",
   aspect = "aspect-[5/4]",
   imagePosition = "object-center",
-  compact = false,
+  size = "default",
   bodyStyle = "lines",
   details,
 }: SplitBandProps) {
@@ -54,7 +55,11 @@ export function SplitBand({
       id={id}
       aria-labelledby={titleId}
       className={`group/band relative scroll-mt-[76px] overflow-hidden md:grid lg:scroll-mt-[104px] md:grid-cols-2 ${
-        compact ? "md:min-h-[22rem] lg:min-h-[28rem] xl:min-h-[31rem]" : "md:min-h-[26rem] lg:min-h-[32rem] xl:min-h-[36rem]"
+        {
+          compact: "md:min-h-[22rem] lg:min-h-[28rem] xl:min-h-[31rem]",
+          default: "md:min-h-[26rem] lg:min-h-[32rem] xl:min-h-[36rem]",
+          feature: "md:min-h-[30rem] lg:min-h-[38rem] xl:min-h-[42rem]",
+        }[size]
       } ${
         forest ? "bg-forest-900 text-cream" : "bg-cream text-navy"
       }`}
@@ -114,7 +119,7 @@ export function SplitBand({
                 </ul>
               </div>
             )}
-            <div className="mt-8 lg:mt-10">{cta}</div>
+            {cta && <div className="mt-8 lg:mt-10">{cta}</div>}
           </div>
         </Reveal>
       </div>
@@ -134,7 +139,9 @@ export function SplitBand({
         {forest && (
           <div
             aria-hidden="true"
-            className="absolute inset-x-0 top-0 h-1/3 bg-gradient-to-b from-forest-900 to-forest-900/0 md:inset-y-0 md:left-0 md:right-auto md:h-full md:w-2/5 md:bg-gradient-to-r"
+            className={`absolute inset-x-0 top-0 h-1/3 bg-gradient-to-b from-forest-900 to-forest-900/0 md:inset-y-0 md:h-full md:w-2/5 ${
+              imageSide === "right" ? "md:left-0 md:right-auto md:bg-gradient-to-r" : "md:left-auto md:right-0 md:bg-gradient-to-l"
+            }`}
           />
         )}
       </div>

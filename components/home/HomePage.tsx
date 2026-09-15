@@ -1,5 +1,5 @@
 import { getDictionary, type Locale } from "@/lib/i18n";
-import { pathFor } from "@/lib/routes";
+import { pathFor, SHOW_IMMOBILIER } from "@/lib/routes";
 import { CtaLink } from "./CtaLink";
 import { Hero } from "./Hero";
 import { MotionScope } from "./MotionScope";
@@ -10,20 +10,24 @@ const ANTIQUES_URL = "https://balzacantiques.ch";
 
 export function HomePage({ locale }: { locale: Locale }) {
   const t = getDictionary(locale);
-  const { cafe, antiques, immobilier } = t.home.houses;
+  const { cafe, antiques, immobilier } = t.home.bands;
   const franchise = t.home.franchise;
-  const houses = pathFor(locale, "houses");
+  const about = pathFor(locale, "about");
+  // With two houses, Café and Antiques carry the page as taller feature bands.
+  const houseBandSize = SHOW_IMMOBILIER ? "default" : "feature";
 
   return (
     <MotionScope>
       <Hero
+        layout="split"
         titleLines={t.motto.split(", ").map((line, idx, all) => (idx < all.length - 1 ? `${line},` : line))}
         tagline={t.tagline}
-        // TEMP mockup crop, replace with client photography.
+        // Storefront signage is baked into the photo, so the type sits beside it, never on it.
+        // Mobile square: crops the upper sign out cleanly and keeps the awning, window, terrace and A-board whole.
         image={{
-          src: "/images/temp/temp-hero-storefront.jpg",
+          src: "/images/balzacgroupe-hero.jpg",
           alt: t.home.hero.imageAlt,
-          position: "object-[56%_50%] lg:object-[50%_12%]",
+          position: "object-[50%_85%] sm:object-[50%_45%] lg:object-[50%_30%]",
         }}
         cta={
           <CtaLink href={pathFor(locale, "vision")} variant="hero">
@@ -38,9 +42,11 @@ export function HomePage({ locale }: { locale: Locale }) {
         title={cafe.title}
         body={cafe.body}
         imageSide="right"
-        // TEMP mockup crop, replace with client photography.
-        image={{ src: "/images/temp/temp-cafe.jpg", alt: cafe.imageAlt }}
-        cta={<CtaLink href={`${houses}#cafe`}>{cafe.cta}</CtaLink>}
+        size={houseBandSize}
+        aspect="aspect-[3/4] sm:aspect-[4/5]"
+        imagePosition="object-[50%_66%]"
+        image={{ src: "/images/balzacgroupe-cafe-interior.jpg", alt: cafe.imageAlt }}
+        cta={<CtaLink href={`${about}#cafe`}>{cafe.cta}</CtaLink>}
       />
 
       <SplitBand
@@ -49,6 +55,7 @@ export function HomePage({ locale }: { locale: Locale }) {
         title={antiques.title}
         body={antiques.body}
         imageSide="left"
+        size={houseBandSize}
         aspect="aspect-[3/2]"
         // TEMP mockup crop, replace with client photography.
         image={{ src: "/images/temp/temp-antiques.jpg", alt: antiques.imageAlt }}
@@ -59,18 +66,20 @@ export function HomePage({ locale }: { locale: Locale }) {
         }
       />
 
-      <SplitBand
-        id="immobilier"
-        label={immobilier.label}
-        title={immobilier.title}
-        body={immobilier.body}
-        imageSide="right"
-        aspect="aspect-[4/3]"
-        imagePosition="object-[50%_30%]"
-        // TEMP mockup crop, replace with client photography.
-        image={{ src: "/images/temp/temp-immobilier.jpg", alt: immobilier.imageAlt }}
-        cta={<CtaLink href={`${houses}#immobilier`}>{immobilier.cta}</CtaLink>}
-      />
+      {SHOW_IMMOBILIER && (
+        <SplitBand
+          id="immobilier"
+          label={immobilier.label}
+          title={immobilier.title}
+          body={immobilier.body}
+          imageSide="right"
+          aspect="aspect-[4/3]"
+          imagePosition="object-[50%_30%]"
+          // TEMP mockup crop, replace with client photography.
+          image={{ src: "/images/temp/temp-immobilier.jpg", alt: immobilier.imageAlt }}
+          cta={<CtaLink href={`${about}#immobilier`}>{immobilier.cta}</CtaLink>}
+        />
+      )}
 
       <SplitBand
         id="franchise"
@@ -78,10 +87,11 @@ export function HomePage({ locale }: { locale: Locale }) {
         label={franchise.label}
         title={franchise.title}
         body={franchise.body}
-        imageSide="right"
-        compact
+        // Image sides keep alternating whether or not the Immobilier band is shown.
+        imageSide={SHOW_IMMOBILIER ? "left" : "right"}
+        size="compact"
         aspect="aspect-[16/10]"
-        imagePosition="object-right"
+        imagePosition={SHOW_IMMOBILIER ? "object-left" : "object-right"}
         // TEMP mockup crop, replace with client photography.
         image={{ src: "/images/temp/temp-franchise-globe.jpg", alt: franchise.imageAlt }}
         cta={

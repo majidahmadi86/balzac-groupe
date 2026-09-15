@@ -3,7 +3,7 @@ import { type Locale, type PageKey } from "./i18n";
 // Same slugs under both trees: /vision and /fr/vision.
 export const slugs: Record<PageKey, string> = {
   home: "",
-  houses: "houses",
+  about: "about",
   vision: "vision",
   franchise: "franchise",
   news: "news",
@@ -18,7 +18,13 @@ export const slugs: Record<PageKey, string> = {
  */
 export const SHOW_NEWS = false;
 
-const primaryPages = ["home", "houses", "vision", "franchise", "news", "contact"] as const satisfies readonly PageKey[];
+/**
+ * Balzac Immobilier becomes a separate project later. While false, the homepage band, the About
+ * chapter, the contact link and every other Immobilier mention are hidden; true restores them all.
+ */
+export const SHOW_IMMOBILIER = false;
+
+const primaryPages = ["home", "about", "vision", "franchise", "news", "contact"] as const satisfies readonly PageKey[];
 
 export const mainNav = primaryPages.filter((page) => page !== "news" || SHOW_NEWS);
 export const legalNav = ["legal", "privacy"] as const satisfies readonly PageKey[];

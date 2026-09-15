@@ -5,7 +5,10 @@
 // 3. No link anywhere points at a nav item hidden by a visibility flag; the hidden route itself stays live.
 // 4. EN/FR structural parity of <main> on every route.
 // 5. Favicon, apple icon and Open Graph image are referenced in the HTML and served correctly.
-import { BASE_URL, hiddenSlugs, routePairs } from "./lib/site.mjs";
+// 6. Retired URLs answer 301 to their replacement; nothing links to or routes through "houses".
+// 7. While SHOW_IMMOBILIER is false, no page says "Immobilier" anywhere in its rendered text.
+// Reports (without failing) which temporary mockup crops are still in use.
+import { BASE_URL, flags, hiddenSlugs, routePairs } from "./lib/site.mjs";
 
 const failures = [];
 const fail = (msg) => failures.push(msg);
@@ -151,10 +154,54 @@ for (const pair of pairs) {
   }
 }
 
+// 6
+const REDIRECTS = [
+  ["/houses", "/about"],
+  ["/fr/houses", "/fr/about"],
+];
+for (const [from, to] of REDIRECTS) {
+  const res = await fetch(BASE_URL + from, { redirect: "manual" });
+  const location = res.headers.get("location") || "";
+  const target = location ? new URL(location, BASE_URL).pathname : "";
+  if (res.status !== 301 || target !== to) fail(`${from} should 301 to ${to}, got ${res.status} ${location}`);
+  const landed = await fetch(BASE_URL + from);
+  if (!landed.ok) fail(`${from} does not land on a live page (${landed.status})`);
+}
+if (pairs.some((pair) => pair.slug.includes("houses"))) fail("a route is still named houses");
+for (const path of seen) {
+  const res = cache.get(path);
+  if (typeof res?.body === "string" && hrefs(res.body).some((href) => href.includes("/houses"))) fail(`${path} still links to /houses`);
+}
+
+// 7
+const visibleText = (html) =>
+  html
+    .replace(/<script[\s\S]*?<\/script>/g, " ")
+    .replace(/<style[\s\S]*?<\/style>/g, " ")
+    .replace(/<[^>]+>/g, " ");
+const flagState = flags();
+if (!flagState.immobilier) {
+  for (const pair of pairs) {
+    for (const path of [pair.en, pair.fr]) {
+      const res = await get(path);
+      if (typeof res.body === "string" && /immobili/i.test(visibleText(res.body))) fail(`${path} mentions Immobilier while SHOW_IMMOBILIER is false`);
+    }
+  }
+}
+
+const tempInUse = new Set();
+for (const pair of pairs) {
+  for (const path of [pair.en, pair.fr]) {
+    const res = await get(path);
+    if (typeof res.body === "string") for (const m of res.body.matchAll(/temp-[a-z-]+\.jpg/g)) tempInUse.add(m[0]);
+  }
+}
+
 if (failures.length) {
   console.error(`check:site FAILED (${failures.length})\n${failures.map((f) => `  ${f}`).join("\n")}`);
   process.exit(1);
 }
 console.log(
-  `check:site ok · ${pairs.length} routes x 2 languages · ${seen.size} crawled pages, ${anchors.length} anchors · hidden: ${hidden.join(", ") || "none"} · parity ok · icons + OG ok`,
+  `check:site ok · ${pairs.length} routes x 2 languages · ${seen.size} crawled pages, ${anchors.length} anchors · hidden: ${hidden.join(", ") || "none"} · parity ok · icons + OG ok · redirects 301 ok · immobilier ${flagState.immobilier ? "shown" : "hidden everywhere"}`,
 );
+console.log(`temporary crops still in use: ${[...tempInUse].sort().join(", ") || "none"}`);

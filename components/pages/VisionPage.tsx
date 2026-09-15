@@ -19,6 +19,7 @@ export function VisionPage({ locale }: { locale: Locale }) {
         label={page.hero.label}
         titleLines={[page.hero.title]}
         intro={page.hero.intro}
+        scrim="light"
         // TEMP mockup crop, replace with client photography.
         image={{
           src: "/images/temp/temp-vision-interior.jpg",

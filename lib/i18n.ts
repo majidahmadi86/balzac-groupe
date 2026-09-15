@@ -2,7 +2,7 @@ export const locales = ["en", "fr"] as const;
 export type Locale = (typeof locales)[number];
 export const defaultLocale: Locale = "en";
 
-export const pageKeys = ["home", "houses", "vision", "franchise", "news", "contact", "legal", "privacy"] as const;
+export const pageKeys = ["home", "about", "vision", "franchise", "news", "contact", "legal", "privacy"] as const;
 export type PageKey = (typeof pageKeys)[number];
 
 // FR copy is verbatim from docs/mockup-mobile.jpg and docs/mockup-desktop.jpg.
@@ -16,9 +16,10 @@ const fr = {
   motto: "Des lieux, des objets, des histoires.",
   heroLead:
     "Nous créons et développons des lieux, des objets et des opportunités immobilières qui ont une âme, en France, en Suisse et à l’international.",
+  heroLeadCore: "Nous créons et développons des lieux et des objets qui ont une âme, en France, en Suisse et à l’international.",
   nav: {
     home: "Accueil",
-    houses: "Nos maisons",
+    about: "À propos",
     vision: "Notre vision",
     franchise: "Franchise",
     news: "Actualités",
@@ -44,7 +45,7 @@ const fr = {
   },
   pages: {
     home: { title: "Accueil", eyebrow: "Groupe Balzac" },
-    houses: { title: "Nos maisons", eyebrow: "Groupe Balzac" },
+    about: { title: "À propos", eyebrow: "Groupe Balzac" },
     vision: { title: "Notre vision", eyebrow: "Groupe Balzac" },
     franchise: { title: "Franchise", eyebrow: "Franchise internationale" },
     news: { title: "Actualités", eyebrow: "Groupe Balzac" },
@@ -66,13 +67,13 @@ const fr = {
       cta: "Découvrir le groupe",
       imageAlt: "Façade de la librairie, galerie et café Balzac, avec sa terrasse",
     },
-    houses: {
+    bands: {
       cafe: {
         label: "Balzac Café",
         title: "Une maison française contemporaine.",
         body: ["Librairie, galerie, café.", "Un lieu de culture, de rencontres et d’art de vivre."],
         cta: "Découvrir Balzac Café",
-        imageAlt: "Tasse de café Balzac, croissant et bouquet de marguerites",
+        imageAlt: "Salle de Balzac Café : clients attablés, tableau des boissons et vitrine de pâtisseries",
       },
       antiques: {
         label: "Balzac Antiques",
@@ -109,44 +110,62 @@ const fr = {
     },
     newTab: "(s’ouvre dans un nouvel onglet)",
   },
-  housesPage: {
+  aboutPage: {
     hero: {
-      label: "Nos maisons",
-      title: "Trois maisons, un même art de vivre.",
-      intro: "Groupe Balzac réunit des activités complémentaires autour d’une même conviction.",
-      imageAlt: "Une tasse Balzac Café, une commode ancienne et une maison de pierre sous la neige",
+      label: "À propos",
+      title: "Qui nous sommes.",
+      intro: "Groupe Balzac crée et développe des lieux et des objets qui ont une âme, en France, en Suisse et à l’international.",
+      imageAlt: "Salle de Balzac Café : clients attablés, tableau des boissons et vitrine de pâtisseries",
     },
-    contactCta: "Prendre contact",
-    cafe: {
+    group: {
+      label: "Groupe Balzac",
+      title: "Des lieux, des objets, des histoires.",
       paragraphs: [
-        "Librairie, galerie, café : Balzac Café réunit sous un même toit ce qui fait le charme d’une maison française. Un lieu où l’on vient lire, regarder, goûter et prendre le temps.",
-        "Les livres et les affiches y côtoient les vins fins, le cinéma et la littérature. Chaque visite est une invitation à la rencontre et à la conversation.",
-        "Un lieu de culture, de rencontres et d’art de vivre, pensé pour être partagé.",
+        "Groupe Balzac réunit des activités complémentaires autour d’une même conviction : la beauté, la culture et le patrimoine créent des liens durables entre les hommes et les lieux.",
+        "Chacune de nos maisons porte cette conviction à sa manière : un lieu où l’on se retrouve, des objets que l’on transmet, un art de vivre que l’on partage.",
       ],
-      details: {
-        title: "Dans la maison",
-        items: ["Librairie", "Galerie", "Café", "Vins fins", "Cinéma et littérature"],
+    },
+    chapters: {
+      cafe: {
+        label: "Un lieu · Balzac Café",
+        title: "Un lieu où l’on prend le temps.",
+        imageAlt: "Façade de Balzac Café, librairie, galerie et café, avec sa terrasse",
+        paragraphs: [
+          "Librairie, galerie, café : Balzac Café réunit sous un même toit ce qui fait le charme d’une maison française. Un lieu où l’on vient lire, regarder, goûter et prendre le temps.",
+          "Les livres et les affiches y côtoient les vins fins, le cinéma et la littérature. Chaque visite est une invitation à la rencontre et à la conversation.",
+        ],
+      },
+      antiques: {
+        label: "Des objets · Balzac Antiques",
+        title: "Des objets qui traversent le temps.",
+        paragraphs: [
+          "Balzac Antiques rassemble du mobilier, des objets d’art et des collections choisis pour leur caractère et pour ce qu’ils racontent.",
+          "Chaque pièce porte la trace d’une époque et d’un savoir-faire. Elle trouve sa place dans des intérieurs d’exception, où le patrimoine se vit au quotidien.",
+        ],
+        link: "Découvrir Balzac Antiques",
+      },
+      immobilier: {
+        label: "Des maisons · Balzac Immobilier",
+        title: "Des maisons qui ont une âme.",
+        paragraphs: [
+          "Spécialiste de la région de Pontarlier, Balzac Immobilier se consacre à l’immobilier de caractère, à ces lieux qui ont une âme.",
+          "Un accompagnement complet, de la recherche à la signature, avec l’attention que mérite chaque projet.",
+        ],
       },
     },
-    antiques: {
-      paragraphs: [
-        "Balzac Antiques rassemble du mobilier, des objets d’art et des collections choisis pour leur caractère et pour ce qu’ils racontent.",
-        "Chaque pièce porte la trace d’une époque et d’un savoir-faire. Elle trouve sa place dans des intérieurs d’exception, où le patrimoine se vit au quotidien.",
+    horizons: {
+      label: "Nos horizons",
+      title: "D’ici, et d’ailleurs.",
+      intro: "Groupe Balzac est présent en France, en Suisse et à l’international, avec le même goût pour ce qui dure.",
+      places: [
+        { title: "France", body: "L’esprit d’une maison française : ses livres, sa table, ses objets." },
+        { title: "Suisse", body: "Un ancrage où se cultive le même attachement au patrimoine et au caractère des lieux." },
+        { title: "International", body: "Balzac Café a vocation à voyager, porté par sa franchise internationale." },
       ],
-      details: {
-        title: "La sélection",
-        items: ["Mobilier", "Objets d’art", "Collections"],
-      },
     },
-    immobilier: {
-      paragraphs: [
-        "Spécialiste de la région de Pontarlier, Balzac Immobilier se consacre à l’immobilier de caractère, à ces lieux qui ont une âme.",
-        "Nous proposons un accompagnement complet, de la recherche à la signature, avec l’attention que mérite chaque projet.",
-      ],
-      details: {
-        title: "L’accompagnement",
-        items: ["Recherche", "Accompagnement", "Signature", "Région de Pontarlier"],
-      },
+    closing: {
+      label: "Notre vision",
+      cta: "Découvrir notre vision",
     },
   },
   visionPage: {
@@ -199,6 +218,10 @@ const fr = {
     },
     concept: {
       label: "Le concept",
+      details: {
+        title: "Dans la maison",
+        items: ["Librairie", "Galerie", "Café", "Vins fins", "Cinéma et littérature"],
+      },
       paragraphs: [
         "Librairie, galerie, café : Balzac Café réunit sous un même toit les livres, les images et le goût d’une maison française.",
         "Un lieu où l’on vient lire, regarder, goûter et prendre le temps, pensé pour devenir un repère dans sa ville.",
@@ -245,10 +268,10 @@ const fr = {
     aside: {
       label: "Groupe Balzac",
       emailTitle: "Nous écrire directement",
-      housesTitle: "Nos maisons",
-      cafeNote: "Nos maisons",
+      maisonsTitle: "Nos maisons",
+      cafeNote: "À propos",
       antiquesNote: "balzacantiques.ch",
-      immobilierNote: "Nos maisons",
+      immobilierNote: "À propos",
     },
   },
   forms: {
@@ -302,9 +325,10 @@ const en: Dictionary = {
   motto: "Places, objects, stories.",
   heroLead:
     "We create and develop places, objects and property opportunities with a soul, in France, in Switzerland and around the world.",
+  heroLeadCore: "We create and develop places and objects with a soul, in France, in Switzerland and around the world.",
   nav: {
     home: "Home",
-    houses: "Our Houses",
+    about: "About us",
     vision: "Our Vision",
     franchise: "Franchise",
     news: "News",
@@ -330,7 +354,7 @@ const en: Dictionary = {
   },
   pages: {
     home: { title: "Home", eyebrow: "Groupe Balzac" },
-    houses: { title: "Our Houses", eyebrow: "Groupe Balzac" },
+    about: { title: "About us", eyebrow: "Groupe Balzac" },
     vision: { title: "Our Vision", eyebrow: "Groupe Balzac" },
     franchise: { title: "Franchise", eyebrow: "International franchise" },
     news: { title: "News", eyebrow: "Groupe Balzac" },
@@ -352,13 +376,13 @@ const en: Dictionary = {
       cta: "Discover the group",
       imageAlt: "The Balzac bookshop, gallery and café storefront with its terrace",
     },
-    houses: {
+    bands: {
       cafe: {
         label: "Balzac Café",
         title: "A contemporary French house.",
         body: ["Bookshop, gallery, café.", "A place for culture, encounters and the art of living."],
         cta: "Discover Balzac Café",
-        imageAlt: "A Balzac coffee cup, a croissant and a small bouquet of daisies",
+        imageAlt: "Inside Balzac Café: guests at their tables, the drinks board and a pastry counter",
       },
       antiques: {
         label: "Balzac Antiques",
@@ -395,44 +419,62 @@ const en: Dictionary = {
     },
     newTab: "(opens in a new tab)",
   },
-  housesPage: {
+  aboutPage: {
     hero: {
-      label: "Our houses",
-      title: "Three houses, one art of living.",
-      intro: "Groupe Balzac brings together complementary activities around a single conviction.",
-      imageAlt: "A Balzac Café cup, an antique chest and a stone house in the snow",
+      label: "About us",
+      title: "Who we are.",
+      intro: "Groupe Balzac creates and develops places and objects with a soul, in France, in Switzerland and around the world.",
+      imageAlt: "Inside Balzac Café: guests at their tables, the drinks board and a pastry counter",
     },
-    contactCta: "Get in touch",
-    cafe: {
+    group: {
+      label: "Groupe Balzac",
+      title: "Places, objects, stories.",
       paragraphs: [
-        "Bookshop, gallery, café: Balzac Café gathers under one roof what gives a French house its charm. A place to read, to look, to taste and to take one’s time.",
-        "Books and posters sit alongside fine wines, cinema and literature. Every visit is an invitation to meet and to talk.",
-        "A place of culture, encounters and the art of living, made to be shared.",
+        "Groupe Balzac brings together complementary activities around a single conviction: beauty, culture and heritage create lasting bonds between people and places.",
+        "Each of our houses carries that conviction in its own way: a place where people meet, objects that are passed on, an art of living that is shared.",
       ],
-      details: {
-        title: "In the house",
-        items: ["Bookshop", "Gallery", "Café", "Fine wines", "Cinema and literature"],
+    },
+    chapters: {
+      cafe: {
+        label: "A place · Balzac Café",
+        title: "A place to take one’s time.",
+        imageAlt: "The Balzac Café storefront, bookshop, gallery and café, with its terrace",
+        paragraphs: [
+          "Bookshop, gallery, café: Balzac Café gathers under one roof what gives a French house its charm. A place to read, to look, to taste and to take one’s time.",
+          "Books and posters sit alongside fine wines, cinema and literature. Every visit is an invitation to meet and to talk.",
+        ],
+      },
+      antiques: {
+        label: "Objects · Balzac Antiques",
+        title: "Objects that stand the test of time.",
+        paragraphs: [
+          "Balzac Antiques brings together furniture, works of art and collections chosen for their character and for the stories they tell.",
+          "Each piece carries the mark of an era and of a craft. It finds its place in exceptional interiors, where heritage becomes part of everyday life.",
+        ],
+        link: "Discover Balzac Antiques",
+      },
+      immobilier: {
+        label: "Houses · Balzac Immobilier",
+        title: "Houses with a soul.",
+        paragraphs: [
+          "Specialists in the Pontarlier region, Balzac Immobilier is devoted to property of character, to places with a soul.",
+          "Complete guidance, from the first search to the signing, with the care every project deserves.",
+        ],
       },
     },
-    antiques: {
-      paragraphs: [
-        "Balzac Antiques brings together furniture, works of art and collections chosen for their character and for the stories they tell.",
-        "Each piece carries the mark of an era and of a craft. It finds its place in exceptional interiors, where heritage becomes part of everyday life.",
+    horizons: {
+      label: "Our horizons",
+      title: "Here, and elsewhere.",
+      intro: "Groupe Balzac is present in France, in Switzerland and around the world, with the same taste for what lasts.",
+      places: [
+        { title: "France", body: "The spirit of a French house: its books, its table, its objects." },
+        { title: "Switzerland", body: "Roots where the same attachment to heritage and to the character of places is cultivated." },
+        { title: "International", body: "Balzac Café is made to travel, carried by its international franchise." },
       ],
-      details: {
-        title: "The selection",
-        items: ["Furniture", "Works of art", "Collections"],
-      },
     },
-    immobilier: {
-      paragraphs: [
-        "Specialists in the Pontarlier region, Balzac Immobilier is devoted to property of character, to places with a soul.",
-        "We offer complete guidance, from the first search to the signing, with the care every project deserves.",
-      ],
-      details: {
-        title: "Our guidance",
-        items: ["Search", "Guidance", "Signing", "Pontarlier region"],
-      },
+    closing: {
+      label: "Our vision",
+      cta: "Discover our vision",
     },
   },
   visionPage: {
@@ -485,6 +527,10 @@ const en: Dictionary = {
     },
     concept: {
       label: "The concept",
+      details: {
+        title: "In the house",
+        items: ["Bookshop", "Gallery", "Café", "Fine wines", "Cinema and literature"],
+      },
       paragraphs: [
         "Bookshop, gallery, café: Balzac Café gathers under one roof books, images and the pleasures of a French house.",
         "A place to read, to look, to taste and to take one’s time, designed to become a landmark in its city.",
@@ -531,10 +577,10 @@ const en: Dictionary = {
     aside: {
       label: "Groupe Balzac",
       emailTitle: "Write to us directly",
-      housesTitle: "Our houses",
-      cafeNote: "Our houses",
+      maisonsTitle: "Our houses",
+      cafeNote: "About us",
       antiquesNote: "balzacantiques.ch",
-      immobilierNote: "Our houses",
+      immobilierNote: "About us",
     },
   },
   forms: {

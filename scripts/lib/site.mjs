@@ -30,6 +30,15 @@ export function routePairs() {
   return slugs.map((slug) => ({ slug, en: slug ? `/${slug}` : "/", fr: slug ? `/fr/${slug}` : "/fr", inEn: en.includes(slug), inFr: fr.includes(slug) }));
 }
 
+/** Visibility flags in lib/routes.ts. */
+export function flags() {
+  const source = readFileSync(join(root, "lib", "routes.ts"), "utf8");
+  return {
+    news: /export const SHOW_NEWS = true/.test(source),
+    immobilier: /export const SHOW_IMMOBILIER = true/.test(source),
+  };
+}
+
 /** Nav items hidden by a visibility flag in lib/routes.ts (currently SHOW_NEWS). */
 export function hiddenSlugs() {
   const source = readFileSync(join(root, "lib", "routes.ts"), "utf8");
