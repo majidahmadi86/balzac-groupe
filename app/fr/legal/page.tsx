@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
-import { StubPage } from "@/components/StubPage";
+import { LegalPage } from "@/components/pages/LegalPage";
+import { legalNotice } from "@/lib/legal-content";
 import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = pageMetadata("fr", "legal");
+const doc = legalNotice("fr");
+
+export const metadata: Metadata = pageMetadata("fr", "legal", doc.hero.intro);
 
 export default function Page() {
-  return <StubPage locale="fr" page="legal" />;
+  return <LegalPage locale="fr" doc={doc} />;
 }

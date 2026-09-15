@@ -22,6 +22,10 @@ export function pageMetadata(locale: Locale, page: PageKey, description?: string
   const t = getDictionary(locale);
   const path = pathFor(locale, page);
   const summary = description ?? t.heroLead;
+  // Explicit per locale: a page-level openGraph object replaces the one Next derives
+  // from app/opengraph-image.png, so the card must be named here to reach every route.
+  const cardBase = locale === "fr" ? "/fr" : "";
+  const cardAlt = `${t.siteName} · ${t.motto}`;
   const title = page === "home" ? `${t.siteName} · ${t.motto}` : `${t.pages[page].title} · ${t.siteName}`;
 
   return {
@@ -43,11 +47,13 @@ export function pageMetadata(locale: Locale, page: PageKey, description?: string
       url: path,
       title,
       description: summary,
+      images: [{ url: `${cardBase}/opengraph-image.png`, width: 1200, height: 630, alt: cardAlt, type: "image/png" }],
     },
     twitter: {
-      card: "summary",
+      card: "summary_large_image",
       title,
       description: summary,
+      images: [{ url: `${cardBase}/twitter-image.png`, width: 1200, height: 630, alt: cardAlt }],
     },
   };
 }

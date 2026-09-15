@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
-import { StubPage } from "@/components/StubPage";
+import { LegalPage } from "@/components/pages/LegalPage";
+import { privacyPolicy } from "@/lib/legal-content";
 import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = pageMetadata("en", "privacy");
+const doc = privacyPolicy("en");
+
+export const metadata: Metadata = pageMetadata("en", "privacy", doc.hero.intro);
 
 export default function Page() {
-  return <StubPage locale="en" page="privacy" />;
+  return <LegalPage locale="en" doc={doc} />;
 }

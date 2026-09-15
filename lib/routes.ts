@@ -12,7 +12,15 @@ export const slugs: Record<PageKey, string> = {
   privacy: "privacy",
 };
 
-export const mainNav = ["home", "houses", "vision", "franchise", "news", "contact"] as const satisfies readonly PageKey[];
+/**
+ * News is hidden until there is editorial content. The /news route stays live;
+ * flip this to true to put it back in the header, drawer and footer.
+ */
+export const SHOW_NEWS = false;
+
+const primaryPages = ["home", "houses", "vision", "franchise", "news", "contact"] as const satisfies readonly PageKey[];
+
+export const mainNav = primaryPages.filter((page) => page !== "news" || SHOW_NEWS);
 export const legalNav = ["legal", "privacy"] as const satisfies readonly PageKey[];
 
 export function pathFor(locale: Locale, page: PageKey): string {

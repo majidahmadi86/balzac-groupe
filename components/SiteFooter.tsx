@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getDictionary, type Locale } from "@/lib/i18n";
+import { copyrightLine } from "@/lib/legal";
 import { legalNav, mainNav, pathFor } from "@/lib/routes";
 import { Plaque } from "./Plaque";
 import { SocialLinks } from "./SocialLinks";
@@ -63,7 +64,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
             ))}
           </ul>
 
-          <p className="order-2 ml-auto py-2 text-right lg:order-1 lg:ml-0 lg:text-left">{t.footer.copyright}</p>
+          <p className="order-2 ml-auto py-2 text-right lg:order-1 lg:ml-0 lg:text-left">{copyrightLine(locale)}</p>
 
           <p className="hidden items-center gap-4 font-display text-[17px] italic text-cream/85 lg:order-3 lg:flex">
             <span aria-hidden="true" className="h-px w-10 bg-gold/60" />

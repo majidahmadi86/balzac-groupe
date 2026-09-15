@@ -41,7 +41,6 @@ const fr = {
   footer: {
     footerNav: "Navigation du pied de page",
     social: "Réseaux sociaux",
-    copyright: "© Groupe Balzac · Une société du groupe Outsiders Corp. Ltd",
   },
   pages: {
     home: { title: "Accueil", eyebrow: "Groupe Balzac" },
@@ -221,7 +220,6 @@ const en: Dictionary = {
   footer: {
     footerNav: "Footer navigation",
     social: "Social media",
-    copyright: "© Groupe Balzac · A company of the Outsiders Corp. Ltd group",
   },
   pages: {
     home: { title: "Home", eyebrow: "Groupe Balzac" },
