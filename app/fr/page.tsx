@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { HomePlaceholder } from "@/components/HomePlaceholder";
+import { HomePage } from "@/components/home/HomePage";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = pageMetadata("fr", "home");
 
 export default function Page() {
-  return <HomePlaceholder locale="fr" />;
+  return <HomePage locale="fr" />;
 }
