@@ -3,7 +3,6 @@ import { InquiryForm } from "@/components/forms/InquiryForm";
 import { Hero } from "@/components/home/Hero";
 import { MotionScope } from "@/components/home/MotionScope";
 import { getDictionary, type Locale } from "@/lib/i18n";
-import { GROUP_EMAIL } from "@/lib/legal";
 import { pathFor, SHOW_IMMOBILIER } from "@/lib/routes";
 
 const ANTIQUES_URL = "https://balzacantiques.ch";
@@ -12,7 +11,6 @@ export function ContactPage({ locale }: { locale: Locale }) {
   const t = getDictionary(locale);
   const page = t.contactPage;
   const about = pathFor(locale, "about");
-  const pendingLabel = locale === "fr" ? "À compléter" : "To be confirmed";
 
   const houseLinks = [
     { name: t.home.bands.cafe.label, note: page.aside.cafeNote, href: `${about}#cafe`, external: false },
@@ -33,7 +31,8 @@ export function ContactPage({ locale }: { locale: Locale }) {
         image={{ src: "/images/temp/temp-vision-interior.jpg", alt: page.hero.imageAlt, position: "object-[18%_50%] lg:object-[50%_60%]" }}
       />
 
-      {/* Intro beside the form from 1024px (first field visible without scrolling); on mobile intro, form, then details. */}
+      {/* Intro beside the form from 1024px (first field visible without scrolling); on mobile intro, form, then the houses.
+          The form is the only way to reach the group: no email address is shown anywhere. */}
       <section aria-labelledby="contact-intro-title" className="bg-cream pb-16 pt-8 text-navy sm:pb-20 sm:pt-10 lg:pb-24 lg:pt-12">
         <div className="site-gutter grid gap-8 lg:grid-cols-12 lg:gap-x-12 lg:gap-y-10">
           <div data-contrast="" className="lg:col-span-5 lg:row-start-1 lg:pt-2">
@@ -48,27 +47,11 @@ export function ContactPage({ locale }: { locale: Locale }) {
           </div>
 
           <div className="lg:col-span-7 lg:col-start-6 lg:row-span-2 lg:row-start-1">
-            <InquiryForm kind="contact" locale={locale} groupEmail={GROUP_EMAIL} label={page.form.label} />
+            <InquiryForm kind="contact" locale={locale} label={page.form.label} />
           </div>
 
           <aside data-contrast="" aria-label={page.aside.label} className="border-t border-navy/15 pt-8 lg:col-span-5 lg:row-start-2 lg:self-start">
-            <h3 className="font-display text-[1.5rem] font-semibold leading-[1.15]">{page.aside.emailTitle}</h3>
-            <p className="mt-2 text-[1.0625rem]">
-              {GROUP_EMAIL ? (
-                <a
-                  href={`mailto:${GROUP_EMAIL}`}
-                  className="inline-flex min-h-[44px] items-center text-navy underline decoration-navy/40 underline-offset-[6px] transition-colors duration-300 hover:decoration-navy"
-                >
-                  {GROUP_EMAIL}
-                </a>
-              ) : (
-                <span data-pending="GROUP_EMAIL" className="border-b border-dotted border-gold-dark italic text-navy">
-                  {pendingLabel}
-                </span>
-              )}
-            </p>
-
-            <h3 className="mt-10 font-display text-[1.5rem] font-semibold leading-[1.15]">{page.aside.maisonsTitle}</h3>
+            <h3 className="font-display text-[1.5rem] font-semibold leading-[1.15]">{page.aside.maisonsTitle}</h3>
             <ul className="mt-3 border-t border-navy/15">
               {houseLinks.map((house) => {
                 const inner = (

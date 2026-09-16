@@ -92,6 +92,13 @@ function HeroText({
   );
 }
 
+/**
+ * Hero photos are the largest paint of their page. Quality 60 is visually indistinguishable from
+ * the default 75 on these photographs and markedly lighter. (AVIF was tried: a third smaller again,
+ * but a cold encode of a large variant takes seconds, which the first visitor would wait for.)
+ */
+export const HERO_IMAGE_QUALITY = 60;
+
 // Photographic hero. The image source and its art direction come from the caller.
 export function Hero({ image, compact = false, tight = false, layout = "overlay", scrim = "dark", ...text }: HeroProps) {
   if (tight) compact = true;
@@ -105,6 +112,7 @@ export function Hero({ image, compact = false, tight = false, layout = "overlay"
             alt={image.alt}
             fill
             priority
+            quality={HERO_IMAGE_QUALITY}
             sizes="(min-width: 1024px) 50vw, 100vw"
             data-crop="art-directed"
             className={`hero-settle object-cover ${image.position ?? "object-center"}`}
@@ -142,6 +150,7 @@ export function Hero({ image, compact = false, tight = false, layout = "overlay"
           alt={image.alt}
           fill
           priority
+          quality={HERO_IMAGE_QUALITY}
           sizes="100vw"
           data-crop="art-directed"
           className={`hero-settle object-cover ${image.position ?? "object-center"}`}

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
+import { HERO_IMAGE_QUALITY } from "./Hero";
 
 type StorefrontHeroProps = {
   titleLines: string[];
@@ -31,6 +32,7 @@ export function StorefrontHero({ titleLines, tagline, imageAlt, cta }: Storefron
         alt={imageAlt}
         fill
         priority
+        quality={HERO_IMAGE_QUALITY}
         sizes="100vw"
         data-crop="art-directed"
         data-text-zones="110,34,1080,139;345,384,695,449;395,539,560,579;760,414,930,559;390,679,605,724;850,764,1115,1114"

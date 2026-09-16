@@ -3,22 +3,21 @@ import { SHOW_IMMOBILIER } from "./routes";
 import {
   APPLICABLE_LAW,
   DPO_NAME,
+  ENTITY_LOCATION,
+  FORM_CAPTCHA_PROCESSOR,
   FORM_EMAIL_PROCESSOR,
   FORM_FIELDS,
   FORM_RETENTION_PERIOD,
   HOSTING_PROVIDER,
   LEGAL_ENTITY_NAME,
-  PRIVACY_CONTACT_EMAIL,
   PUBLICATION_DIRECTOR,
-  REGISTERED_ADDRESS,
-  REGISTRATION_NUMBER,
   SITE_DOMAIN,
 } from "./legal";
 
-// Typeset copy for /legal and /privacy. Every fact comes from lib/legal.ts;
-// a null fact becomes { pending } and renders as a visible "to be confirmed" marker.
+// Typeset copy for /legal and /privacy. Every fact comes from lib/legal.ts.
+// A fact that is still null leaves its line (or section) out entirely: no placeholder is ever rendered.
 
-export type Inline = string | { pending: string } | { link: PageKey; text: string };
+export type Inline = string | { link: PageKey; text: string };
 export type LegalBlock = { type: "p"; parts: Inline[] } | { type: "facts"; items: { label: string; value: Inline[] }[] };
 export type LegalSection = { id: string; title: string; blocks: LegalBlock[] };
 export type LegalDoc = {
@@ -26,7 +25,9 @@ export type LegalDoc = {
   sections: LegalSection[];
 };
 
-const fact = (value: string | null, name: string): Inline[] => [value ?? { pending: name }];
+type FactItem = { label: string; value: Inline[] };
+/** A facts line, or nothing while its value is unknown. */
+const known = (label: string, value: string | null): FactItem[] => (value ? [{ label, value: [value] }] : []);
 const p = (...parts: Inline[]): LegalBlock => ({ type: "p", parts });
 const list = (items: string[], locale: Locale) =>
   items.length < 2 ? items.join("") : `${items.slice(0, -1).join(", ")} ${locale === "fr" ? "et" : "and"} ${items[items.length - 1]}`;
@@ -45,7 +46,9 @@ export function legalNotice(locale: Locale): LegalDoc {
       hero: {
         label: "Informations",
         title: "Mentions légales.",
-        intro: `L’éditeur du site ${SITE_DOMAIN}, son hébergement et les règles qui s’y appliquent.`,
+        intro: HOSTING_PROVIDER
+          ? `L’éditeur du site ${SITE_DOMAIN}, son hébergement et les règles qui s’y appliquent.`
+          : `L’éditeur du site ${SITE_DOMAIN} et les règles qui s’y appliquent.`,
         imageAlt: imageAlt.fr,
       },
       sections: [
@@ -58,22 +61,25 @@ export function legalNotice(locale: Locale): LegalDoc {
               type: "facts",
               items: [
                 { label: "Société", value: [LEGAL_ENTITY_NAME] },
-                { label: "Siège social", value: fact(REGISTERED_ADDRESS, "REGISTERED_ADDRESS") },
-                { label: "Immatriculation", value: fact(REGISTRATION_NUMBER, "REGISTRATION_NUMBER") },
-                { label: "Directeur de la publication", value: fact(PUBLICATION_DIRECTOR, "PUBLICATION_DIRECTOR") },
-                { label: "Contact", value: [{ link: "contact", text: "Page Contact" }] },
+                { label: "Siège", value: [ENTITY_LOCATION.fr] },
+                ...known("Directeur de la publication", PUBLICATION_DIRECTOR),
+                { label: "Contact", value: [{ link: "contact", text: "Formulaire de contact" }] },
               ],
             },
           ],
         },
-        {
-          id: "hebergement",
-          title: "Hébergement",
-          blocks: [
-            p("Le site est hébergé par le prestataire suivant."),
-            { type: "facts", items: [{ label: "Hébergeur", value: fact(HOSTING_PROVIDER, "HOSTING_PROVIDER") }] },
-          ],
-        },
+        ...(HOSTING_PROVIDER
+          ? [
+              {
+                id: "hebergement",
+                title: "Hébergement",
+                blocks: [
+                  p("Le site est hébergé par le prestataire suivant."),
+                  { type: "facts" as const, items: known("Hébergeur", HOSTING_PROVIDER) },
+                ],
+              },
+            ]
+          : []),
         {
           id: "propriete-intellectuelle",
           title: "Propriété intellectuelle",
@@ -101,7 +107,7 @@ export function legalNotice(locale: Locale): LegalDoc {
           id: "droit-applicable",
           title: "Droit applicable",
           blocks: [
-            p("Les présentes mentions légales et l’utilisation du site sont régies par le droit suivant : ", ...fact(APPLICABLE_LAW, "APPLICABLE_LAW"), "."),
+            p(`Les présentes mentions légales et l’utilisation du site sont régies par ${APPLICABLE_LAW.fr}.`),
           ],
         },
       ],
@@ -112,7 +118,9 @@ export function legalNotice(locale: Locale): LegalDoc {
     hero: {
       label: "Information",
       title: "Legal notice.",
-      intro: `The publisher of ${SITE_DOMAIN}, its hosting and the rules that apply to it.`,
+      intro: HOSTING_PROVIDER
+        ? `The publisher of ${SITE_DOMAIN}, its hosting and the rules that apply to it.`
+        : `The publisher of ${SITE_DOMAIN} and the rules that apply to it.`,
       imageAlt: imageAlt.en,
     },
     sections: [
@@ -125,22 +133,25 @@ export function legalNotice(locale: Locale): LegalDoc {
             type: "facts",
             items: [
               { label: "Company", value: [LEGAL_ENTITY_NAME] },
-              { label: "Registered office", value: fact(REGISTERED_ADDRESS, "REGISTERED_ADDRESS") },
-              { label: "Registration number", value: fact(REGISTRATION_NUMBER, "REGISTRATION_NUMBER") },
-              { label: "Publication director", value: fact(PUBLICATION_DIRECTOR, "PUBLICATION_DIRECTOR") },
-              { label: "Contact", value: [{ link: "contact", text: "Contact page" }] },
+              { label: "Based in", value: [ENTITY_LOCATION.en] },
+              ...known("Publication director", PUBLICATION_DIRECTOR),
+              { label: "Contact", value: [{ link: "contact", text: "Contact form" }] },
             ],
           },
         ],
       },
-      {
-        id: "hebergement",
-        title: "Hosting",
-        blocks: [
-          p("The site is hosted by the following provider."),
-          { type: "facts", items: [{ label: "Hosting provider", value: fact(HOSTING_PROVIDER, "HOSTING_PROVIDER") }] },
-        ],
-      },
+      ...(HOSTING_PROVIDER
+        ? [
+            {
+              id: "hebergement",
+              title: "Hosting",
+              blocks: [
+                p("The site is hosted by the following provider."),
+                { type: "facts" as const, items: known("Hosting provider", HOSTING_PROVIDER) },
+              ],
+            },
+          ]
+        : []),
       {
         id: "propriete-intellectuelle",
         title: "Intellectual property",
@@ -165,7 +176,7 @@ export function legalNotice(locale: Locale): LegalDoc {
       {
         id: "droit-applicable",
         title: "Applicable law",
-        blocks: [p("This legal notice and the use of the site are governed by the following law: ", ...fact(APPLICABLE_LAW, "APPLICABLE_LAW"), ".")],
+        blocks: [p(`This legal notice and the use of the site are governed by ${APPLICABLE_LAW.en}.`)],
       },
     ],
   };
@@ -173,7 +184,7 @@ export function legalNotice(locale: Locale): LegalDoc {
 
 export function privacyPolicy(locale: Locale): LegalDoc {
   const fields = FORM_FIELDS[locale];
-  const retention = fact(FORM_RETENTION_PERIOD[locale], "FORM_RETENTION_PERIOD");
+  const retention = FORM_RETENTION_PERIOD[locale];
 
   if (locale === "fr") {
     return {
@@ -193,9 +204,9 @@ export function privacyPolicy(locale: Locale): LegalDoc {
               type: "facts",
               items: [
                 { label: "Société", value: [LEGAL_ENTITY_NAME] },
-                { label: "Demandes", value: [{ link: "contact", text: "Page Contact" }] },
-                { label: "Adresse dédiée", value: fact(PRIVACY_CONTACT_EMAIL, "PRIVACY_CONTACT_EMAIL") },
-                { label: "Délégué à la protection des données", value: fact(DPO_NAME, "DPO_NAME") },
+                { label: "Siège", value: [ENTITY_LOCATION.fr] },
+                { label: "Demandes", value: [{ link: "contact", text: "Formulaire de contact" }] },
+                ...known("Délégué à la protection des données", DPO_NAME),
               ],
             },
           ],
@@ -226,14 +237,17 @@ export function privacyPolicy(locale: Locale): LegalDoc {
         {
           id: "conservation",
           title: "Durée de conservation",
-          blocks: [p("Les informations transmises sont conservées pendant la durée suivante, puis supprimées : ", ...retention, ".")],
+          blocks: [p(`Les informations transmises sont conservées pendant ${retention}, puis supprimées.`)],
         },
         {
           id: "sous-traitant",
-          title: "Sous-traitant",
+          title: "Sous-traitants",
           blocks: [
             p(
               `Les messages envoyés via les formulaires nous sont transmis par email grâce au service ${FORM_EMAIL_PROCESSOR}, qui agit en qualité de sous-traitant pour leur acheminement.`,
+            ),
+            p(
+              `Pour les protéger des envois automatisés, les formulaires font appel au service ${FORM_CAPTCHA_PROCESSOR}, qui vérifie au moment de l’envoi que le message provient bien d’une personne, à partir d’informations techniques sur le navigateur.`,
             ),
           ],
         },
@@ -242,8 +256,8 @@ export function privacyPolicy(locale: Locale): LegalDoc {
           title: "Vos demandes",
           blocks: [
             p(
-              "Vous pouvez demander à accéder aux informations vous concernant, à les faire rectifier ou supprimer, ou vous opposer à leur traitement. Adressez votre demande via la ",
-              { link: "contact", text: "page Contact" },
+              "Vous pouvez demander à accéder aux informations vous concernant, à les faire rectifier ou supprimer, ou vous opposer à leur traitement. Adressez votre demande via le ",
+              { link: "contact", text: "formulaire de contact" },
               " ; nous y répondrons dans les meilleurs délais.",
             ),
           ],
@@ -277,9 +291,9 @@ export function privacyPolicy(locale: Locale): LegalDoc {
             type: "facts",
             items: [
               { label: "Company", value: [LEGAL_ENTITY_NAME] },
-              { label: "Requests", value: [{ link: "contact", text: "Contact page" }] },
-              { label: "Dedicated address", value: fact(PRIVACY_CONTACT_EMAIL, "PRIVACY_CONTACT_EMAIL") },
-              { label: "Data protection officer", value: fact(DPO_NAME, "DPO_NAME") },
+              { label: "Based in", value: [ENTITY_LOCATION.en] },
+              { label: "Requests", value: [{ link: "contact", text: "Contact form" }] },
+              ...known("Data protection officer", DPO_NAME),
             ],
           },
         ],
@@ -310,14 +324,17 @@ export function privacyPolicy(locale: Locale): LegalDoc {
       {
         id: "conservation",
         title: "Retention",
-        blocks: [p("Information sent to us is kept for the following period, then deleted: ", ...retention, ".")],
+        blocks: [p(`Information sent to us is kept for ${retention}, then deleted.`)],
       },
       {
         id: "sous-traitant",
-        title: "Processor",
+        title: "Processors",
         blocks: [
           p(
             `Messages sent through the forms reach us by email via ${FORM_EMAIL_PROCESSOR}, which acts as a processor for their delivery.`,
+          ),
+          p(
+            `To protect them from automated submissions, the forms use ${FORM_CAPTCHA_PROCESSOR}, which checks when a form is sent that the message comes from a person, using technical information about the browser.`,
           ),
         ],
       },
@@ -327,7 +344,7 @@ export function privacyPolicy(locale: Locale): LegalDoc {
         blocks: [
           p(
             "You may ask to access the information concerning you, to have it corrected or deleted, or object to its processing. Send your request through the ",
-            { link: "contact", text: "Contact page" },
+            { link: "contact", text: "contact form" },
             " and we will reply as promptly as we can.",
           ),
         ],

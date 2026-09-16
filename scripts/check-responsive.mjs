@@ -150,6 +150,17 @@ try {
     for (const width of WIDTHS) {
       await page.setViewport({ width, height: 900, deviceScaleFactor: 1 });
       await new Promise((r) => setTimeout(r, 120));
+      // A new width can select a new srcset candidate; let it arrive (a cold image cache encodes it first).
+      await page.evaluate(() =>
+        Promise.race([
+          Promise.all(
+            [...document.images]
+              .filter((img) => !img.complete)
+              .map((img) => new Promise((r) => (img.addEventListener("load", r, { once: true }), img.addEventListener("error", r, { once: true })))),
+          ),
+          new Promise((r) => setTimeout(r, 10000)),
+        ]),
+      );
       const found = await page.evaluate(audit);
       found.signs = await page.evaluate(signsAudit);
       const contrast = await measureContrast(page);

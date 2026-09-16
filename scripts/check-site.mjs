@@ -6,9 +6,14 @@
 // 4. EN/FR structural parity of <main> on every route.
 // 5. Favicon, apple icon and Open Graph image are referenced in the HTML and served correctly.
 // 6. Retired URLs answer 301 to their replacement; nothing links to or routes through "houses".
-// 7. While SHOW_IMMOBILIER is false, no page says "Immobilier" anywhere in its rendered text.
+// 7. SHOW_IMMOBILIER false: no page says "Immobilier". True: the homepage and About page present
+//    Balzac Immobilier in both languages. Either way, no page carries property listing vocabulary
+//    (prices, listings, for sale or rent, surfaces): Immobilier is described as an activity only.
 // 8. /robots.txt allows crawling and points at /sitemap.xml; the sitemap lists every live route in
 //    both languages with hreflang alternates, and nothing hidden by a flag.
+// 9. No email address anywhere in what the site ships: every page's full HTML (including the inline
+//    React payload), the 404 page, and every script and stylesheet those pages load.
+// 10. No placeholder anywhere: no "To be confirmed", "À compléter", "à confirmer" and no data-pending marker.
 // Reports (without failing) which temporary mockup crops are still in use.
 import { BASE_URL, flags, hiddenSlugs, routePairs } from "./lib/site.mjs";
 
@@ -182,12 +187,23 @@ const visibleText = (html) =>
     .replace(/<style[\s\S]*?<\/style>/g, " ")
     .replace(/<[^>]+>/g, " ");
 const flagState = flags();
-if (!flagState.immobilier) {
-  for (const pair of pairs) {
-    for (const path of [pair.en, pair.fr]) {
-      const res = await get(path);
-      if (typeof res.body === "string" && /immobili/i.test(visibleText(res.body))) fail(`${path} mentions Immobilier while SHOW_IMMOBILIER is false`);
-    }
+const LISTING_WORDS = /(\d\s?(€|EUR|CHF|m²|m2)(?![\p{L}\d])|(?<!\p{L})(prix|price|annonces?|listings?|à vendre|for sale|à louer|for rent|bedrooms?|chambres?|surface habitable)(?!\p{L}))/iu;
+for (const pair of pairs) {
+  for (const path of [pair.en, pair.fr]) {
+    const res = await get(path);
+    if (typeof res.body !== "string") continue;
+    const text = visibleText(res.body);
+    if (!flagState.immobilier && /immobili/i.test(text)) fail(`${path} mentions Immobilier while SHOW_IMMOBILIER is false`);
+    const listing = text.match(LISTING_WORDS);
+    if (listing) fail(`${path} carries property listing vocabulary ("${listing[0]}")`);
+  }
+}
+if (flagState.immobilier) {
+  for (const path of ["/", "/fr", "/about", "/fr/about"]) {
+    const res = await get(path);
+    if (typeof res.body !== "string") continue;
+    if (!/Balzac Immobilier/.test(visibleText(res.body))) fail(`${path} does not present Balzac Immobilier while SHOW_IMMOBILIER is true`);
+    if (!res.body.includes('id="immobilier"')) fail(`${path} has no #immobilier section while SHOW_IMMOBILIER is true`);
   }
 }
 
@@ -217,6 +233,33 @@ for (const entry of entries) {
   }
 }
 
+// 9 + 10
+const EMAIL = /[A-Z0-9._%+-]+@[A-Z0-9-]+(\.[A-Z0-9-]+)*\.[A-Z]{2,}/gi;
+// File names such as logo@2x.png look like addresses; they are not.
+const notFile = (match) => !/\.(png|jpe?g|webp|avif|gif|svg|ico|js|css|woff2?)$/i.test(match);
+const PLACEHOLDER = /to be confirmed|À compléter|à confirmer|data-pending/i;
+const shipped = new Set();
+const notFound = await fetch(`${BASE_URL}/this-page-does-not-exist-${Date.now()}`);
+const notFoundHtml = await notFound.text();
+const shippedPages = [...[...seen].map((path) => [path, cache.get(path)?.body]), ["404 page", notFoundHtml]];
+let emailScans = 0;
+for (const [path, html] of shippedPages) {
+  if (typeof html !== "string") continue;
+  emailScans += 1;
+  const found = (html.match(EMAIL) || []).filter(notFile);
+  if (found.length) fail(`${path} ships an email address: ${[...new Set(found)].join(", ")}`);
+  if (PLACEHOLDER.test(html)) fail(`${path} ships a placeholder ("${html.match(PLACEHOLDER)[0]}")`);
+  for (const m of html.matchAll(/<(?:script|link)[^>]+(?:src|href)="(\/_next\/static\/[^"]+\.(?:js|css))"/g)) shipped.add(m[1]);
+}
+for (const asset of shipped) {
+  const res = await fetch(BASE_URL + asset);
+  const body = await res.text();
+  emailScans += 1;
+  const found = (body.match(EMAIL) || []).filter(notFile);
+  if (found.length) fail(`${asset} ships an email address: ${[...new Set(found)].join(", ")}`);
+  if (/to be confirmed|À compléter|à confirmer/i.test(body)) fail(`${asset} ships a placeholder`);
+}
+
 const tempInUse = new Set();
 for (const pair of pairs) {
   for (const path of [pair.en, pair.fr]) {
@@ -230,6 +273,6 @@ if (failures.length) {
   process.exit(1);
 }
 console.log(
-  `check:site ok · ${pairs.length} routes x 2 languages · ${seen.size} crawled pages, ${anchors.length} anchors · hidden: ${hidden.join(", ") || "none"} · parity ok · icons + OG ok · redirects 301 ok · immobilier ${flagState.immobilier ? "shown" : "hidden everywhere"} · sitemap ${listed.length} urls + robots ok`,
+  `check:site ok · ${pairs.length} routes x 2 languages · ${seen.size} crawled pages, ${anchors.length} anchors · hidden: ${hidden.join(", ") || "none"} · parity ok · icons + OG ok · redirects 301 ok · immobilier ${flagState.immobilier ? "shown EN + FR, no listings" : "hidden everywhere"} · sitemap ${listed.length} urls + robots ok · no email address or placeholder in ${emailScans} shipped files`,
 );
 console.log(`temporary crops still in use: ${[...tempInUse].sort().join(", ") || "none"}`);

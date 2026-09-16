@@ -269,7 +269,6 @@ const fr = {
     },
     aside: {
       label: "Groupe Balzac",
-      emailTitle: "Nous écrire directement",
       maisonsTitle: "Nos maisons",
       cafeNote: "À propos",
       antiquesNote: "balzacantiques.ch",
@@ -307,12 +306,14 @@ const fr = {
     },
     failure: {
       title: "Votre message n’a pas pu être envoyé.",
-      body: "Rien n’est perdu, votre texte est conservé ci-dessous. Réessayez dans un instant, ou écrivez-nous directement à",
+      body: "Rien n’est perdu, votre texte est conservé ci-dessous. Merci de réessayer dans un instant.",
+      retry: "Réessayer",
     },
     limited: {
       title: "Trop d’envois en peu de temps.",
-      body: "Réessayez dans quelques minutes, ou écrivez-nous directement à",
+      body: "Votre texte est conservé ci-dessous. Merci de réessayer dans quelques minutes.",
     },
+    captcha: "Une vérification rapide avant l’envoi.",
     honeypot: "Ne pas remplir ce champ",
   },
 };
@@ -405,7 +406,7 @@ const en: Dictionary = {
       label: "International franchise",
       title: "Open a Balzac Café in your country.",
       body: ["Join the adventure and bring a French house to your city."],
-      cta: "Learn more",
+      cta: "Discover the franchise",
       imageAlt: "An antique globe beside books marked Paris, Bangkok, New York, Tokyo",
     },
     vision: {
@@ -580,7 +581,6 @@ const en: Dictionary = {
     },
     aside: {
       label: "Groupe Balzac",
-      emailTitle: "Write to us directly",
       maisonsTitle: "Our houses",
       cafeNote: "About us",
       antiquesNote: "balzacantiques.ch",
@@ -618,12 +618,14 @@ const en: Dictionary = {
     },
     failure: {
       title: "Your message could not be sent.",
-      body: "Nothing is lost, your text is kept below. Try again in a moment, or write to us directly at",
+      body: "Nothing is lost, your text is kept below. Please try again in a moment.",
+      retry: "Try again",
     },
     limited: {
       title: "Too many messages in a short time.",
-      body: "Try again in a few minutes, or write to us directly at",
+      body: "Your text is kept below. Please try again in a few minutes.",
     },
+    captcha: "A quick check before sending.",
     honeypot: "Leave this field empty",
   },
 };

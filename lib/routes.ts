@@ -19,10 +19,11 @@ export const slugs: Record<PageKey, string> = {
 export const SHOW_NEWS = false;
 
 /**
- * Balzac Immobilier becomes a separate project later. While false, the homepage band, the About
- * chapter, the contact link and every other Immobilier mention are hidden; true restores them all.
+ * Balzac Immobilier, presented as an activity only: no listings, prices, property gallery or search.
+ * While false, the homepage band, the About chapter, the contact link and every other Immobilier
+ * mention are hidden; true shows them all.
  */
-export const SHOW_IMMOBILIER = false;
+export const SHOW_IMMOBILIER = true;
 
 const primaryPages = ["home", "about", "vision", "franchise", "news", "contact"] as const satisfies readonly PageKey[];
 

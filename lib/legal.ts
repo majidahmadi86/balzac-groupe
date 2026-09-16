@@ -3,10 +3,19 @@ import type { Locale } from "./i18n";
 // Single source of truth for the legal entity and every legal fact the site
 // states. Nothing else in the codebase names an entity.
 
-/** Operating entity that publishes balzacgroupe.com. */
-export const LEGAL_ENTITY_NAME = "Balzac International Ltd";
+/** Operating entity that publishes balzacgroupe.com. Not yet registered, so no registration number exists. */
+export const LEGAL_ENTITY_NAME = "Balzac International Corp";
 
 export const SITE_DOMAIN = "balzacgroupe.com";
+
+/** City and country where LEGAL_ENTITY_NAME is based. */
+export const ENTITY_LOCATION: Record<Locale, string> = { en: "Dublin, Ireland", fr: "Dublin, Irlande" };
+
+/** Law governing the site and its legal notices, as it reads inside a sentence. */
+export const APPLICABLE_LAW: Record<Locale, string> = { en: "the law of Ireland", fr: "le droit irlandais" };
+
+/** How long form submissions are kept before deletion. */
+export const FORM_RETENTION_PERIOD: Record<Locale, string> = { en: "24 months", fr: "24 mois" };
 
 const copyright: Record<Locale, string> = {
   en: `© Groupe Balzac · ${LEGAL_ENTITY_NAME}`,
@@ -17,35 +26,24 @@ export function copyrightLine(locale: Locale): string {
   return copyright[locale];
 }
 
-// Facts not yet supplied. They are deliberately NOT invented: while a value is
-// null, the legal pages print a visible "to be confirmed" marker in its place.
-// Filling one is a one-line change here.
+// Facts not supplied yet. They are never invented and never shown as a placeholder:
+// while a value is null its whole line is left out of /legal and /privacy.
+// Filling one is a one-line change here, and the line appears.
 
-/** Law and courts governing the site and its legal notices. */
-export const APPLICABLE_LAW: string | null = null;
-/** Registered office address of LEGAL_ENTITY_NAME. */
-export const REGISTERED_ADDRESS: string | null = null;
-/** Company registration number of LEGAL_ENTITY_NAME. */
-export const REGISTRATION_NUMBER: string | null = null;
 /** Person responsible for publication (directeur de la publication). */
 export const PUBLICATION_DIRECTOR: string | null = null;
 /** Hosting provider name and address. */
 export const HOSTING_PROVIDER: string | null = null;
-/** Dedicated email address for personal data requests, if any (the Contact page is the route meanwhile). */
-export const PRIVACY_CONTACT_EMAIL: string | null = null;
 /** Data protection officer, if one is appointed. */
 export const DPO_NAME: string | null = null;
-/** How long form submissions are kept before deletion. */
-export const FORM_RETENTION_PERIOD: Record<Locale, string | null> = { en: null, fr: null };
 
-/**
- * Public group email shown on /contact and as the fallback when a form cannot be sent.
- * Not yet supplied: while null, the page shows a "to be confirmed" marker instead.
- */
-export const GROUP_EMAIL: string | null = null;
+// No public email address anywhere on the site: personal data requests and every other
+// message go through the /contact form, delivered server-side to CONTACT_TO_EMAIL.
 
 /** Email delivery processor used by the Contact and Franchise forms. */
 export const FORM_EMAIL_PROCESSOR = "Resend";
+/** Anti-spam check on the Contact and Franchise forms. */
+export const FORM_CAPTCHA_PROCESSOR = "Cloudflare Turnstile";
 
 /** Fields collected by the two site forms. Keep in step with the forms themselves. */
 export const FORM_FIELDS: Record<Locale, { contact: string[]; franchise: string[] }> = {

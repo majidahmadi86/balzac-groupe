@@ -5,7 +5,6 @@ import { MotionScope } from "@/components/home/MotionScope";
 import { Reveal } from "@/components/home/Reveal";
 import { SplitBand } from "@/components/home/SplitBand";
 import { getDictionary, type Locale } from "@/lib/i18n";
-import { GROUP_EMAIL } from "@/lib/legal";
 import { pathFor } from "@/lib/routes";
 
 export function FranchisePage({ locale }: { locale: Locale }) {
@@ -46,7 +45,7 @@ export function FranchisePage({ locale }: { locale: Locale }) {
             </div>
           </div>
           <div className="lg:col-span-7">
-            <InquiryForm kind="franchise" locale={locale} groupEmail={GROUP_EMAIL} label={page.form.label} />
+            <InquiryForm kind="franchise" locale={locale} label={page.form.label} />
           </div>
         </div>
       </section>

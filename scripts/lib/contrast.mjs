@@ -121,18 +121,25 @@ export async function measureContrast(page) {
   if (!targets.length) return { failures: [], worst: null };
 
   const style = await page.addStyleTag({ content: HIDE_TEXT_CSS });
-  const { vh, docH } = await page.evaluate(() => ({ vh: innerHeight, docH: document.documentElement.scrollHeight }));
+  // The sticky header is hidden for the capture, but its paint can survive in a scrolled frame, so no
+  // target is ever sampled inside the band it occupies: targets are scrolled to sit below it.
+  const { vh, docH, top } = await page.evaluate(() => {
+    const header = document.querySelector("body > header");
+    const position = header ? getComputedStyle(header).position : "static";
+    const band = position === "sticky" || position === "fixed" ? Math.ceil(header.getBoundingClientRect().height) : 0;
+    return { vh: innerHeight, docH: document.documentElement.scrollHeight, top: band };
+  });
   const pending = [...targets].sort((a, b) => a.y - b.y);
   const measured = [];
   try {
     while (pending.length) {
       const first = pending[0];
-      const scroll = Math.max(0, Math.min(Math.floor(first.y - 40), docH - vh));
+      const scroll = Math.max(0, Math.min(Math.floor(first.y - top - 40), docH - vh));
       await page.evaluate((y) => window.scrollTo(0, y), scroll);
       // Wait for the scrolled frame to be composited before capturing it.
       await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(r, 30)))));
       const actual = await page.evaluate(() => scrollY);
-      const inView = pending.filter((t) => t.y >= actual && t.y + t.h <= actual + vh);
+      const inView = pending.filter((t) => t.y >= actual + top && t.y + t.h <= actual + vh);
       const batch = inView.length ? inView : [first];
       for (const t of batch) pending.splice(pending.indexOf(t), 1);
       if (!inView.length) {
@@ -145,6 +152,14 @@ export async function measureContrast(page) {
       const local = batch.map((t) => ({ ...t, y: t.y - actual }));
       const results = await page.evaluate(sampleTargets, b64, { x: 0, y: 0 }, local);
       measured.push(...results);
+      // CONTRAST_DEBUG_DIR=path keeps the frame behind any failing measurement, to see what the text sat on.
+      if (process.env.CONTRAST_DEBUG_DIR && results.some((m) => m.ratio !== null && m.ratio < CONTRAST_MIN)) {
+        const { mkdirSync, writeFileSync } = await import("node:fs");
+        mkdirSync(process.env.CONTRAST_DEBUG_DIR, { recursive: true });
+        const name = `${Date.now()}-${results.find((m) => m.ratio < CONTRAST_MIN).label.replace(/[^a-z0-9]+/gi, "-").slice(0, 30)}`;
+        writeFileSync(`${process.env.CONTRAST_DEBUG_DIR}/${name}.png`, Buffer.from(b64, "base64"));
+        writeFileSync(`${process.env.CONTRAST_DEBUG_DIR}/${name}.json`, JSON.stringify({ scrollY: actual, results: results.filter((m) => m.ratio < CONTRAST_MIN) }, null, 2));
+      }
     }
   } finally {
     await style.evaluate((node) => node.remove());

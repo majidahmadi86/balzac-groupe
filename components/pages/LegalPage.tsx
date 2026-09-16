@@ -6,24 +6,11 @@ import type { Locale } from "@/lib/i18n";
 import type { Inline, LegalDoc } from "@/lib/legal-content";
 import { pathFor } from "@/lib/routes";
 
-const pendingLabel: Record<Locale, string> = { en: "To be confirmed", fr: "À compléter" };
-
 function InlineParts({ parts, locale, standalone = false }: { parts: Inline[]; locale: Locale; standalone?: boolean }) {
   return (
     <>
       {parts.map((part, idx) => {
         if (typeof part === "string") return <span key={idx}>{part}</span>;
-        if ("pending" in part) {
-          return (
-            <span
-              key={idx}
-              data-pending={part.pending}
-              className="border-b border-dotted border-gold-dark italic text-navy/60"
-            >
-              {pendingLabel[locale]}
-            </span>
-          );
-        }
         return (
           <Link
             key={idx}

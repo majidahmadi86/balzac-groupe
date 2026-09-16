@@ -1,8 +1,9 @@
 "use server";
 
 import { headers } from "next/headers";
+import { captchaClientConfig, verifyCaptcha, type CaptchaClientConfig } from "./captcha";
 import { sendInquiry } from "./email";
-import { HONEYPOT_FIELD, validateForm, type FormKind, type FormState } from "./forms";
+import { CAPTCHA_FIELD, HONEYPOT_FIELD, validateForm, type FormKind, type FormState } from "./forms";
 import type { Locale } from "./i18n";
 import { isRateLimited } from "./rate-limit";
 
@@ -23,12 +24,25 @@ async function handle(kind: FormKind, previous: FormState, formData: FormData): 
   const trap = formData.get(HONEYPOT_FIELD);
   if (typeof trap === "string" && trap.trim() !== "") return { status: "success", errors: {}, values: { email: values.email }, nonce };
 
-  if (isRateLimited(`${kind}:${clientIp()}`)) return { status: "limited", errors: {}, values, nonce };
+  const ip = clientIp();
+  if (isRateLimited(`${kind}:${ip}`)) return { status: "limited", errors: {}, values, nonce };
+
+  // Turnstile token checked server-side before anything is sent. Unconfigured: logged, and the send goes ahead.
+  const captcha = await verifyCaptcha(formData.get(CAPTCHA_FIELD), ip, kind);
+  if (!captcha.ok) return { status: "error", reason: "captcha", errors: {}, values, nonce };
 
   const result = await sendInquiry(kind, locale, values);
-  if (!result.ok) return { status: "error", errors: {}, values, nonce };
+  if (!result.ok) return { status: "error", reason: "delivery", errors: {}, values, nonce };
 
   return { status: "success", errors: {}, values: { email: values.email }, nonce };
+}
+
+/**
+ * Turnstile settings for the browser, asked for when someone starts using a form. Read at request time,
+ * so the pages stay static and the keys can change with a restart. Never includes the secret.
+ */
+export async function getCaptchaConfig(): Promise<CaptchaClientConfig> {
+  return captchaClientConfig();
 }
 
 export async function submitContact(previous: FormState, formData: FormData): Promise<FormState> {

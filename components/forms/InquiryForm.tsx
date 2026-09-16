@@ -1,15 +1,26 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useFormState, useFormStatus } from "react-dom";
-import { submitContact, submitFranchise } from "@/lib/form-actions";
-import { FORM_FIELDS_BY_KIND, HONEYPOT_FIELD, initialFormState, type FieldName, type FormKind, type FormState } from "@/lib/forms";
+import { getCaptchaConfig, submitContact, submitFranchise } from "@/lib/form-actions";
+import {
+  CAPTCHA_FIELD,
+  FORM_FIELDS_BY_KIND,
+  HONEYPOT_FIELD,
+  initialFormState,
+  type FieldName,
+  type FormKind,
+  type FormState,
+} from "@/lib/forms";
 import { getDictionary, type Locale } from "@/lib/i18n";
+import { useTurnstile } from "./useTurnstile";
 
 const actions = { contact: submitContact, franchise: submitFranchise };
 
-function SubmitButton({ label, pendingLabel }: { label: string; pendingLabel: string }) {
-  const { pending } = useFormStatus();
+function SubmitButton({ label, pendingLabel, waiting }: { label: string; pendingLabel: string; waiting: boolean }) {
+  const { pending: sending } = useFormStatus();
+  // Waiting covers the moment the captcha token is still being issued, before the send itself.
+  const pending = sending || waiting;
   return (
     <button
       type="submit"
@@ -32,36 +43,26 @@ function SubmitButton({ label, pendingLabel }: { label: string; pendingLabel: st
   );
 }
 
-function FallbackEmail({ email, pending }: { email: string | null; pending: string }) {
-  if (!email) {
-    return (
-      <span data-pending="GROUP_EMAIL" className="border-b border-dotted border-gold-dark font-medium italic text-navy">
-        {pending}
-      </span>
-    );
-  }
-  return (
-    <a href={`mailto:${email}`} className="font-medium text-navy underline decoration-navy/40 underline-offset-4 hover:decoration-navy">
-      {email}
-    </a>
-  );
-}
-
 type InquiryFormProps = {
   kind: FormKind;
   locale: Locale;
-  groupEmail: string | null;
   /** Caps label shown above the form, inside the panel. */
   label: string;
 };
 
 // The form as a framed cream panel: caps label, white fields with visible navy borders and a gold
 // focus ring, all text at 4.5:1 or better (asserted by the responsive gate via data-contrast).
-export function InquiryForm({ kind, locale, groupEmail, label }: InquiryFormProps) {
+// No email address is ever shown: when a send fails, the only way forward is to try again.
+export function InquiryForm({ kind, locale, label }: InquiryFormProps) {
   const t = getDictionary(locale).forms;
-  const pendingEmail = locale === "fr" ? "adresse à confirmer" : "address to be confirmed";
   const [state, formAction] = useFormState(actions[kind], initialFormState);
   const statusRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const tokenRef = useRef<HTMLInputElement>(null);
+  const tokenReady = useRef(false);
+  const [waiting, setWaiting] = useState(false);
+  // After a first submission the person is clearly using the form, so the next widget renders at once.
+  const captcha = useTurnstile(getCaptchaConfig, { action: kind, language: locale, resetKey: state.nonce, eager: state.nonce > 0 });
   const fields = FORM_FIELDS_BY_KIND[kind];
   // Marks the form as interactive (hydrated), for progressive enhancement and the form checks.
   const [ready, setReady] = useState(false);
@@ -77,6 +78,30 @@ export function InquiryForm({ kind, locale, groupEmail, label }: InquiryFormProp
       statusRef.current?.focus();
     }
   }, [state, fields, kind]);
+
+  // Unless captcha is known to be off, hold the submit until Turnstile has issued a token (or the
+  // server has said captcha is off), then submit again with it.
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+    if (captcha.status === "off") return;
+    if (tokenReady.current) {
+      tokenReady.current = false;
+      return;
+    }
+    event.preventDefault();
+    if (waiting) return;
+    const form = event.currentTarget;
+    setWaiting(true);
+    void captcha.getToken().then((token) => {
+      if (tokenRef.current) tokenRef.current.value = token ?? "";
+      setWaiting(false);
+      tokenReady.current = true;
+      // A form ignores requestSubmit while its own submit event is still being dispatched, and a token
+      // that is already there resolves within that dispatch: submit again on the next task.
+      setTimeout(() => form.requestSubmit(), 0);
+    });
+  };
+
+  const retry = () => formRef.current?.requestSubmit();
 
   const panel = "border border-navy/15 bg-cream-50 px-5 py-7 sm:px-8 sm:py-9 lg:px-10 lg:py-10";
   const panelLabel = (
@@ -124,14 +149,23 @@ export function InquiryForm({ kind, locale, groupEmail, label }: InquiryFormProp
           tabIndex={-1}
           role="alert"
           data-form-state={state.status}
+          data-form-reason={state.reason}
           className="mt-6 border-l-2 border-gold-dark bg-white px-5 py-4 outline-none"
         >
           <p className="font-display text-[1.375rem] font-semibold leading-[1.2] text-navy">
             {state.status === "error" ? t.failure.title : t.limited.title}
           </p>
-          <p className="mt-2 text-[1rem] leading-[1.6] text-navy">
-            {state.status === "error" ? t.failure.body : t.limited.body} <FallbackEmail email={groupEmail} pending={pendingEmail} />.
-          </p>
+          <p className="mt-2 text-[1rem] leading-[1.6] text-navy">{state.status === "error" ? t.failure.body : t.limited.body}</p>
+          {state.status === "error" && (
+            <button
+              type="button"
+              onClick={retry}
+              data-form-retry=""
+              className="label-caps mt-3 inline-flex min-h-[44px] items-center text-[0.75rem] tracking-caps-sm text-navy underline decoration-navy/40 underline-offset-[6px] transition-colors duration-300 hover:decoration-navy"
+            >
+              {t.failure.retry}
+            </button>
+          )}
         </div>
       )}
 
@@ -141,8 +175,21 @@ export function InquiryForm({ kind, locale, groupEmail, label }: InquiryFormProp
         </p>
       )}
 
-      <form key={state.nonce} action={formAction} noValidate className="mt-7" data-form={kind}>
+      <form
+        key={state.nonce}
+        ref={formRef}
+        action={formAction}
+        onSubmit={onSubmit}
+        onFocusCapture={captcha.start}
+        onPointerDownCapture={captcha.start}
+        noValidate
+        className="mt-7"
+        data-form={kind}
+        data-captcha={captcha.status}
+      >
         <input type="hidden" name="locale" value={locale} />
+        {/* No value prop: React would write it back over the token on the next render. */}
+        <input ref={tokenRef} type="hidden" name={CAPTCHA_FIELD} />
 
         <div className="grid gap-x-6 gap-y-6 sm:grid-cols-2">
           {fields.map((field, idx) => (
@@ -165,8 +212,16 @@ export function InquiryForm({ kind, locale, groupEmail, label }: InquiryFormProp
           <input id={`${kind}-${HONEYPOT_FIELD}`} type="text" name={HONEYPOT_FIELD} tabIndex={-1} autoComplete="off" defaultValue="" />
         </div>
 
+        {/* Turnstile slot: empty and zero-height unless Cloudflare asks for an interaction. */}
+        {captcha.status === "on" && (
+          <div className={captcha.interactive ? "mt-8" : ""}>
+            {captcha.interactive && <p className="label-caps mb-3 text-[0.75rem] tracking-caps-sm text-navy">{t.captcha}</p>}
+            <div ref={captcha.slotRef} data-captcha-slot="" className="max-w-full overflow-hidden" />
+          </div>
+        )}
+
         <div className="mt-8 flex flex-wrap items-center justify-between gap-x-6 gap-y-4">
-          <SubmitButton label={t.submit[kind]} pendingLabel={t.submitting} />
+          <SubmitButton label={t.submit[kind]} pendingLabel={t.submitting} waiting={waiting} />
           <p className="text-[0.9375rem] text-navy">{t.required}</p>
         </div>
       </form>

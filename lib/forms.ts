@@ -12,6 +12,8 @@ export type FormState = {
   status: FormStatus;
   errors: Partial<Record<FieldName, FieldError>>;
   values: FormValues;
+  /** Why an error state was returned: the captcha check or the email delivery. */
+  reason?: "captcha" | "delivery";
   /** Changes on every submission so the client can remount the form with the returned values. */
   nonce: number;
 };
@@ -24,6 +26,9 @@ export const FORM_FIELDS_BY_KIND: Record<FormKind, readonly FieldName[]> = {
 
 /** Hidden honeypot input name. Real people never fill it. */
 export const HONEYPOT_FIELD = "website";
+
+/** Hidden input carrying the Cloudflare Turnstile token. */
+export const CAPTCHA_FIELD = "cf-turnstile-response";
 
 const LENGTH: Record<FieldName, { min: number; max: number }> = {
   name: { min: 2, max: 120 },
