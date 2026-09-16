@@ -80,14 +80,14 @@ const fr = {
         title: "Des objets ayant une histoire.",
         body: ["Mobilier, objets d’art, collections.", "Pour des intérieurs d’exception."],
         cta: "Découvrir Balzac Antiques",
-        imageAlt: "Buste en marbre, livres anciens et bougeoir sur une commode ancienne",
+        imageAlt: "Livre ancien de Jules Verne, montre vintage et malle de voyage sur une table de marbre",
       },
       immobilier: {
         label: "Balzac Immobilier",
         title: "L’immobilier de caractère aux portes de la Suisse.",
         body: ["Spécialiste de la région de Pontarlier.", "Un accompagnement complet, de la recherche à la signature."],
         cta: "Découvrir Balzac Immobilier",
-        imageAlt: "Maison de caractère en pierre sous la neige, entourée de sapins",
+        imageAlt: "Ferme de caractère en pierre sous la neige, fenêtres éclairées au coucher du soleil",
       },
     },
     franchise: {
@@ -314,6 +314,11 @@ const fr = {
       body: "Votre texte est conservé ci-dessous. Merci de réessayer dans quelques minutes.",
     },
     captcha: "Une vérification rapide avant l’envoi.",
+    stale: {
+      title: "Cette page doit être actualisée.",
+      body: "Le site a été mis à jour pendant votre saisie. Actualisez la page : votre texte sera conservé.",
+      action: "Actualiser la page",
+    },
     honeypot: "Ne pas remplir ce champ",
   },
 };
@@ -392,14 +397,14 @@ const en: Dictionary = {
         title: "Objects with a story.",
         body: ["Furniture, works of art, collections.", "For exceptional interiors."],
         cta: "Discover Balzac Antiques",
-        imageAlt: "A marble bust, antique books and a candlestick on an old chest",
+        imageAlt: "An antique Jules Verne book, a vintage watch and a travel trunk on a marble table",
       },
       immobilier: {
         label: "Balzac Immobilier",
         title: "Property of character at the gateway to Switzerland.",
         body: ["Specialists in the Pontarlier region.", "Complete guidance, from the first search to the signing."],
         cta: "Discover Balzac Immobilier",
-        imageAlt: "A stone house of character in the snow, framed by fir trees",
+        imageAlt: "A stone farmhouse of character in the snow, its windows lit at sunset",
       },
     },
     franchise: {
@@ -626,6 +631,11 @@ const en: Dictionary = {
       body: "Your text is kept below. Please try again in a few minutes.",
     },
     captcha: "A quick check before sending.",
+    stale: {
+      title: "This page needs refreshing.",
+      body: "The site was updated while you were writing. Refresh the page and your text will be kept.",
+      action: "Refresh the page",
+    },
     honeypot: "Leave this field empty",
   },
 };

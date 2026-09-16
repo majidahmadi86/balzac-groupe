@@ -12,6 +12,9 @@
 //                a retry that sends once the provider is back
 //   honeypot     a filled honeypot shows success but sends nothing
 //   rate limit   repeated sends from one IP render the limited state
+//   stale        a submission whose Server Action is gone (a deploy happened while the tab was open),
+//                and one that fails outright, both render the "refresh the page" notice in the page
+//                language, with no error text, and the refresh brings the typed values back
 // Captcha present (keys set, Turnstile mocked):
 //   the widget loads only once the form is used; the token reaches siteverify with the secret before
 //   anything is sent; a rejected token, a token for the other form and an unreachable siteverify each
@@ -365,6 +368,68 @@ try {
   }
   expect(limited, `contact: repeated sends from one IP hit the rate limit (${RATE_LIMIT} per window)`);
   if (limited) await snap("contact-en-limited");
+  // ---------------------------------------------------------------- stale deployment
+  // Two ways a deploy breaks a tab that is already open: the action id is gone from the new build,
+  // or the request fails outright while the server restarts. Neither may show an error page.
+  for (const [slug, kind, locale, mode, refreshLabel] of [
+    ["contact", "contact", "en", "unknown-action", "Refresh the page"],
+    ["fr/franchise", "franchise", "fr", "request-failed", "Actualiser la page"],
+  ]) {
+    const tag = `${kind} ${locale} stale deploy (${mode})`;
+    const form = forms.find((f) => f.kind === kind);
+    const values = valuesFor(form, locale);
+    step = tag;
+    trace(step);
+    await open(`/${slug}`);
+    await fill(kind, values);
+
+    await page.setRequestInterception(true);
+    const intercept = (req) => {
+      const headers = req.headers();
+      if (!headers["next-action"]) return void req.continue();
+      // An id from an older build: the server cannot map it to an action any more.
+      if (mode === "unknown-action") return void req.continue({ headers: { ...headers, "next-action": "0".repeat(40) } });
+      return void req.abort("connectionrefused");
+    };
+    page.on("request", intercept);
+    try {
+      await page.click(`form[data-form="${kind}"] button[type="submit"]`);
+      await page.waitForSelector('[data-form-state="stale"]', { timeout: 20000 });
+    } finally {
+      page.off("request", intercept);
+      await page.setRequestInterception(false);
+    }
+
+    const shown = await page.evaluate(() => {
+      const notice = document.querySelector('[data-form-state="stale"]');
+      return { text: (notice?.textContent || "").replace(/\s+/g, " ").trim(), body: (document.body.innerText || "").replace(/\s+/g, " ") };
+    });
+    expect(shown.text.includes(refreshLabel), `${tag}: the notice is in the page language ("${shown.text.slice(0, 60)}")`);
+    expect(!/Application error|client-side exception|Failed to find Server Action|TypeError|Error:/i.test(shown.body), `${tag}: no error page and no raw error text`);
+    expect(/Balzac/.test(shown.body), `${tag}: the page itself is still standing`);
+    if (mode === "unknown-action") {
+      // The form is still standing, so the text is still in front of the person who typed it.
+      const keptBefore = await page.$eval(`#${kind}-message`, (el) => el.value);
+      expect(keptBefore === values.message, `${tag}: the typed message is still in the field`);
+    } else {
+      // The submission threw: the boundary replaced the form, and the text is held for the reload.
+      expect(!(await page.$(`form[data-form="${kind}"]`)), `${tag}: the broken form is replaced by the notice`);
+    }
+    const { failures: low } = await measureContrast(page);
+    expect(low.length === 0, `${tag}: all text at 4.5:1 or better${low.length ? ` (${low[0]})` : ""}`);
+    await snap(`${kind}-${locale}-stale-${mode}`);
+
+    // The refresh reloads the page and puts the text back.
+    await Promise.all([page.waitForNavigation({ waitUntil: "networkidle0", timeout: 20000 }), page.click("[data-form-refresh]")]);
+    await page.waitForFunction(() => Boolean(document.querySelector("[data-form-restored]")), { timeout: 15000, polling: "mutation" });
+    const restored = await page.evaluate((k, fieldNames) => Object.fromEntries(fieldNames.map((f) => [f, document.getElementById(`${k}-${f}`)?.value])), kind, form.fields);
+    expect(
+      form.fields.every((f) => restored[f] === values[f]),
+      `${tag}: refreshing keeps every typed value`,
+    );
+    expect(!(await page.$('[data-form-state="stale"]')), `${tag}: the refreshed page is back to a working form`);
+  }
+
   expect(scriptLoads.length === 0, "captcha absent: no captcha script is ever requested");
   site.stop();
   site = null;
@@ -512,5 +577,5 @@ if (failures.length) {
   process.exit(1);
 }
 console.log(
-  `check:forms ok · ${passes.length} assertions · contact + franchise x EN + FR · captcha absent, mocked and live · validation, success, failure + retry, honeypot, rate limit, no email shown${skipped.length ? `\n  skipped: ${skipped.join("; ")}` : ""}`,
+  `check:forms ok · ${passes.length} assertions · contact + franchise x EN + FR · captcha absent, mocked and live · validation, success, failure + retry, honeypot, rate limit, stale deploy, no email shown${skipped.length ? `\n  skipped: ${skipped.join("; ")}` : ""}`,
 );

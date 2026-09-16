@@ -19,6 +19,23 @@ npm run start
 npm run lint
 ```
 
+## Deploy
+
+On the server, in this exact order:
+
+```bash
+npm ci
+npm run build
+npm run start
+```
+
+`npm ci` must install optional dependencies: sharp's native binary ships as one (`@img/sharp-linux-x64`),
+and without it Next cannot load sharp and quietly falls back to a slower image path. The repo `.npmrc`
+sets `include=optional`, which wins over an `--omit=optional` or `omit=optional` in the server's own npm
+config, so do not pass `--omit=optional` or `--production` by hand. Node 18.18 or newer (see `engines`).
+`npm run check:sharp` confirms on the server itself that sharp loads and that the production server
+optimizes images without falling back.
+
 ## Checks
 
 Keep these green before every commit; `npm run verify` runs them all. `check:copy` and `check:forms` need no running server (build first for `check:forms`); `check:site` and `check:responsive` run against `npm start`.
@@ -64,7 +81,8 @@ Turnstile renders in interaction-only mode and loads only once someone starts us
 - News is hidden from navigation by `SHOW_NEWS` in `lib/routes.ts`; the route stays live.
 - Balzac Immobilier is shown while `SHOW_IMMOBILIER` in `lib/routes.ts` is true (homepage band, About chapter, contact link, legal mentions), described as an activity only: no listings, prices, property gallery or search. Setting it to false hides every mention with no other edit.
 - `/houses` and `/fr/houses` answer 301 to `/about` and `/fr/about` (see `next.config.mjs`).
-- Photography lives in `public/images/balzacgroupe-*.jpg`. Sections without client photos still use `public/images/temp/` mockup crops, each marked with a TEMP comment.
+- Photography lives in `public/images/balzacgroupe-*.jpg`: the storefront (whole, and the crop the homepage hero is art-directed on), the cafe interior, the antiques still life and the Pontarlier house. Sections without a client photo still use `public/images/temp/` mockup crops, each marked with a TEMP comment; `check:site` lists which are still in use.
+- A photograph with text in it (shop signs, book covers) declares those areas as `data-text-zones` in its own pixels, and the responsive gate fails if any HTML text lands on one at any width.
 
 Copy `.env.example` to `.env.local` and fill it in for the forms to send.
 

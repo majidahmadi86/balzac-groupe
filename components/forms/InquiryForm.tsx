@@ -13,6 +13,7 @@ import {
   type FormState,
 } from "@/lib/forms";
 import { getDictionary, type Locale } from "@/lib/i18n";
+import { StaleNotice, SubmissionBoundary, storageKeyFor, type FormTracker } from "./StaleDeployment";
 import { useTurnstile } from "./useTurnstile";
 
 const actions = { contact: submitContact, franchise: submitFranchise };
@@ -50,12 +51,39 @@ type InquiryFormProps = {
   label: string;
 };
 
+const PANEL = "border border-navy/15 bg-cream-50 px-5 py-7 sm:px-8 sm:py-9 lg:px-10 lg:py-10";
+
+function PanelLabel({ label }: { label: string }) {
+  return (
+    <div className="flex items-center gap-4">
+      <p className="label-caps text-[0.75rem] tracking-caps-lg text-navy">{label}</p>
+      <span aria-hidden="true" className="h-px flex-1 bg-gold/60" />
+    </div>
+  );
+}
+
+/** The form, inside a boundary that turns a submission lost to a deploy into a "refresh the page" notice. */
+export function InquiryForm({ kind, locale, label }: InquiryFormProps) {
+  // Written by the form on every keystroke, read by the boundary after the form has gone.
+  const tracker = useRef<FormTracker>({ values: {}, submitting: false });
+  return (
+    <SubmissionBoundary locale={locale} kind={kind} tracker={tracker.current} panel={PANEL} label={<PanelLabel label={label} />}>
+      <InquiryFormFields kind={kind} locale={locale} label={label} tracker={tracker.current} />
+    </SubmissionBoundary>
+  );
+}
+
 // The form as a framed cream panel: caps label, white fields with visible navy borders and a gold
 // focus ring, all text at 4.5:1 or better (asserted by the responsive gate via data-contrast).
 // No email address is ever shown: when a send fails, the only way forward is to try again.
-export function InquiryForm({ kind, locale, label }: InquiryFormProps) {
+function InquiryFormFields({ kind, locale, label, tracker }: InquiryFormProps & { tracker: FormTracker }) {
   const t = getDictionary(locale).forms;
-  const [state, formAction] = useFormState(actions[kind], initialFormState);
+  const [returned, formAction] = useFormState(actions[kind], initialFormState);
+  // A submission whose action no longer exists on the server comes back as nothing usable.
+  const stale = !returned || typeof returned.nonce !== "number";
+  const lastGood = useRef<FormState>(initialFormState);
+  if (!stale) lastGood.current = returned;
+  const state = stale ? lastGood.current : returned;
   const statusRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const tokenRef = useRef<HTMLInputElement>(null);
@@ -67,6 +95,41 @@ export function InquiryForm({ kind, locale, label }: InquiryFormProps) {
   // Marks the form as interactive (hydrated), for progressive enhancement and the form checks.
   const [ready, setReady] = useState(false);
   useEffect(() => setReady(true), []);
+
+  // Text kept across the refresh that a deploy forces. Written into the fields after mount, so the
+  // markup React hydrates is still the one the server sent.
+  useEffect(() => {
+    let saved: Record<string, string> | null = null;
+    try {
+      const raw = sessionStorage.getItem(storageKeyFor(kind));
+      if (raw) {
+        sessionStorage.removeItem(storageKeyFor(kind));
+        saved = JSON.parse(raw);
+      }
+    } catch {
+      saved = null;
+    }
+    if (!saved) return;
+    for (const [field, value] of Object.entries(saved)) {
+      const input = document.getElementById(`${kind}-${field}`);
+      if (input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement) input.value = value;
+    }
+    tracker.values = { ...saved };
+    formRef.current?.setAttribute("data-form-restored", "");
+  }, [kind, tracker]);
+
+  // The boundary needs the typed text after the form itself is gone.
+  const trackValues = () => {
+    const form = formRef.current;
+    if (!form) return;
+    for (const field of fields) {
+      const input = form.elements.namedItem(field);
+      if (input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement) tracker.values[field] = input.value;
+    }
+  };
+  useEffect(() => {
+    tracker.submitting = false;
+  }, [state, tracker]);
 
   // Move focus to the outcome so screen reader and keyboard users hear it.
   useEffect(() => {
@@ -82,6 +145,8 @@ export function InquiryForm({ kind, locale, label }: InquiryFormProps) {
   // Unless captcha is known to be off, hold the submit until Turnstile has issued a token (or the
   // server has said captcha is off), then submit again with it.
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+    trackValues();
+    tracker.submitting = true;
     if (captcha.status === "off") return;
     if (tokenReady.current) {
       tokenReady.current = false;
@@ -103,15 +168,10 @@ export function InquiryForm({ kind, locale, label }: InquiryFormProps) {
 
   const retry = () => formRef.current?.requestSubmit();
 
-  const panel = "border border-navy/15 bg-cream-50 px-5 py-7 sm:px-8 sm:py-9 lg:px-10 lg:py-10";
-  const panelLabel = (
-    <div className="flex items-center gap-4">
-      <p className="label-caps text-[0.75rem] tracking-caps-lg text-navy">{label}</p>
-      <span aria-hidden="true" className="h-px flex-1 bg-gold/60" />
-    </div>
-  );
+  const panel = PANEL;
+  const panelLabel = <PanelLabel label={label} />;
 
-  if (state.status === "success") {
+  if (!stale && state.status === "success") {
     return (
       <div
         ref={statusRef}
@@ -143,7 +203,9 @@ export function InquiryForm({ kind, locale, label }: InquiryFormProps) {
     <div data-contrast="" data-form-nonce={state.nonce} data-form-ready={ready ? "" : undefined} className={panel}>
       {panelLabel}
 
-      {(state.status === "error" || state.status === "limited") && (
+      {stale && <StaleNotice locale={locale} kind={kind} tracker={tracker} className="mt-6" />}
+
+      {!stale && (state.status === "error" || state.status === "limited") && (
         <div
           ref={statusRef}
           tabIndex={-1}
@@ -169,7 +231,7 @@ export function InquiryForm({ kind, locale, label }: InquiryFormProps) {
         </div>
       )}
 
-      {state.status === "invalid" && (
+      {!stale && state.status === "invalid" && (
         <p role="alert" data-form-state="invalid" className="mt-6 border-l-2 border-gold-dark bg-white px-4 py-3 text-[1rem] font-medium text-navy">
           {t.invalid}
         </p>
@@ -180,6 +242,7 @@ export function InquiryForm({ kind, locale, label }: InquiryFormProps) {
         ref={formRef}
         action={formAction}
         onSubmit={onSubmit}
+        onInput={trackValues}
         onFocusCapture={captcha.start}
         onPointerDownCapture={captcha.start}
         noValidate

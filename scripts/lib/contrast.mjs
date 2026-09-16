@@ -183,8 +183,9 @@ export async function measureContrast(page) {
 /**
  * Browser side: baked-in text in photos. An image may declare its sign areas as
  * data-text-zones="x1,y1,x2,y2;..." in the pixels of its source file (data-zones-width, default 1122).
- * Zones are mapped through object-fit: cover and object-position; any HTML text in the same section
- * that overlaps one fails.
+ * Zones are mapped through object-fit: cover and object-position, then clipped to what the image box
+ * actually shows: the part of a sign that object-cover crops away is not on the page. Any HTML text in
+ * the same section that overlaps what remains fails.
  */
 export function signsAudit() {
   const out = [];
@@ -205,10 +206,19 @@ export function signsAudit() {
     const top = box.top + (box.height - rh) * py;
     const sourceWidth = Number(img.dataset.zonesWidth || 1122);
     const k = (img.naturalWidth / sourceWidth) * scale;
-    const zones = img.dataset.textZones.split(";").map((z) => {
-      const [x1, y1, x2, y2] = z.split(",").map(Number);
-      return { x1: left + x1 * k - 4, y1: top + y1 * k - 4, x2: left + x2 * k + 4, y2: top + y2 * k + 4 };
-    });
+    const zones = img.dataset.textZones
+      .split(";")
+      .map((z) => {
+        const [x1, y1, x2, y2] = z.split(",").map(Number);
+        return {
+          x1: Math.max(left + x1 * k - 4, box.left),
+          y1: Math.max(top + y1 * k - 4, box.top),
+          x2: Math.min(left + x2 * k + 4, box.right),
+          y2: Math.min(top + y2 * k + 4, box.bottom),
+        };
+      })
+      // A sign cropped out of the frame is not on the page.
+      .filter((z) => z.x2 - z.x1 > 1 && z.y2 - z.y1 > 1);
     const section = img.closest("section") || document.body;
     const walker = document.createTreeWalker(section, NodeFilter.SHOW_TEXT);
     for (let node = walker.nextNode(); node; node = walker.nextNode()) {
@@ -219,7 +229,7 @@ export function signsAudit() {
       for (const r of range.getClientRects()) {
         if (r.width < 2) continue;
         for (const z of zones) {
-          const hit = r.left < z.x2 && r.right > z.x1 && r.top < z.y2 && r.bottom > z.y1 && z.x2 > box.left && z.x1 < box.right && z.y2 > box.top && z.y1 < box.bottom;
+          const hit = r.left < z.x2 && r.right > z.x1 && r.top < z.y2 && r.bottom > z.y1;
           if (hit) out.push(`"${text.slice(0, 30)}" lies on baked-in sign text at ${Math.round(z.x1)},${Math.round(z.y1)}`);
         }
       }

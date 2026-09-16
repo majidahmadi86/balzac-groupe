@@ -3,6 +3,7 @@ import { Hero } from "@/components/home/Hero";
 import { MotionScope } from "@/components/home/MotionScope";
 import { Reveal } from "@/components/home/Reveal";
 import { SplitBand } from "@/components/home/SplitBand";
+import { ANTIQUES_TEXT_ZONES, STOREFRONT_TEXT_ZONES } from "@/components/home/HomePage";
 import { getDictionary, type Locale } from "@/lib/i18n";
 import { pathFor, SHOW_IMMOBILIER } from "@/lib/routes";
 
@@ -62,10 +63,10 @@ export function AboutPage({ locale }: { locale: Locale }) {
         body={cafe.paragraphs}
         bodyStyle="paragraphs"
         imageSide="right"
-        aspect="aspect-square"
-        // Storefront crop without the upper band, so BALZAC reads once (on the awning).
-        imagePosition="object-[50%_20%]"
-        image={{ src: "/images/balzacgroupe-hero-storefront.jpg", alt: cafe.imageAlt }}
+        // The whole storefront, at its own 4:5. Nothing is laid over it here, so the signage reads
+        // as part of the photograph; the homepage keeps the crop that excludes the upper band.
+        aspect="aspect-[4/5]"
+        image={{ src: "/images/balzacgroupe-hero.jpg", alt: cafe.imageAlt, textZones: STOREFRONT_TEXT_ZONES, zonesWidth: 1122 }}
       />
 
       <SplitBand
@@ -75,9 +76,8 @@ export function AboutPage({ locale }: { locale: Locale }) {
         body={antiques.paragraphs}
         bodyStyle="paragraphs"
         imageSide="left"
-        aspect="aspect-[3/2]"
-        // TEMP mockup crop, replace with client photography.
-        image={{ src: "/images/temp/temp-antiques.jpg", alt: t.home.bands.antiques.imageAlt }}
+        aspect="aspect-[4/3]"
+        image={{ src: "/images/balzacgroupe-antiques.jpg", alt: t.home.bands.antiques.imageAlt, textZones: ANTIQUES_TEXT_ZONES, zonesWidth: 1374 }}
         cta={
           <a
             href={ANTIQUES_URL}
@@ -99,10 +99,9 @@ export function AboutPage({ locale }: { locale: Locale }) {
           body={immobilier.paragraphs}
           bodyStyle="paragraphs"
           imageSide="right"
-          aspect="aspect-[4/3]"
-          imagePosition="object-[50%_30%]"
-          // TEMP mockup crop, replace with client photography.
-          image={{ src: "/images/temp/temp-immobilier.jpg", alt: t.home.bands.immobilier.imageAlt }}
+          aspect="aspect-[3/2]"
+          imagePosition="object-[55%_50%]"
+          image={{ src: "/images/balzacgroupe-immobilier.jpg", alt: t.home.bands.immobilier.imageAlt }}
         />
       ) : null}
 

@@ -8,7 +8,8 @@ type SplitBandProps = {
   title: string;
   body: string[];
   cta?: ReactNode;
-  image: { src: string; alt: string };
+  /** textZones: baked-in sign text as "x1,y1,x2,y2;..." in the source file's own pixels (zonesWidth). */
+  image: { src: string; alt: string; textZones?: string; zonesWidth?: number };
   imageSide: "left" | "right";
   tone?: "cream" | "forest";
   /** Mobile aspect ratio class, close to the source crop so nothing important is cut. */
@@ -134,6 +135,8 @@ export function SplitBand({
           alt={image.alt}
           fill
           sizes="(min-width: 768px) 50vw, 100vw"
+          data-text-zones={image.textZones}
+          data-zones-width={image.textZones ? image.zonesWidth : undefined}
           className={`object-cover transition-transform duration-[1800ms] ease-editorial lg:group-hover/band:scale-[1.04] ${imagePosition}`}
         />
         {forest && (
