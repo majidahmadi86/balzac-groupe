@@ -1,5 +1,6 @@
 import { InquiryForm } from "@/components/forms/InquiryForm";
 import { CtaLink } from "@/components/home/CtaLink";
+import { STOREFRONT_TEXT_ZONES } from "@/components/home/HomePage";
 import { Hero } from "@/components/home/Hero";
 import { MotionScope } from "@/components/home/MotionScope";
 import { Reveal } from "@/components/home/Reveal";
@@ -19,10 +20,18 @@ export function FranchisePage({ locale }: { locale: Locale }) {
         scrim="light"
         label={page.hero.label}
         titleLines={[page.hero.title]}
-        // TEMP mockup crop, replace with client photography. The storefront photograph cannot serve
-        // here: a tight hero shows most of it at phone widths, and the title then lands on the shop
-        // signage (the responsive gate fails it). This hero needs a landscape photo without lettering.
-        image={{ src: "/images/temp/temp-franchise-globe.jpg", alt: page.hero.imageAlt, position: "object-[70%_50%] lg:object-[50%_55%]" }}
+        // Below 1024px the whole shopfront reads and the type sits on navy under it: at phone width a
+        // tight crop of this photograph is all signage, and any type over it would land on a sign.
+        // From 1024px the hero shows the band between the awning and the window lettering, which
+        // carries neither signage nor the figure, and the type sits over the olive tree.
+        stackBelowLg="aspect-[1122/1402]"
+        image={{
+          src: "/images/balzacgroupe-storefront-welcome.jpg",
+          alt: page.hero.imageAlt,
+          position: "lg:object-[50%_34%]",
+          textZones: STOREFRONT_TEXT_ZONES,
+          zonesWidth: 1122,
+        }}
       />
 
       {/* Proposition beside the interest form: the form's first field shows without scrolling from 1024px. */}

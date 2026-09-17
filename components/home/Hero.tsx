@@ -22,6 +22,12 @@ type HeroProps = {
    * behind the type that clears quickly, so pale photos keep their colour instead of washing grey.
    */
   scrim?: "dark" | "light";
+  /**
+   * Overlay heroes only. Below 1024px, show the whole photograph at this aspect and set the type on
+   * navy underneath it instead of over it. For photographs covered in signage, where no crop at phone
+   * width leaves a clear area: the shopfront reads whole, and the type keeps its contrast on navy.
+   */
+  stackBelowLg?: string;
 };
 
 const SCRIMS = {
@@ -100,7 +106,7 @@ function HeroText({
 export const HERO_IMAGE_QUALITY = 60;
 
 // Photographic hero. The image source and its art direction come from the caller.
-export function Hero({ image, compact = false, tight = false, layout = "overlay", scrim = "dark", ...text }: HeroProps) {
+export function Hero({ image, compact = false, tight = false, layout = "overlay", scrim = "dark", stackBelowLg, ...text }: HeroProps) {
   if (tight) compact = true;
   if (layout === "split") {
     const height = compact ? "lg:h-[55vh] lg:min-h-[28rem] lg:max-h-[40rem]" : "lg:h-[85vh] lg:min-h-[40rem] lg:max-h-[64rem]";
@@ -138,27 +144,55 @@ export function Hero({ image, compact = false, tight = false, layout = "overlay"
     );
   }
 
-  const height = tight
-    ? "h-[34svh] min-h-[15rem] lg:h-[30vh] lg:min-h-[15rem] lg:max-h-[19rem]"
+  const desktopHeight = tight
+    ? "lg:h-[30vh] lg:min-h-[15rem] lg:max-h-[19rem]"
     : compact
-    ? "h-[45svh] min-h-[24rem] lg:h-[45vh] lg:min-h-[26rem] lg:max-h-[36rem]"
-    : "h-[calc(100svh-76px)] min-h-[32rem] lg:h-[85vh] lg:min-h-[40rem] lg:max-h-[64rem]";
+    ? "lg:h-[45vh] lg:min-h-[26rem] lg:max-h-[36rem]"
+    : "lg:h-[85vh] lg:min-h-[40rem] lg:max-h-[64rem]";
+  const height = tight
+    ? `h-[34svh] min-h-[15rem] ${desktopHeight}`
+    : compact
+    ? `h-[45svh] min-h-[24rem] ${desktopHeight}`
+    : `h-[calc(100svh-76px)] min-h-[32rem] ${desktopHeight}`;
+
+  const photo = (
+    <Image
+      src={image.src}
+      alt={image.alt}
+      fill
+      priority
+      quality={HERO_IMAGE_QUALITY}
+      sizes="100vw"
+      data-crop="art-directed"
+      data-text-zones={image.textZones}
+      data-zones-width={image.textZones ? image.zonesWidth : undefined}
+      className={`hero-settle object-cover ${image.position ?? "object-center"}`}
+    />
+  );
+
+  if (stackBelowLg) {
+    return (
+      <section
+        aria-labelledby="hero-title"
+        className="relative isolate flex flex-col overflow-hidden bg-navy-950 text-cream lg:block"
+      >
+        <div className={`relative w-full ${stackBelowLg} lg:aspect-auto ${desktopHeight}`}>
+          {photo}
+          {/* Mobile: a seam into the navy type block. Desktop: the hero's own scrim. */}
+          <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-navy-950 to-navy-950/0 lg:hidden" />
+          <div aria-hidden="true" className={`absolute inset-0 hidden lg:block ${SCRIMS[scrim]}`} />
+        </div>
+        <div className="site-gutter relative pb-12 pt-6 sm:pb-14 sm:pt-8 lg:absolute lg:inset-0 lg:flex lg:h-full lg:flex-col lg:justify-center lg:pb-0 lg:pt-0">
+          <HeroText compact={compact} overlay {...text} />
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section aria-labelledby="hero-title" className="relative isolate overflow-hidden bg-navy-950 text-cream">
       <div className={`relative ${height}`}>
-        <Image
-          src={image.src}
-          alt={image.alt}
-          fill
-          priority
-          quality={HERO_IMAGE_QUALITY}
-          sizes="100vw"
-          data-crop="art-directed"
-          data-text-zones={image.textZones}
-          data-zones-width={image.textZones ? image.zonesWidth : undefined}
-          className={`hero-settle object-cover ${image.position ?? "object-center"}`}
-        />
+        {photo}
         <div aria-hidden="true" className={`absolute inset-0 ${SCRIMS[scrim]}`} />
 
         <div

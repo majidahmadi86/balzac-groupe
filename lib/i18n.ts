@@ -257,7 +257,7 @@ const fr = {
       label: "Franchise",
       title: "Une maison française, dans votre ville.",
       intro: "Balzac Café s’ouvre à des partenaires qui partagent son goût pour la culture et l’art de vivre.",
-      imageAlt: "Globe ancien et pile de livres marqués Paris, Bangkok, New York, Tokyo",
+      imageAlt: "Une personne, un livre à la main, devant la façade de Balzac Café et sa terrasse",
     },
     proposition: {
       label: "Franchise internationale",
@@ -625,7 +625,7 @@ const en: Dictionary = {
       label: "Franchise",
       title: "A French house, in your city.",
       intro: "Balzac Café is opening to partners who share its taste for culture and the art of living.",
-      imageAlt: "An antique globe beside books marked Paris, Bangkok, New York, Tokyo",
+      imageAlt: "Someone holding a book outside the Balzac Café storefront and its terrace",
     },
     proposition: {
       label: "International franchise",
