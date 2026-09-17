@@ -26,12 +26,12 @@ export function copyrightLine(locale: Locale): string {
   return copyright[locale];
 }
 
-// Facts not supplied yet. They are never invented and never shown as a placeholder:
-// while a value is null its whole line is left out of /legal and /privacy.
-// Filling one is a one-line change here, and the line appears.
+// Facts not supplied yet are never invented and never shown as a placeholder: while a value is null
+// its whole line is left out of /legal and /privacy. Filling one is a one-line change here, and the
+// line appears.
 
-/** Person responsible for publication (directeur de la publication). */
-export const PUBLICATION_DIRECTOR: string | null = null;
+/** Person responsible for publication (directeur de la publication): the group's founder. */
+export const PUBLICATION_DIRECTOR: string | null = "Chango Zaza Favre";
 /** Hosting provider name and address. */
 export const HOSTING_PROVIDER: string | null = null;
 /** Data protection officer, if one is appointed. */

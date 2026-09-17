@@ -56,7 +56,7 @@ export function FranchisePage({ locale }: { locale: Locale }) {
       <SplitBand
         id="concept"
         label={page.concept.label}
-        title={t.home.bands.cafe.title}
+        title={page.concept.title}
         body={page.concept.paragraphs}
         bodyStyle="paragraphs"
         details={page.concept.details}

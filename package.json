@@ -10,11 +10,12 @@
     "assets:brand": "node scripts/generate-brand-assets.mjs",
     "check:copy": "node scripts/check-copy.mjs",
     "check:site": "node scripts/check-site.mjs",
-    "verify": "npm run lint && npm run check:copy && npm run check:sharp && npm run check:site && npm run check:responsive && npm run check:forms",
+    "verify": "npm run lint && npm run check:copy && npm run check:sharp && npm run check:site && npm run check:client-copy && npm run check:responsive && npm run check:forms",
     "check:responsive": "node scripts/check-responsive.mjs",
     "check:forms": "node scripts/check-forms.mjs",
     "check:lighthouse": "node scripts/check-lighthouse.mjs",
-    "check:sharp": "node scripts/check-sharp.mjs"
+    "check:sharp": "node scripts/check-sharp.mjs",
+    "check:client-copy": "node scripts/check-client-copy.mjs"
   },
   "dependencies": {
     "next": "14.2.35",

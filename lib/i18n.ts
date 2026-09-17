@@ -67,25 +67,38 @@ const fr = {
       cta: "Découvrir le groupe",
       imageAlt: "Façade de la librairie, galerie et café Balzac, avec sa terrasse",
     },
+    activities: {
+      label: "Nos activités",
+      title: "Trois domaines complémentaires, réunis par la culture, le caractère et l’art de vivre à la française.",
+    },
     bands: {
       cafe: {
-        label: "Balzac Café",
-        title: "Une maison française contemporaine.",
-        body: ["Librairie, galerie, café.", "Un lieu de culture, de rencontres et d’art de vivre."],
+        field: "Gestion hôtelière",
+        name: "Balzac Café",
+        title: "Balzac Café & French Cultural Corner",
+        body: [
+          "Nous créons et gérons des cafés où l’hospitalité rencontre la culture française, à travers les livres, l’art, la musique, le cinéma et la conversation.",
+        ],
         cta: "Découvrir Balzac Café",
         imageAlt: "Salle de Balzac Café : clients attablés, tableau des boissons et vitrine de pâtisseries",
       },
       antiques: {
-        label: "Balzac Antiques",
-        title: "Des objets ayant une histoire.",
-        body: ["Mobilier, objets d’art, collections.", "Pour des intérieurs d’exception."],
+        field: "Patrimoine",
+        name: "Balzac Antiques",
+        title: "Balzac Antiques",
+        body: [
+          "Nous achetons et vendons livres rares, objets culturels, œuvres d’art, montres, mode vintage et pièces iconiques, choisis pour leur histoire et leur caractère.",
+        ],
         cta: "Découvrir Balzac Antiques",
         imageAlt: "Livre ancien de Jules Verne, montre vintage et malle de voyage sur une table de marbre",
       },
       immobilier: {
-        label: "Balzac Immobilier",
-        title: "L’immobilier de caractère aux portes de la Suisse.",
-        body: ["Spécialiste de la région de Pontarlier.", "Un accompagnement complet, de la recherche à la signature."],
+        field: "Immobilier",
+        name: "Balzac Immobilier",
+        title: "Balzac Immobilier",
+        body: [
+          "Des biens de caractère situés en France, près de la frontière suisse, avec un accompagnement personnalisé pour celles et ceux qui cherchent une maison singulière dans la région.",
+        ],
         cta: "Découvrir Balzac Immobilier",
         imageAlt: "Ferme de caractère en pierre sous la neige, fenêtres éclairées au coucher du soleil",
       },
@@ -113,54 +126,56 @@ const fr = {
   aboutPage: {
     hero: {
       label: "À propos",
-      title: "Qui nous sommes.",
-      intro: "Groupe Balzac crée et développe des lieux et des objets qui ont une âme, en France, en Suisse et à l’international.",
+      title: "Trois activités. Une identité.",
+      intro: "Groupe Balzac est un groupe indépendant actif dans trois domaines complémentaires : la gestion hôtelière, le patrimoine et l’immobilier.",
       imageAlt: "Salle de Balzac Café : clients attablés, tableau des boissons et vitrine de pâtisseries",
     },
-    group: {
+    identity: {
       label: "Groupe Balzac",
-      title: "Des lieux, des objets, des histoires.",
       paragraphs: [
-        "Groupe Balzac réunit des activités complémentaires autour d’une même conviction : la beauté, la culture et le patrimoine créent des liens durables entre les hommes et les lieux.",
-        "Chacune de nos maisons porte cette conviction à sa manière : un lieu où l’on se retrouve, des objets que l’on transmet, un art de vivre que l’on partage.",
+        "Ses projets sont de nature différente, mais ils partagent la même identité : un lien fort avec la culture française, un goût pour le caractère et l’histoire, et une approche personnelle de chaque lieu, de chaque objet et de chaque bien.",
+        "Groupe Balzac a été créé et est dirigé par Chango Zaza Favre, entrepreneur suisse attaché de longue date à la France et passionné de littérature, de culture et d’art de vivre français.",
+        "Son expérience du développement de projets culturels et commerciaux entre l’Europe et l’Asie a façonné l’approche indépendante, internationale et personnelle du groupe.",
       ],
     },
     chapters: {
       cafe: {
-        label: "Un lieu · Balzac Café",
-        title: "Un lieu où l’on prend le temps.",
+        label: "Gestion hôtelière · Balzac Café",
+        title: "Un coin de culture française.",
         imageAlt: "Façade de Balzac Café, librairie, galerie et café, avec sa terrasse",
         paragraphs: [
-          "Librairie, galerie, café : Balzac Café réunit sous un même toit ce qui fait le charme d’une maison française. Un lieu où l’on vient lire, regarder, goûter et prendre le temps.",
-          "Les livres et les affiches y côtoient les vins fins, le cinéma et la littérature. Chaque visite est une invitation à la rencontre et à la conversation.",
+          "Balzac Café est plus qu’un café. C’est une destination culturelle où les livres, l’art, la musique, le cinéma, la table et la conversation se rejoignent.",
+          "Créé à Bangkok, Balzac Café propose une expérience originale de la culture française dans un cadre chaleureux et singulier. On y découvre des livres, des expositions, des films, de la musique, des objets choisis avec soin et un café inspiré de l’art de vivre à la française.",
+          "Groupe Balzac développe et gère le concept avec une attention particulière à l’identité, à l’atmosphère et à la programmation culturelle. Balzac Café est aussi pensé pour un développement international, par des partenariats choisis avec soin.",
         ],
       },
       antiques: {
-        label: "Des objets · Balzac Antiques",
-        title: "Des objets qui traversent le temps.",
+        label: "Patrimoine · Balzac Antiques",
+        title: "Des objets qui ont une histoire et du caractère.",
         paragraphs: [
-          "Balzac Antiques rassemble du mobilier, des objets d’art et des collections choisis pour leur caractère et pour ce qu’ils racontent.",
-          "Chaque pièce porte la trace d’une époque et d’un savoir-faire. Elle trouve sa place dans des intérieurs d’exception, où le patrimoine se vit au quotidien.",
+          "Balzac Antiques achète et vend des livres rares, des objets culturels, des œuvres d’art, des montres, de la mode vintage, des pièces de design et des objets iconiques.",
+          "Notre sélection ne se limite ni à une époque ni à une catégorie. Nous cherchons des pièces qui portent une histoire, qui reflètent une époque ou qui incarnent le style et la créativité de leur temps.",
+          "Chaque objet est choisi pour son authenticité, son caractère, son intérêt culturel et sa valeur durable. Balzac Antiques relie collectionneurs, amateurs et clients en quête de pièces singulières qui méritent d’être découvertes, préservées et transmises.",
         ],
         link: "Découvrir Balzac Antiques",
       },
       immobilier: {
-        label: "Des maisons · Balzac Immobilier",
-        title: "Des maisons qui ont une âme.",
+        label: "Immobilier · Balzac Immobilier",
+        title: "Des biens de caractère près de la frontière suisse.",
         paragraphs: [
-          "Spécialiste de la région de Pontarlier, Balzac Immobilier se consacre à l’immobilier de caractère, à ces lieux qui ont une âme.",
-          "Un accompagnement complet, de la recherche à la signature, avec l’attention que mérite chaque projet.",
+          "Balzac Immobilier est spécialisé dans les biens singuliers situés en France, à proximité de la frontière suisse.",
+          "Nous nous concentrons sur des maisons, des appartements, des fermes rénovées et d’autres biens choisis pour leur architecture, leur authenticité, leur cadre et leur qualité de vie.",
+          "Nous offrons un accompagnement personnalisé tout au long du parcours, de la recherche et de la sélection des biens à la négociation et à la signature. Une attention particulière est portée aux clients internationaux et frontaliers, qui attendent un soutien clair, fiable et attentif pour acheter en France.",
         ],
       },
     },
-    horizons: {
-      label: "Nos horizons",
-      title: "D’ici, et d’ailleurs.",
-      intro: "Groupe Balzac est présent en France, en Suisse et à l’international, avec le même goût pour ce qui dure.",
-      places: [
-        { title: "France", body: "L’esprit d’une maison française : ses livres, sa table, ses objets." },
-        { title: "Suisse", body: "Un ancrage où se cultive le même attachement au patrimoine et au caractère des lieux." },
-        { title: "International", body: "Balzac Café a vocation à voyager, porté par sa franchise internationale." },
+    approach: {
+      label: "Notre approche",
+      title: "Indépendante, personnelle et sélective.",
+      paragraphs: [
+        "Groupe Balzac préfère le caractère à l’uniformité, la relation personnelle au volume, et la valeur durable aux tendances passagères.",
+        "Qu’il s’agisse de gérer un café culturel, de choisir un objet rare ou de présenter un bien singulier, le groupe suit le même principe : chaque projet doit avoir une identité claire, une histoire qui a du sens et une vraie raison d’être.",
+        "Cette vision indépendante permet à chaque activité Balzac de se développer à sa manière, tout en restant partie d’un ensemble cohérent et reconnaissable.",
       ],
     },
     closing: {
@@ -171,34 +186,69 @@ const fr = {
   visionPage: {
     hero: {
       label: "Notre vision",
-      title: "Une même conviction.",
-      intro: "Ce qui relie nos maisons, d’un lieu à l’autre.",
+      title: "Trois domaines. Une direction.",
+      intro: "Groupe Balzac développe trois activités complémentaires : la gestion hôtelière, le patrimoine et l’immobilier.",
       imageAlt: "Livre Balzac, buste en marbre et vase d’olivier sur une cheminée",
     },
     statement: {
       label: "Groupe Balzac",
       paragraphs: [
-        "La beauté, la culture et le patrimoine créent des liens durables entre les hommes et les lieux. C’est cette conviction qui relie chacune de nos maisons.",
-        "Nous choisissons des objets et des lieux qui traversent le temps, pour les faire vivre et les transmettre à leur tour.",
-        "Une certaine idée du beau et du bon guide notre manière d’accueillir, de choisir et d’accompagner.",
-        "Présent en France, en Suisse et à l’international, cet art de vivre a vocation à voyager : aujourd’hui ici, et demain ailleurs.",
+        "Chacune a sa raison d’être, mais toutes partagent le même engagement : la culture française, une identité forte, une sélection exigeante et un service personnel.",
       ],
     },
-    pillars: {
-      label: "Nos piliers",
-      title: "Quatre idées qui nous guident.",
-      body: {
-        culture: "La culture est au cœur de chaque maison : un lieu de partage, de curiosité et de conversation.",
-        heritage: "Nous les choisissons pour leur caractère et nous attachons à les transmettre.",
-        artDeVivre: "Elle se retrouve dans une tasse de café, un meuble ancien ou une maison de pierre.",
-        international: "Balzac Café a vocation à s’ouvrir dans d’autres pays, portée par la franchise internationale.",
+    fields: {
+      hospitality: {
+        label: "Gestion hôtelière",
+        title: "Créer des destinations culturelles.",
+        paragraphs: [
+          "Notre vision de Balzac Café est de créer bien plus qu’un lieu où boire et manger. Chaque café est conçu comme un French Cultural Corner, où les livres, l’art, la musique, le cinéma, la table et la conversation se rejoignent.",
+          "Par une gestion attentive, des intérieurs singuliers et une programmation culturelle, Balzac Café offre une expérience reconnaissable, inspirée de la culture française et de l’art de vivre.",
+          "Le concept est pensé pour un développement international, avec des partenaires de franchise choisis avec soin, qui en comprennent l’identité et en respectent la dimension culturelle.",
+        ],
+      },
+      heritage: {
+        label: "Patrimoine",
+        title: "Chercher, acheter et transmettre des objets qui ont une histoire.",
+        paragraphs: [
+          "Balzac Antiques recherche et achète activement des livres rares, des objets culturels, des œuvres d’art, des montres, de la mode vintage, des pièces de design et des objets iconiques.",
+          "Nous achetons aussi bien des pièces isolées que des collections entières, auprès de particuliers, de collectionneurs et de professionnels. Chaque pièce est choisie pour son authenticité, son histoire, son intérêt culturel et son caractère.",
+          "Notre rôle est de relier ces objets à de nouveaux collectionneurs et propriétaires, qui sauront les apprécier, les préserver et poursuivre leur histoire.",
+        ],
+      },
+      realEstate: {
+        label: "Immobilier",
+        title: "Relier les personnes aux biens de caractère.",
+        paragraphs: [
+          "Balzac Immobilier est spécialisé dans les biens singuliers situés en France, près de la frontière suisse.",
+          "Nous nous concentrons sur des maisons, des appartements, des fermes rénovées et d’autres biens choisis pour leur architecture, leur authenticité, leur cadre et leur qualité de vie.",
+          "Notre vision est d’offrir une approche personnelle et sélective, avec un accompagnement clair et attentif tout au long du parcours, en particulier pour les clients internationaux et frontaliers qui souhaitent acheter une maison en France.",
+        ],
       },
     },
+    horizons: {
+      label: "Nos horizons",
+      title: "Une idée intemporelle de la France.",
+      paragraphs: [
+        "La France continue d’inspirer le monde par son art de vivre, mais aussi par ses écrivains, ses peintres, ses philosophes, ses cafés littéraires et ses voix inoubliables.",
+        "Groupe Balzac fait vivre cet héritage culturel au présent et le partage avec une nouvelle génération.",
+        "Dans un monde qui va toujours plus vite, nous offrons un endroit où faire une pause : ouvrir un livre, découvrir un artiste, savourer un café et avoir une vraie conversation. La technologie nous relie, mais certaines expériences méritent du temps, de l’attention et une présence humaine.",
+        "Notre approche ne consiste pas à regarder en arrière. Elle consiste à donner aux idées intemporelles une place dans la vie contemporaine.",
+        "Près de 90 % de nos hôtes sont jeunes. Leur enthousiasme montre que la littérature, la culture et les rencontres qui comptent ont encore le pouvoir de réunir les générations et les cultures.",
+        "C’est l’horizon auquel nous croyons : un monde plus curieux, plus ouvert et plus humain.",
+      ],
+    },
+    commitment: {
+      label: "Notre engagement",
+      title: "Trois activités. Une exigence.",
+      paragraphs: [
+        "En gestion hôtelière, en patrimoine et en immobilier, Groupe Balzac préfère la qualité au volume, le caractère à l’uniformité et les relations durables aux transactions passagères.",
+        "Chaque café, chaque objet et chaque bien est abordé avec curiosité, discernement et respect de ce qui le rend singulier.",
+      ],
+    },
     closing: {
-      label: "Poursuivre",
-      title: "Partager cette vision.",
-      body: "Ouvrir Balzac Café dans votre pays, ou simplement nous écrire.",
-      franchiseCta: "Découvrir la franchise",
+      title: "Découvrir Groupe Balzac",
+      body: "Découvrez Balzac Café, Balzac Antiques et Balzac Immobilier, ou écrivez-nous pour parler d’un projet, d’un objet, d’un bien ou d’un partenariat.",
+      activitiesCta: "Découvrir nos activités",
       contactCta: "Nous contacter",
     },
   },
@@ -218,13 +268,14 @@ const fr = {
     },
     concept: {
       label: "Le concept",
+      title: "Un café culturel français.",
       details: {
         title: "Dans la maison",
         items: ["Librairie", "Galerie", "Café", "Vins fins", "Cinéma et littérature"],
       },
       paragraphs: [
-        "Librairie, galerie, café : Balzac Café réunit sous un même toit les livres, les images et le goût d’une maison française.",
-        "Un lieu où l’on vient lire, regarder, goûter et prendre le temps, pensé pour devenir un repère dans sa ville.",
+        "Balzac Café est un concept singulier, créé pour des entrepreneurs qui partagent un intérêt à la fois pour l’hospitalité et pour la culture.",
+        "Plus qu’un café traditionnel, il réunit la culture française, l’art de vivre et un fort sentiment du lieu, dans un concept pensé pour un développement international.",
       ],
     },
     profile: {
@@ -384,25 +435,38 @@ const en: Dictionary = {
       cta: "Discover the group",
       imageAlt: "The Balzac bookshop, gallery and café storefront with its terrace",
     },
+    activities: {
+      label: "Our activities",
+      title: "Three complementary fields, united by culture, character and the French art of living.",
+    },
     bands: {
       cafe: {
-        label: "Balzac Café",
-        title: "A contemporary French house.",
-        body: ["Bookshop, gallery, café.", "A place for culture, encounters and the art of living."],
+        field: "Hospitality management",
+        name: "Balzac Café",
+        title: "Balzac Café & French Cultural Corner",
+        body: [
+          "We create and manage cafés where hospitality meets French culture through books, art, music, cinema and conversation.",
+        ],
         cta: "Discover Balzac Café",
         imageAlt: "Inside Balzac Café: guests at their tables, the drinks board and a pastry counter",
       },
       antiques: {
-        label: "Balzac Antiques",
-        title: "Objects with a story.",
-        body: ["Furniture, works of art, collections.", "For exceptional interiors."],
+        field: "Heritage",
+        name: "Balzac Antiques",
+        title: "Balzac Antiques",
+        body: [
+          "We buy and sell rare books, cultural objects, art, watches, vintage fashion and iconic pieces selected for their history and character.",
+        ],
         cta: "Discover Balzac Antiques",
         imageAlt: "An antique Jules Verne book, a vintage watch and a travel trunk on a marble table",
       },
       immobilier: {
-        label: "Balzac Immobilier",
-        title: "Property of character at the gateway to Switzerland.",
-        body: ["Specialists in the Pontarlier region.", "Complete guidance, from the first search to the signing."],
+        field: "Real estate",
+        name: "Balzac Immobilier",
+        title: "Balzac Immobilier",
+        body: [
+          "Properties with character located in France, near the Swiss border, with personalised guidance for clients seeking a distinctive home in the region.",
+        ],
         cta: "Discover Balzac Immobilier",
         imageAlt: "A stone farmhouse of character in the snow, its windows lit at sunset",
       },
@@ -430,54 +494,56 @@ const en: Dictionary = {
   aboutPage: {
     hero: {
       label: "About us",
-      title: "Who we are.",
-      intro: "Groupe Balzac creates and develops places and objects with a soul, in France, in Switzerland and around the world.",
+      title: "Three activities. One identity.",
+      intro: "Groupe Balzac is an independent group active in three complementary fields: hospitality management, heritage and real estate.",
       imageAlt: "Inside Balzac Café: guests at their tables, the drinks board and a pastry counter",
     },
-    group: {
+    identity: {
       label: "Groupe Balzac",
-      title: "Places, objects, stories.",
       paragraphs: [
-        "Groupe Balzac brings together complementary activities around a single conviction: beauty, culture and heritage create lasting bonds between people and places.",
-        "Each of our houses carries that conviction in its own way: a place where people meet, objects that are passed on, an art of living that is shared.",
+        "Its projects are different in nature, yet they share the same identity: a strong connection to French culture, an appreciation for character and history, and a personal approach to every place, object and property.",
+        "Groupe Balzac was created and is managed by Chango Zaza Favre, a Swiss entrepreneur with a longstanding connection to France and a passion for French literature, culture and art de vivre.",
+        "His experience developing cultural and commercial projects between Europe and Asia has shaped the group’s independent, international and personal approach.",
       ],
     },
     chapters: {
       cafe: {
-        label: "A place · Balzac Café",
-        title: "A place to take one’s time.",
+        label: "Hospitality management · Balzac Café",
+        title: "A French cultural corner.",
         imageAlt: "The Balzac Café storefront, bookshop, gallery and café, with its terrace",
         paragraphs: [
-          "Bookshop, gallery, café: Balzac Café gathers under one roof what gives a French house its charm. A place to read, to look, to taste and to take one’s time.",
-          "Books and posters sit alongside fine wines, cinema and literature. Every visit is an invitation to meet and to talk.",
+          "Balzac Café is more than a café. It is a cultural destination where books, art, music, cinema, food and conversation come together.",
+          "Created in Bangkok, Balzac Café offers an original experience of French culture in a warm and distinctive setting. Visitors can discover books, exhibitions, films, music, carefully selected objects and a café inspired by the French art of living.",
+          "Groupe Balzac develops and manages the concept with particular attention to identity, atmosphere and cultural programming. Balzac Café is also designed for international development through carefully selected partnerships.",
         ],
       },
       antiques: {
-        label: "Objects · Balzac Antiques",
-        title: "Objects that stand the test of time.",
+        label: "Heritage · Balzac Antiques",
+        title: "Objects with history and character.",
         paragraphs: [
-          "Balzac Antiques brings together furniture, works of art and collections chosen for their character and for the stories they tell.",
-          "Each piece carries the mark of an era and of a craft. It finds its place in exceptional interiors, where heritage becomes part of everyday life.",
+          "Balzac Antiques buys and sells rare books, cultural objects, art, watches, vintage fashion, design pieces and iconic objects.",
+          "Our selection is not limited to a single period or category. We look for pieces that carry a story, reflect a particular era or embody the style and creativity of their time.",
+          "Each object is selected for its authenticity, character, cultural interest and lasting appeal. Balzac Antiques connects collectors, enthusiasts and clients looking for singular pieces that deserve to be discovered, preserved and passed on.",
         ],
         link: "Discover Balzac Antiques",
       },
       immobilier: {
-        label: "Houses · Balzac Immobilier",
-        title: "Houses with a soul.",
+        label: "Real estate · Balzac Immobilier",
+        title: "Properties with character near the Swiss border.",
         paragraphs: [
-          "Specialists in the Pontarlier region, Balzac Immobilier is devoted to property of character, to places with a soul.",
-          "Complete guidance, from the first search to the signing, with the care every project deserves.",
+          "Balzac Immobilier specialises in distinctive properties located in France, close to the Swiss border.",
+          "Our focus is on houses, apartments, renovated farmhouses and other properties chosen for their architecture, authenticity, setting and quality of life.",
+          "We offer personalised guidance throughout the process, from the initial search and selection of properties to negotiations and completion. Particular attention is given to international and cross-border clients who require clear, reliable and attentive support when purchasing property in France.",
         ],
       },
     },
-    horizons: {
-      label: "Our horizons",
-      title: "Here, and elsewhere.",
-      intro: "Groupe Balzac is present in France, in Switzerland and around the world, with the same taste for what lasts.",
-      places: [
-        { title: "France", body: "The spirit of a French house: its books, its table, its objects." },
-        { title: "Switzerland", body: "Roots where the same attachment to heritage and to the character of places is cultivated." },
-        { title: "International", body: "Balzac Café is made to travel, carried by its international franchise." },
+    approach: {
+      label: "Our approach",
+      title: "Independent, personal and selective.",
+      paragraphs: [
+        "Groupe Balzac favours character over uniformity, personal relationships over volume and lasting value over passing trends.",
+        "Whether managing a cultural café, selecting a rare object or presenting a distinctive property, the group follows the same principle: every project must have a clear identity, a meaningful story and a genuine reason to exist.",
+        "This independent vision allows each Balzac activity to develop in its own way while remaining part of a coherent and recognisable whole.",
       ],
     },
     closing: {
@@ -488,34 +554,69 @@ const en: Dictionary = {
   visionPage: {
     hero: {
       label: "Our vision",
-      title: "A single conviction.",
-      intro: "What connects our houses, from one place to the next.",
+      title: "Three fields. One direction.",
+      intro: "Groupe Balzac develops three complementary activities: hospitality management, heritage and real estate.",
       imageAlt: "A Balzac book, a marble bust and an olive branch in a vase on a mantelpiece",
     },
     statement: {
       label: "Groupe Balzac",
       paragraphs: [
-        "Beauty, culture and heritage create lasting bonds between people and places. This conviction is what connects each of our houses.",
-        "We choose objects and places that stand the test of time, so that they can live on and be passed on in turn.",
-        "A certain idea of the beautiful and the good shapes the way we welcome, choose and guide.",
-        "Present in France, in Switzerland and around the world, this art of living is made to travel: here today, elsewhere tomorrow.",
+        "Each has its own purpose, but all share the same commitment to French culture, strong identity, careful selection and personal service.",
       ],
     },
-    pillars: {
-      label: "Our pillars",
-      title: "Four ideas that guide us.",
-      body: {
-        culture: "Culture sits at the heart of each house: a place for sharing, curiosity and conversation.",
-        heritage: "We choose them for their character and take care to pass them on.",
-        artDeVivre: "It lives in a cup of coffee, an antique piece of furniture or a stone house.",
-        international: "Balzac Café is set to open in other countries through its international franchise.",
+    fields: {
+      hospitality: {
+        label: "Hospitality management",
+        title: "Creating cultural destinations.",
+        paragraphs: [
+          "Our vision for Balzac Café is to create more than a place to eat and drink. Each café is conceived as a French Cultural Corner where books, art, music, cinema, food and conversation come together.",
+          "Through thoughtful management, distinctive interiors and cultural programming, Balzac Café offers a recognisable experience inspired by French culture and art de vivre.",
+          "The concept is designed for international development through carefully selected franchise partners who understand its identity and respect its cultural dimension.",
+        ],
+      },
+      heritage: {
+        label: "Heritage",
+        title: "Sourcing, buying and passing on objects with a story.",
+        paragraphs: [
+          "Balzac Antiques actively searches for and purchases rare books, cultural objects, works of art, watches, vintage fashion, design pieces and iconic objects.",
+          "We buy individual pieces as well as complete collections from private owners, collectors and professionals. Each item is selected for its authenticity, history, cultural interest and character.",
+          "Our role is to connect these objects with new collectors and owners who will appreciate, preserve and continue their stories.",
+        ],
+      },
+      realEstate: {
+        label: "Real estate",
+        title: "Connecting people with properties of character.",
+        paragraphs: [
+          "Balzac Immobilier specialises in distinctive properties located in France, near the Swiss border.",
+          "We focus on houses, apartments, renovated farmhouses and other properties selected for their architecture, authenticity, setting and quality of life.",
+          "Our vision is to offer a personal and selective approach, with clear and attentive guidance throughout the process, particularly for international and cross-border clients looking to purchase a home in France.",
+        ],
       },
     },
+    horizons: {
+      label: "Our horizons",
+      title: "A timeless idea of France.",
+      paragraphs: [
+        "France continues to inspire the world through its art de vivre, but also through its writers, painters, philosophers, literary cafés and unforgettable voices.",
+        "Groupe Balzac brings this cultural heritage into the present and shares it with a new generation.",
+        "In a world that moves ever faster, we offer a place to pause: to open a book, discover an artist, enjoy a coffee and have a real conversation. Technology connects us, but certain experiences deserve time, attention and human presence.",
+        "Our approach is not about looking back. It is about giving timeless ideas a place in contemporary life.",
+        "Nearly 90% of our guests are young. Their enthusiasm shows that literature, culture and meaningful encounters still have the power to bring generations and cultures together.",
+        "This is the horizon we believe in: a more curious, more open and more human world.",
+      ],
+    },
+    commitment: {
+      label: "Our commitment",
+      title: "Three activities. One standard.",
+      paragraphs: [
+        "Across hospitality management, heritage and real estate, Groupe Balzac favours quality over volume, character over uniformity and lasting relationships over short-term transactions.",
+        "Every café, object and property is approached with curiosity, discernment and respect for what makes it distinctive.",
+      ],
+    },
     closing: {
-      label: "Continue",
-      title: "Share this vision.",
-      body: "Open a Balzac Café in your country, or simply write to us.",
-      franchiseCta: "Discover the franchise",
+      title: "Discover Groupe Balzac",
+      body: "Explore Balzac Café, Balzac Antiques and Balzac Immobilier, or contact us to discuss a project, an object, a property or a partnership.",
+      activitiesCta: "Discover our activities",
       contactCta: "Contact us",
     },
   },
@@ -535,13 +636,14 @@ const en: Dictionary = {
     },
     concept: {
       label: "The concept",
+      title: "A French cultural café.",
       details: {
         title: "In the house",
         items: ["Bookshop", "Gallery", "Café", "Fine wines", "Cinema and literature"],
       },
       paragraphs: [
-        "Bookshop, gallery, café: Balzac Café gathers under one roof books, images and the pleasures of a French house.",
-        "A place to read, to look, to taste and to take one’s time, designed to become a landmark in its city.",
+        "Balzac Café is a distinctive concept created for entrepreneurs who share an interest in both hospitality and culture.",
+        "More than a traditional café, it brings together French culture, art de vivre and a strong sense of place within a concept designed for international development.",
       ],
     },
     profile: {

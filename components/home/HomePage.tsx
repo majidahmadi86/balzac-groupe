@@ -1,6 +1,7 @@
 import { getDictionary, type Locale } from "@/lib/i18n";
 import { pathFor, SHOW_IMMOBILIER } from "@/lib/routes";
 import { CtaLink } from "./CtaLink";
+import { Reveal } from "./Reveal";
 import { StorefrontHero } from "./StorefrontHero";
 import { MotionScope } from "./MotionScope";
 import { SplitBand } from "./SplitBand";
@@ -37,9 +38,23 @@ export function HomePage({ locale }: { locale: Locale }) {
         }
       />
 
+      {/* The group's three activities, introduced once and then taken one band at a time */}
+      <section aria-labelledby="activities-title" className="bg-cream pb-2 pt-16 text-navy sm:pb-4 sm:pt-20 lg:pb-6 lg:pt-24">
+        <Reveal className="site-gutter mx-auto max-w-4xl text-center">
+          <p className="label-caps tracking-caps-lg text-navy/80 lg:text-xs">{t.home.activities.label}</p>
+          <h2
+            id="activities-title"
+            className="mt-4 text-balance font-display text-[1.875rem] font-semibold leading-[1.12] sm:text-[2.25rem] lg:mt-5 lg:text-[2.75rem]"
+          >
+            {t.home.activities.title}
+          </h2>
+          <span aria-hidden="true" className="mx-auto mt-8 block h-px w-14 bg-gold lg:mt-10" />
+        </Reveal>
+      </section>
+
       <SplitBand
         id="cafe"
-        label={cafe.label}
+        label={cafe.field}
         title={cafe.title}
         body={cafe.body}
         imageSide="right"
@@ -52,7 +67,7 @@ export function HomePage({ locale }: { locale: Locale }) {
 
       <SplitBand
         id="antiques"
-        label={antiques.label}
+        label={antiques.field}
         title={antiques.title}
         body={antiques.body}
         imageSide="left"
@@ -70,7 +85,7 @@ export function HomePage({ locale }: { locale: Locale }) {
       {SHOW_IMMOBILIER && (
         <SplitBand
           id="immobilier"
-          label={immobilier.label}
+          label={immobilier.field}
           title={immobilier.title}
           body={immobilier.body}
           imageSide="right"

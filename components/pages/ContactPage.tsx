@@ -13,10 +13,10 @@ export function ContactPage({ locale }: { locale: Locale }) {
   const about = pathFor(locale, "about");
 
   const houseLinks = [
-    { name: t.home.bands.cafe.label, note: page.aside.cafeNote, href: `${about}#cafe`, external: false },
-    { name: t.home.bands.antiques.label, note: page.aside.antiquesNote, href: ANTIQUES_URL, external: true },
+    { name: t.home.bands.cafe.name, note: page.aside.cafeNote, href: `${about}#cafe`, external: false },
+    { name: t.home.bands.antiques.name, note: page.aside.antiquesNote, href: ANTIQUES_URL, external: true },
     ...(SHOW_IMMOBILIER
-      ? [{ name: t.home.bands.immobilier.label, note: page.aside.immobilierNote, href: `${about}#immobilier`, external: false }]
+      ? [{ name: t.home.bands.immobilier.name, note: page.aside.immobilierNote, href: `${about}#immobilier`, external: false }]
       : []),
   ];
 

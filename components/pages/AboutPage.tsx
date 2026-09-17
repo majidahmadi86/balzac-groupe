@@ -30,22 +30,17 @@ export function AboutPage({ locale }: { locale: Locale }) {
         }}
       />
 
-      {/* The group and its conviction */}
-      <section aria-labelledby="group-title" className="bg-cream py-16 text-navy sm:py-20 lg:py-28">
+      {/* The group and who runs it. The page heading is the hero's, and the client's copy gives one
+          title per block, so this block carries its label and no invented second heading. */}
+      <section aria-label={page.identity.label} className="bg-cream py-16 text-navy sm:py-20 lg:py-28">
         <div className="site-gutter grid gap-8 lg:grid-cols-12 lg:gap-12">
-          <Reveal className="lg:col-span-5">
-            <p className="label-caps tracking-caps-lg text-navy/80 lg:text-xs">{page.group.label}</p>
-            <h2
-              id="group-title"
-              className="mt-4 text-balance font-display text-[2.25rem] font-semibold leading-[1.04] sm:text-[2.75rem] lg:mt-5 lg:text-[3.5rem]"
-            >
-              {page.group.title}
-            </h2>
+          <Reveal className="lg:col-span-4">
+            <p className="label-caps tracking-caps-lg text-navy/80 lg:text-xs">{page.identity.label}</p>
             <span aria-hidden="true" className="mt-7 block h-px w-14 bg-gold lg:mt-9" />
           </Reveal>
-          <Reveal delay={120} className="lg:col-span-6 lg:col-start-7 lg:pt-10">
+          <Reveal delay={120} className="lg:col-span-7 lg:col-start-6">
             <div className="space-y-5 text-[1.0625rem] leading-[1.65] text-navy/85 lg:text-[1.1875rem]">
-              {page.group.paragraphs.map((paragraph) => (
+              {page.identity.paragraphs.map((paragraph) => (
                 <p key={paragraph} className="text-pretty">
                   {paragraph}
                 </p>
@@ -55,7 +50,7 @@ export function AboutPage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      {/* Chapters of the narrative. Old /houses#cafe, #antiques and #immobilier links land here. */}
+      {/* One chapter per activity. Old /houses#cafe, #antiques and #immobilier links land here. */}
       <SplitBand
         id="cafe"
         label={cafe.label}
@@ -105,35 +100,32 @@ export function AboutPage({ locale }: { locale: Locale }) {
         />
       ) : null}
 
-      {/* Where the group works */}
+      {/* How the group works, across all three activities */}
       <section
         id={SHOW_IMMOBILIER ? undefined : "immobilier"}
-        aria-labelledby="horizons-title"
+        aria-labelledby="approach-title"
         className="scroll-mt-[76px] border-t border-navy/10 bg-cream-50 py-16 text-navy sm:py-20 lg:scroll-mt-[104px] lg:py-28"
       >
-        <div className="site-gutter">
-          <Reveal className="mx-auto max-w-3xl text-center">
-            <p className="label-caps tracking-caps-lg text-navy/80 lg:text-xs">{page.horizons.label}</p>
+        <div className="site-gutter grid gap-8 lg:grid-cols-12 lg:gap-12">
+          <Reveal className="lg:col-span-5">
+            <p className="label-caps tracking-caps-lg text-navy/80 lg:text-xs">{page.approach.label}</p>
             <h2
-              id="horizons-title"
+              id="approach-title"
               className="mt-4 text-balance font-display text-[2rem] font-semibold leading-[1.08] sm:text-[2.5rem] lg:mt-5 lg:text-[3.25rem]"
             >
-              {page.horizons.title}
+              {page.approach.title}
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-pretty text-[1.0625rem] leading-[1.55] text-navy/85 lg:mt-6 lg:text-[1.1875rem]">
-              {page.horizons.intro}
-            </p>
+            <span aria-hidden="true" className="mt-7 block h-px w-14 bg-gold lg:mt-9" />
           </Reveal>
-          <ul className="mx-auto mt-12 grid max-w-5xl gap-y-10 sm:grid-cols-3 sm:gap-x-10 lg:mt-16">
-            {page.horizons.places.map((place, idx) => (
-              <li key={place.title}>
-                <Reveal delay={idx * 90} className="border-t border-gold/60 pt-6 text-center sm:text-left">
-                  <h3 className="font-display text-[1.625rem] font-semibold leading-[1.15]">{place.title}</h3>
-                  <p className="mt-3 text-pretty text-[1rem] leading-[1.6] text-navy/80">{place.body}</p>
-                </Reveal>
-              </li>
-            ))}
-          </ul>
+          <Reveal delay={120} className="lg:col-span-6 lg:col-start-7 lg:pt-4">
+            <div className="space-y-5 text-[1.0625rem] leading-[1.65] text-navy/85 lg:text-[1.1875rem]">
+              {page.approach.paragraphs.map((paragraph) => (
+                <p key={paragraph} className="text-pretty">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+          </Reveal>
         </div>
       </section>
 
