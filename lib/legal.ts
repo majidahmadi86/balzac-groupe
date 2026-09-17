@@ -33,7 +33,7 @@ export function copyrightLine(locale: Locale): string {
 /** Person responsible for publication (directeur de la publication): the group's founder. */
 export const PUBLICATION_DIRECTOR: string | null = "Chango Zaza Favre";
 /** Hosting provider name and address. */
-export const HOSTING_PROVIDER: string | null = null;
+export const HOSTING_PROVIDER: string | null = "Hostinger, Singapore";
 /** Data protection officer, if one is appointed. */
 export const DPO_NAME: string | null = null;
 
