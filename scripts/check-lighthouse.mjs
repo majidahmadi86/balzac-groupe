@@ -5,11 +5,14 @@
 // back anywhere from 85 to 97 between runs, so the floor here only catches a real regression. Set
 // LIGHTHOUSE_MIN_PERFORMANCE=96 to hold the reference target on reference hardware.
 // Prints every audit that did not pass, so a failure names its cause.
+// LIGHTHOUSE_PRESET=desktop audits the desktop layout, which is different markup from the mobile one
+// (header navigation, split heroes, footer row) and so a different audit.
 // Each page runs LIGHTHOUSE_RUNS times (default 3) and the median run by performance score is kept, as
 // Lighthouse recommends for lab variance. LIGHTHOUSE_ONLY=home,contact limits the routes;
 // LIGHTHOUSE_JSON=file writes the scores, metrics and failed audits.
 import { writeFileSync } from "node:fs";
 import lighthouse from "lighthouse";
+import desktopConfig from "lighthouse/core/config/desktop-config.js";
 import { openBrowser } from "./lib/browser.mjs";
 import { BASE_URL, hiddenSlugs, routePairs } from "./lib/site.mjs";
 
@@ -28,6 +31,7 @@ const METRICS = {
   "cumulative-layout-shift": "CLS",
   "speed-index": "SI",
 };
+const DESKTOP = process.env.LIGHTHOUSE_PRESET === "desktop";
 const only = process.env.LIGHTHOUSE_ONLY ? process.env.LIGHTHOUSE_ONLY.split(",") : null;
 const hidden = hiddenSlugs();
 const pages = routePairs()
@@ -42,12 +46,11 @@ try {
   for (const path of pages) {
     const runs = [];
     for (let i = 0; i < RUNS; i++) {
-      const { lhr } = await lighthouse(`${BASE_URL}${path}`, {
-        port,
-        output: "json",
-        logLevel: "error",
-        onlyCategories: CATEGORIES,
-      });
+      const { lhr } = await lighthouse(
+        `${BASE_URL}${path}`,
+        { port, output: "json", logLevel: "error", onlyCategories: CATEGORIES },
+        DESKTOP ? desktopConfig : undefined,
+      );
       runs.push(lhr);
     }
     runs.sort((a, b) => (a.categories.performance?.score ?? 0) - (b.categories.performance?.score ?? 0));
@@ -82,7 +85,7 @@ try {
 if (process.env.LIGHTHOUSE_JSON) writeFileSync(process.env.LIGHTHOUSE_JSON, JSON.stringify(rows, null, 2));
 
 const short = { performance: "perf", accessibility: "a11y", "best-practices": "bp", seo: "seo" };
-console.log(`\nLighthouse · ${rows.length} pages\n`);
+console.log(`\nLighthouse ${DESKTOP ? "desktop" : "mobile"} · ${rows.length} pages\n`);
 console.log(`| page | ${CATEGORIES.map((c) => short[c]).join(" | ")} |`);
 console.log(`|${" --- |".repeat(CATEGORIES.length + 1)}`);
 for (const row of rows) console.log(`| ${row.path} | ${CATEGORIES.map((c) => row.scores[c]).join(" | ")} |`);

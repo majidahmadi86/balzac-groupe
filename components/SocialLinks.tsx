@@ -1,55 +1,37 @@
+/**
+ * The group's one social account. It is a single link on purpose, so it is set as a named link rather
+ * than a lone floating glyph: the icon keeps its 44px target and the word carries the same caps as the
+ * footer nav, which is what makes one mark read as a choice.
+ */
+
+/** Canonical profile URL. The address the client sent carried a personal session token (stkn) and utm
+ * parameters, which expire and are not ours to publish: only the profile path is kept. */
+export const INSTAGRAM_URL = "https://www.instagram.com/balzacgroupe";
+
 type SocialLinksProps = {
-  label: string;
+  /** Sr-only note that the link opens a new tab, in the page language. */
+  newTabLabel: string;
   className?: string;
   itemClassName?: string;
 };
 
-const socials = [
-  {
-    name: "Instagram",
-    href: "#",
-    icon: (
-      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-full w-full" fill="none" stroke="currentColor" strokeWidth="1.6">
-        <rect x="3" y="3" width="18" height="18" rx="5" />
-        <circle cx="12" cy="12" r="4.1" />
-        <circle cx="17.3" cy="6.7" r="0.9" fill="currentColor" stroke="none" />
-      </svg>
-    ),
-  },
-  {
-    name: "LinkedIn",
-    href: "#",
-    icon: (
-      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-full w-full" fill="currentColor" fillRule="evenodd">
-        <path d="M5 2.5h14A2.5 2.5 0 0 1 21.5 5v14a2.5 2.5 0 0 1-2.5 2.5H5A2.5 2.5 0 0 1 2.5 19V5A2.5 2.5 0 0 1 5 2.5Z M6.8 10h2.4v7.5H6.8Z M8 5.9a1.35 1.35 0 1 1 0 2.7a1.35 1.35 0 1 1 0-2.7Z M11 10h2.3v1.05c.45-.75 1.35-1.25 2.5-1.25 2 0 3.2 1.25 3.2 3.6v4.1h-2.4v-3.8c0-1.15-.5-1.8-1.45-1.8-.95 0-1.75.65-1.75 1.9v3.7H11Z" />
-      </svg>
-    ),
-  },
-  {
-    name: "YouTube",
-    href: "#",
-    icon: (
-      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-full w-full" fill="currentColor" fillRule="evenodd">
-        <path d="M5.3 5.5h13.4c1.8 0 3.3 1.4 3.3 3.2v6.6c0 1.8-1.5 3.2-3.3 3.2H5.3C3.5 18.5 2 17.1 2 15.3V8.7c0-1.8 1.5-3.2 3.3-3.2Z M10 9v6l5.2-3Z" />
-      </svg>
-    ),
-  },
-];
-
-export function SocialLinks({ label, className = "", itemClassName = "" }: SocialLinksProps) {
+export function SocialLinks({ newTabLabel, className = "", itemClassName = "" }: SocialLinksProps) {
   return (
-    <ul aria-label={label} className={`flex items-center gap-1 ${className}`}>
-      {socials.map((s) => (
-        <li key={s.name}>
-          <a
-            href={s.href}
-            aria-label={s.name}
-            className={`flex h-11 w-11 items-center justify-center transition-colors duration-300 ${itemClassName}`}
-          >
-            <span className="block h-[22px] w-[22px]">{s.icon}</span>
-          </a>
-        </li>
-      ))}
-    </ul>
+    <a
+      href={INSTAGRAM_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`label-caps inline-flex min-h-[44px] items-center gap-3 text-[0.6875rem] tracking-caps-sm transition-colors duration-300 ${itemClassName} ${className}`}
+    >
+      <span aria-hidden="true" className="block h-[22px] w-[22px]">
+        <svg viewBox="0 0 24 24" aria-hidden="true" className="h-full w-full" fill="none" stroke="currentColor" strokeWidth="1.6">
+          <rect x="3" y="3" width="18" height="18" rx="5" />
+          <circle cx="12" cy="12" r="4.1" />
+          <circle cx="17.3" cy="6.7" r="0.9" fill="currentColor" stroke="none" />
+        </svg>
+      </span>
+      <span>Instagram</span>
+      <span className="sr-only"> {newTabLabel}</span>
+    </a>
   );
 }

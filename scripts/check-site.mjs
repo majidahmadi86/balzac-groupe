@@ -14,6 +14,8 @@
 // 9. No email address anywhere in what the site ships: every page's full HTML (including the inline
 //    React payload), the 404 page, and every script and stylesheet those pages load.
 // 10. No placeholder anywhere: no "To be confirmed", "À compléter", "à confirmer" and no data-pending marker.
+// 11. One social account: every instagram link is the canonical profile URL with no query string, and
+//     no page or asset mentions the accounts that were dropped.
 // Reports (without failing) which temporary mockup crops are still in use.
 import { BASE_URL, flags, hiddenSlugs, routePairs } from "./lib/site.mjs";
 
@@ -260,6 +262,32 @@ for (const asset of shipped) {
   if (/to be confirmed|À compléter|à confirmer/i.test(body)) fail(`${asset} ships a placeholder`);
 }
 
+// 11
+const INSTAGRAM = "https://www.instagram.com/balzacgroupe";
+// Our own pages must not name them at all; framework chunks legitimately carry names like "LinkedInBot"
+// in their bot-detection lists, so assets are searched for the addresses instead.
+const DROPPED_ON_PAGES = /youtube|youtu\.be|linkedin/i;
+const DROPPED_IN_ASSETS = /youtube\.com|youtu\.be|linkedin\.com/i;
+let instagramLinks = 0;
+for (const [path, html] of shippedPages) {
+  if (typeof html !== "string") continue;
+  const dropped = html.match(DROPPED_ON_PAGES);
+  if (dropped) fail(`${path} still mentions ${dropped[0]}`);
+  for (const href of hrefs(html).filter((h) => /instagram/i.test(h))) {
+    instagramLinks += 1;
+    if (href !== INSTAGRAM) fail(`${path} links to ${href}, not the canonical ${INSTAGRAM}`);
+    const anchor = [...html.matchAll(/<a\b[^>]*>/g)].map((m) => m[0]).find((tag) => tag.includes(`href="${href}"`));
+    if (anchor && !/rel="noopener noreferrer"/.test(anchor)) fail(`${path} instagram link is missing rel="noopener noreferrer"`);
+    if (anchor && !/target="_blank"/.test(anchor)) fail(`${path} instagram link is missing target="_blank"`);
+  }
+}
+for (const asset of shipped) {
+  const body = await (await fetch(BASE_URL + asset)).text();
+  const dropped = body.match(DROPPED_IN_ASSETS);
+  if (dropped) fail(`${asset} links to ${dropped[0]}`);
+}
+if (!instagramLinks) fail("no instagram link is rendered anywhere");
+
 const tempInUse = new Set();
 for (const pair of pairs) {
   for (const path of [pair.en, pair.fr]) {
@@ -273,6 +301,6 @@ if (failures.length) {
   process.exit(1);
 }
 console.log(
-  `check:site ok · ${pairs.length} routes x 2 languages · ${seen.size} crawled pages, ${anchors.length} anchors · hidden: ${hidden.join(", ") || "none"} · parity ok · icons + OG ok · redirects 301 ok · immobilier ${flagState.immobilier ? "shown EN + FR, no listings" : "hidden everywhere"} · sitemap ${listed.length} urls + robots ok · no email address or placeholder in ${emailScans} shipped files`,
+  `check:site ok · ${pairs.length} routes x 2 languages · ${seen.size} crawled pages, ${anchors.length} anchors · hidden: ${hidden.join(", ") || "none"} · parity ok · icons + OG ok · redirects 301 ok · immobilier ${flagState.immobilier ? "shown EN + FR, no listings" : "hidden everywhere"} · sitemap ${listed.length} urls + robots ok · no email address or placeholder in ${emailScans} shipped files · instagram only (${instagramLinks} links)`,
 );
 console.log(`temporary crops still in use: ${[...tempInUse].sort().join(", ") || "none"}`);

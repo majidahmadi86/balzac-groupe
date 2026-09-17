@@ -16,7 +16,9 @@ export function LanguageToggle({ locale, pathname, label, tone = "dark", classNa
     { code: "en", text: "EN" },
     { code: "fr", text: "FR" },
   ];
-  const idle = tone === "dark" ? "text-navy/45 hover:text-navy" : "text-cream/50 hover:text-cream";
+  // The language not currently in use is set back, but still has to clear 4.5:1 against its own
+  // background: navy/65 reads 5.44:1 on cream, cream/70 reads 8.20:1 on navy.
+  const idle = tone === "dark" ? "text-navy/65 hover:text-navy" : "text-cream/70 hover:text-cream";
   const current = tone === "dark" ? "text-navy" : "text-gold-light";
   const rule = tone === "dark" ? "bg-navy/25" : "bg-cream/30";
 

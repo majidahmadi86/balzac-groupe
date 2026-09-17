@@ -41,7 +41,6 @@ const fr = {
   },
   footer: {
     footerNav: "Navigation du pied de page",
-    social: "Réseaux sociaux",
   },
   pages: {
     home: { title: "Accueil", eyebrow: "Groupe Balzac" },
@@ -409,7 +408,6 @@ const en: Dictionary = {
   },
   footer: {
     footerNav: "Footer navigation",
-    social: "Social media",
   },
   pages: {
     home: { title: "Home", eyebrow: "Groupe Balzac" },

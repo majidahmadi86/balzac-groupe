@@ -40,7 +40,16 @@ function collectTargets() {
       range.selectNodeContents(node);
       for (const r of range.getClientRects()) {
         if (r.width < 3 || r.height < 6) continue;
-        targets.push({ kind: "text", label: text.slice(0, 40), color, x: r.left, y: r.top + scrollY, w: r.width, h: r.height });
+        targets.push({
+          kind: "text",
+          label: text.slice(0, 40),
+          color,
+          x: r.left,
+          y: r.top + scrollY,
+          w: r.width,
+          h: r.height,
+          inHeader: Boolean(parent.closest("body > header")),
+        });
       }
     }
     for (const field of region.querySelectorAll("input:not([type=hidden]), textarea")) {
@@ -103,7 +112,9 @@ const HIDE_TEXT_CSS = `
     text-shadow: none !important; text-decoration-color: transparent !important; caret-color: transparent !important;
   }
   [data-contrast] ::placeholder { color: transparent !important; -webkit-text-fill-color: transparent !important; }
-  body > header, #site-drawer, a[href="#main"] { visibility: hidden !important; }
+  /* The header keeps its background so its own text can be measured against it; the drawer and the
+     skip link are hidden because they are not visible until opened or focused. */
+  #site-drawer, a[href="#main"] { visibility: hidden !important; }
 `;
 
 /** Measures every [data-contrast] target on the current page and viewport. Returns failures as strings. */
@@ -117,21 +128,36 @@ export async function measureContrast(page) {
       }
     }
   });
+  // Collect from the top of the page: the sticky header is then where it belongs, so its own text has
+  // document coordinates that mean something. Everything else sits at the same place either way.
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(r, 30)))));
   const targets = await page.evaluate(collectTargets);
   if (!targets.length) return { failures: [], worst: null };
 
   const style = await page.addStyleTag({ content: HIDE_TEXT_CSS });
-  // The sticky header is hidden for the capture, but its paint can survive in a scrolled frame, so no
-  // target is ever sampled inside the band it occupies: targets are scrolled to sit below it.
+  // The sticky header covers the top of the page once it is scrolled, so no target from the page below
+  // is sampled inside the band it occupies. The header's own text is measured in place, against the
+  // header's own background, which is what a reader sees.
   const { vh, docH, top } = await page.evaluate(() => {
     const header = document.querySelector("body > header");
     const position = header ? getComputedStyle(header).position : "static";
     const band = position === "sticky" || position === "fixed" ? Math.ceil(header.getBoundingClientRect().height) : 0;
     return { vh: innerHeight, docH: document.documentElement.scrollHeight, top: band };
   });
-  const pending = [...targets].sort((a, b) => a.y - b.y);
+  // The header is sticky: once the page is scrolled it no longer sits at its document coordinates, so
+  // it is measured in one pass at the top of the page, over its own background. Everything else is
+  // measured where it lives, and never inside the band the header covers.
+  const pending = targets.filter((t) => !t.inHeader).sort((a, b) => a.y - b.y);
+  const headerTargets = targets.filter((t) => t.inHeader && t.y + t.h <= vh);
   const measured = [];
   try {
+    if (headerTargets.length) {
+      await page.evaluate(() => window.scrollTo(0, 0));
+      await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(r, 30)))));
+      const b64 = await page.screenshot({ encoding: "base64", captureBeyondViewport: false, optimizeForSpeed: true });
+      measured.push(...(await page.evaluate(sampleTargets, b64, { x: 0, y: 0 }, headerTargets)));
+    }
     while (pending.length) {
       const first = pending[0];
       const scroll = Math.max(0, Math.min(Math.floor(first.y - top - 40), docH - vh));

@@ -77,7 +77,8 @@ window.turnstile = (function () {
         box.setAttribute("data-mock-widget", "");
         box.style.cssText = "width:" + (o.size === "compact" ? 150 : 300) + "px;height:65px;border:1px solid #d8cebb;background:#fafafa";
         el.appendChild(box);
-        timers[id] = setTimeout(function () { o["after-interactive-callback"] && o["after-interactive-callback"](); issue(); }, 1500);
+        // Long enough for the checks to photograph and measure the challenge before it resolves.
+        timers[id] = setTimeout(function () { o["after-interactive-callback"] && o["after-interactive-callback"](); issue(); }, 8000);
       } else {
         timers[id] = setTimeout(issue, 150);
       }

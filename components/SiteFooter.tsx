@@ -6,7 +6,7 @@ import { Plaque } from "./Plaque";
 import { SocialLinks } from "./SocialLinks";
 
 // Below lg the footer follows docs/mockup-Mobile.jpg: one band with plaque,
-// social icons and the italic motto, then legal links left and copyright right.
+// the social link and the italic motto, then legal links left and copyright right.
 // From lg it adds the nav links, per the desktop mockup.
 export function SiteFooter({ locale }: { locale: Locale }) {
   const t = getDictionary(locale);
@@ -38,8 +38,8 @@ export function SiteFooter({ locale }: { locale: Locale }) {
           </ul>
         </nav>
 
-        <div className="order-3 col-span-2 justify-self-center min-[520px]:order-2 min-[520px]:col-span-1 lg:order-3">
-          <SocialLinks label={t.footer.social} className="gap-3 sm:gap-4" itemClassName="text-cream hover:text-gold-light" />
+        <div className="order-3 col-span-2 justify-self-center min-[520px]:order-2 min-[520px]:col-span-1 min-[520px]:justify-self-start lg:order-3 lg:justify-self-auto">
+          <SocialLinks newTabLabel={t.home.newTab} itemClassName="text-cream hover:text-gold-light" />
         </div>
 
         <p className="order-2 justify-self-end text-right font-display text-[15px] italic leading-[1.3] text-cream/90 min-[520px]:order-3 sm:text-lg lg:hidden">

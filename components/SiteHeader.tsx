@@ -90,7 +90,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
         {t.header.skip}
       </a>
 
-      <header className="sticky top-0 z-40 border-b border-navy/10 bg-cream">
+      <header data-contrast="" className="sticky top-0 z-40 border-b border-navy/10 bg-cream">
         <div className="site-gutter flex h-[76px] items-center justify-between gap-6 lg:h-[104px]">
           <Link href={pathFor(locale, "home")} aria-label={t.header.homeLink} className="block shrink-0">
             <Plaque className="block h-auto w-[172px] sm:w-[196px] lg:w-[212px] xl:w-[228px]" label={t.siteName} />
@@ -237,7 +237,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
         >
           <div className="flex items-center justify-between gap-6 border-t border-gold/40 pt-5">
             <LanguageToggle locale={locale} pathname={pathname} label={t.header.language} tone="light" />
-            <SocialLinks label={t.footer.social} className="gap-2" itemClassName="text-cream/80 hover:text-gold-light" />
+            <SocialLinks newTabLabel={t.home.newTab} itemClassName="text-cream/85 hover:text-gold-light" />
           </div>
           <p className="mt-6 font-display text-xl italic text-cream/80">{t.motto}</p>
           <p className="label-caps mt-3 text-[0.625rem] text-gold">{t.tagline}</p>
