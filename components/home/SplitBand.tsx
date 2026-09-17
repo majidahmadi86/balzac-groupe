@@ -2,6 +2,9 @@ import Image from "next/image";
 import type { ReactNode } from "react";
 import { Reveal } from "./Reveal";
 
+/** Band photographs are large but secondary; 65 is indistinguishable from the default 75 and lighter. */
+const BAND_IMAGE_QUALITY = 65;
+
 type SplitBandProps = {
   id: string;
   label: string;
@@ -134,6 +137,7 @@ export function SplitBand({
           src={image.src}
           alt={image.alt}
           fill
+          quality={BAND_IMAGE_QUALITY}
           sizes="(min-width: 768px) 50vw, 100vw"
           data-text-zones={image.textZones}
           data-zones-width={image.textZones ? image.zonesWidth : undefined}

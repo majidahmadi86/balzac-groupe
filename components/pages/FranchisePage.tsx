@@ -19,7 +19,9 @@ export function FranchisePage({ locale }: { locale: Locale }) {
         scrim="light"
         label={page.hero.label}
         titleLines={[page.hero.title]}
-        // TEMP mockup crop, replace with client photography.
+        // TEMP mockup crop, replace with client photography. The storefront photograph cannot serve
+        // here: a tight hero shows most of it at phone widths, and the title then lands on the shop
+        // signage (the responsive gate fails it). This hero needs a landscape photo without lettering.
         image={{ src: "/images/temp/temp-franchise-globe.jpg", alt: page.hero.imageAlt, position: "object-[70%_50%] lg:object-[50%_55%]" }}
       />
 

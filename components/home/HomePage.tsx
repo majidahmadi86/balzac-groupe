@@ -91,10 +91,15 @@ export function HomePage({ locale }: { locale: Locale }) {
         // Image sides keep alternating whether or not the Immobilier band is shown.
         imageSide={SHOW_IMMOBILIER ? "left" : "right"}
         size="compact"
-        aspect="aspect-[16/10]"
-        imagePosition={SHOW_IMMOBILIER ? "object-left" : "object-right"}
-        // TEMP mockup crop, replace with client photography.
-        image={{ src: "/images/temp/temp-franchise-globe.jpg", alt: franchise.imageAlt }}
+        // The house itself, at the photograph's own 4:5, with the terrace and the person in frame.
+        aspect="aspect-[4/5]"
+        imagePosition="object-[42%_58%]"
+        image={{
+          src: "/images/balzacgroupe-storefront-welcome.jpg",
+          alt: franchise.imageAlt,
+          textZones: STOREFRONT_TEXT_ZONES,
+          zonesWidth: 1122,
+        }}
         cta={
           <CtaLink href={pathFor(locale, "franchise")} variant="cream">
             {franchise.cta}

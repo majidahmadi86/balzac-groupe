@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 
 type HeroProps = {
   titleLines: string[];
-  image: { src: string; alt: string; position?: string };
+  image: { src: string; alt: string; position?: string; textZones?: string; zonesWidth?: number };
   label?: string;
   intro?: string;
   tagline?: string;
@@ -115,6 +115,8 @@ export function Hero({ image, compact = false, tight = false, layout = "overlay"
             quality={HERO_IMAGE_QUALITY}
             sizes="(min-width: 1024px) 50vw, 100vw"
             data-crop="art-directed"
+          data-text-zones={image.textZones}
+          data-zones-width={image.textZones ? image.zonesWidth : undefined}
             className={`hero-settle object-cover ${image.position ?? "object-center"}`}
           />
           {/* Soft seam into the navy text field: below the photo on mobile, to its left on desktop. */}
@@ -153,6 +155,8 @@ export function Hero({ image, compact = false, tight = false, layout = "overlay"
           quality={HERO_IMAGE_QUALITY}
           sizes="100vw"
           data-crop="art-directed"
+          data-text-zones={image.textZones}
+          data-zones-width={image.textZones ? image.zonesWidth : undefined}
           className={`hero-settle object-cover ${image.position ?? "object-center"}`}
         />
         <div aria-hidden="true" className={`absolute inset-0 ${SCRIMS[scrim]}`} />

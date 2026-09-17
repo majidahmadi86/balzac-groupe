@@ -95,7 +95,7 @@ const fr = {
       title: "Ouvrez Balzac Café dans votre pays.",
       body: ["Rejoignez l’aventure et développez une maison française dans votre ville."],
       cta: "En savoir plus",
-      imageAlt: "Globe ancien et pile de livres marqués Paris, Bangkok, New York, Tokyo",
+      imageAlt: "Une personne, un livre à la main, devant la façade de Balzac Café et sa terrasse",
     },
     vision: {
       label: "Notre vision",
@@ -412,7 +412,7 @@ const en: Dictionary = {
       title: "Open a Balzac Café in your country.",
       body: ["Join the adventure and bring a French house to your city."],
       cta: "Discover the franchise",
-      imageAlt: "An antique globe beside books marked Paris, Bangkok, New York, Tokyo",
+      imageAlt: "Someone holding a book outside the Balzac Café storefront and its terrace",
     },
     vision: {
       label: "Our vision",
