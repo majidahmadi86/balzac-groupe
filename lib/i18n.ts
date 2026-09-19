@@ -187,7 +187,7 @@ const fr = {
       label: "Notre vision",
       title: "Trois domaines. Une direction.",
       intro: "Groupe Balzac développe trois activités complémentaires : la gestion hôtelière, le patrimoine et l’immobilier.",
-      imageAlt: "Livre Balzac, buste en marbre et vase d’olivier sur une cheminée",
+      imageAlt: "Buste en marbre, livres anciens, cloche de laiton et branche d’olivier sur une console, devant un mur bleu nuit",
     },
     statement: {
       label: "Groupe Balzac",
@@ -543,7 +543,7 @@ const en: Dictionary = {
       label: "Our vision",
       title: "Three fields. One direction.",
       intro: "Groupe Balzac develops three complementary activities: hospitality management, heritage and real estate.",
-      imageAlt: "A Balzac book, a marble bust and an olive branch in a vase on a mantelpiece",
+      imageAlt: "A marble bust, old books, a brass bell and an olive branch on a console table against a navy wall",
     },
     statement: {
       label: "Groupe Balzac",

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { CtaLink } from "@/components/home/CtaLink";
 import { Hero } from "@/components/home/Hero";
 import { MotionScope } from "@/components/home/MotionScope";
+import { VISION_BUST_ZONE } from "@/components/home/HomePage";
 import { Reveal } from "@/components/home/Reveal";
 import { getDictionary, type Locale } from "@/lib/i18n";
 import { pathFor } from "@/lib/routes";
@@ -19,12 +20,18 @@ export function VisionPage({ locale }: { locale: Locale }) {
         label={page.hero.label}
         titleLines={[page.hero.title]}
         intro={page.hero.intro}
-        scrim="light"
-        // TEMP mockup crop, replace with client photography.
+        scrim="dark"
+        // The client's still life: a navy panelled wall left for the type, the console table to its right.
+        // Below 1024px the type fills most of an overlay hero and the bust's face sits right where it would
+        // land, so the photograph stacks: a 16:10 frame anchored on the still life, the bust whole, and the
+        // type on navy beneath. From 1024px the whole width shows and the type sits on the wall.
+        stackBelowLg="aspect-[16/10]"
         image={{
-          src: "/images/temp/temp-vision-interior.jpg",
+          src: "/images/balzacgroupe-vision-console.jpg",
           alt: page.hero.imageAlt,
-          position: "object-[18%_50%] lg:object-[50%_60%]",
+          position: "object-[100%_50%] lg:object-[50%_55%]",
+          subjectZones: VISION_BUST_ZONE,
+          zonesWidth: 1942,
         }}
       />
 

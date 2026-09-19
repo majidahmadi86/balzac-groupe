@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 
 type HeroProps = {
   titleLines: string[];
-  image: { src: string; alt: string; position?: string; textZones?: string; zonesWidth?: number };
+  image: { src: string; alt: string; position?: string; textZones?: string; subjectZones?: string; zonesWidth?: number };
   label?: string;
   intro?: string;
   tagline?: string;
@@ -28,6 +28,8 @@ type HeroProps = {
    * width leaves a clear area: the shopfront reads whole, and the type keeps its contrast on navy.
    */
   stackBelowLg?: string;
+  /** Split heroes only: desktop height classes, when a photograph needs more height than the default. */
+  splitHeight?: string;
 };
 
 const SCRIMS = {
@@ -106,10 +108,19 @@ function HeroText({
 export const HERO_IMAGE_QUALITY = 60;
 
 // Photographic hero. The image source and its art direction come from the caller.
-export function Hero({ image, compact = false, tight = false, layout = "overlay", scrim = "dark", stackBelowLg, ...text }: HeroProps) {
+export function Hero({
+  image,
+  compact = false,
+  tight = false,
+  layout = "overlay",
+  scrim = "dark",
+  stackBelowLg,
+  splitHeight,
+  ...text
+}: HeroProps) {
   if (tight) compact = true;
   if (layout === "split") {
-    const height = compact ? "lg:h-[55vh] lg:min-h-[28rem] lg:max-h-[40rem]" : "lg:h-[85vh] lg:min-h-[40rem] lg:max-h-[64rem]";
+    const height = splitHeight ?? (compact ? "lg:h-[55vh] lg:min-h-[28rem] lg:max-h-[40rem]" : "lg:h-[85vh] lg:min-h-[40rem] lg:max-h-[64rem]");
     return (
       <section aria-labelledby="hero-title" className={`relative isolate overflow-hidden bg-navy-950 text-cream lg:grid lg:grid-cols-2 ${height}`}>
         <div className={`relative overflow-hidden lg:order-2 lg:h-full ${compact ? "aspect-[4/3]" : "aspect-square"} sm:aspect-[16/11] lg:aspect-auto`}>
@@ -121,8 +132,9 @@ export function Hero({ image, compact = false, tight = false, layout = "overlay"
             quality={HERO_IMAGE_QUALITY}
             sizes="(min-width: 1024px) 50vw, 100vw"
             data-crop="art-directed"
-          data-text-zones={image.textZones}
-          data-zones-width={image.textZones ? image.zonesWidth : undefined}
+            data-text-zones={image.textZones}
+            data-subject-zones={image.subjectZones}
+            data-zones-width={image.textZones || image.subjectZones ? image.zonesWidth : undefined}
             className={`hero-settle object-cover ${image.position ?? "object-center"}`}
           />
           {/* Soft seam into the navy text field: below the photo on mobile, to its left on desktop. */}
@@ -165,7 +177,8 @@ export function Hero({ image, compact = false, tight = false, layout = "overlay"
       sizes="100vw"
       data-crop="art-directed"
       data-text-zones={image.textZones}
-      data-zones-width={image.textZones ? image.zonesWidth : undefined}
+      data-subject-zones={image.subjectZones}
+      data-zones-width={image.textZones || image.subjectZones ? image.zonesWidth : undefined}
       className={`hero-settle object-cover ${image.position ?? "object-center"}`}
     />
   );

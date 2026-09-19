@@ -9,13 +9,24 @@ import { Vision } from "./Vision";
 
 const ANTIQUES_URL = "https://balzacantiques.ch";
 
-/** Signage in the full storefront photograph (1122x1402): the two BALZAC bands, the window
- * lettering, the door plaque, the terrace sign and the A-board. The homepage hero uses a crop of the
- * same photograph starting 246px lower, and declares the same zones shifted by that much. */
-export const STOREFRONT_TEXT_ZONES = "30,95,1105,235;110,280,1080,385;345,630,695,695;395,785,560,825;760,660,930,805;390,925,605,970;850,1010,1115,1360";
+/** Lettering in the full storefront photograph (1122x1402): the upper sign band, the awning, the
+ * window lettering, the poster, the door plaque, the terrace sign, and the A-board's BALZAC heading.
+ * Each must stay whole or out of frame. The A-board's lower lines ("…,0") may run off an edge. The
+ * homepage hero uses a crop of the same photograph starting 246px lower, with the zones shifted. */
+export const STOREFRONT_TEXT_ZONES = "30,95,1105,235;110,288,1080,358;345,630,695,695;395,785,560,825;760,660,930,805;390,925,605,970;875,1030,1095,1085;850,1085,1115,1360,0";
 
-/** Titles printed in the Antiques photograph (book covers, trunk plate), in its own 1374px pixels. */
-export const ANTIQUES_TEXT_ZONES = "70,470,480,860;735,985,1335,1145;1150,800,1295,840";
+/** The bust's face in the vision photograph (1942px wide): never under type, never cut by the frame. */
+export const VISION_BUST_ZONE = "1465,270,1625,450";
+
+/** The visitor in the storefront-welcome photograph (1122px wide): her face must stay whole; her figure
+ * may be framed from mid-thigh up (half her height) but never cut at the waist. */
+export const WELCOME_FIGURE_ZONES = "285,648,395,770;238,648,468,1345,0.5";
+
+/** Titles printed in the Antiques photograph (book covers, trunk plate), in its own 1374px pixels.
+ * The Jules Verne book is the subject and stays whole. The art books and the trunk are props the
+ * client's photograph already runs off its right and bottom edges, so a crop may run them off further
+ * ("…,0"); HTML text still never sits on any of them. */
+export const ANTIQUES_TEXT_ZONES = "70,470,480,860;735,990,1335,1085,0;820,1085,1160,1145,0;1150,800,1295,840,0";
 
 export function HomePage({ locale }: { locale: Locale }) {
   const t = getDictionary(locale);
@@ -77,8 +88,10 @@ export function HomePage({ locale }: { locale: Locale }) {
         body={antiques.body}
         imageSide="left"
         size={houseBandSize}
-        // Close to the source crop (1374x1145), so the table of objects is never cut.
+        // Close to the source crop (1374x1145), so the table of objects is never cut. In the split its
+        // column is nearer square than the photograph, so the frame anchors on the Jules Verne book.
         aspect="aspect-[4/3]"
+        imagePosition="md:object-[0%_50%]"
         image={{ src: "/images/balzacgroupe-antiques.jpg", alt: antiques.imageAlt, textZones: ANTIQUES_TEXT_ZONES, zonesWidth: 1374 }}
         cta={
           <CtaLink href={ANTIQUES_URL} external newTabLabel={t.home.newTab}>
@@ -113,11 +126,17 @@ export function HomePage({ locale }: { locale: Locale }) {
         size="compact"
         // The house itself, at the photograph's own 4:5, with the terrace and the person in frame.
         aspect="aspect-[4/5]"
-        imagePosition="object-[42%_58%]"
+        // The band's height follows its text, so a percentage anchor drifts through the awning lettering
+        // as the copy reflows. Below 1280px the frame starts at a fixed 280px of the source instead (the
+        // column is 50vw, so 280/1122 of it), between the upper sign band and the awning, which both read
+        // whole; max() stops it at the photo's bottom edge. From 1280px the band is wide enough to anchor
+        // lower: awning out, window lettering and A-board heading whole with the visitor.
+        imagePosition="object-[42%_100%] md:object-[42%_max(-12.48vw,100%)] xl:object-[42%_76%]"
         image={{
           src: "/images/balzacgroupe-storefront-welcome.jpg",
           alt: franchise.imageAlt,
           textZones: STOREFRONT_TEXT_ZONES,
+          subjectZones: WELCOME_FIGURE_ZONES,
           zonesWidth: 1122,
         }}
         cta={

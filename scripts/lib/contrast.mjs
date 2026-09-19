@@ -207,44 +207,119 @@ export async function measureContrast(page) {
 }
 
 /**
- * Browser side: baked-in text in photos. An image may declare its sign areas as
- * data-text-zones="x1,y1,x2,y2;..." in the pixels of its source file (data-zones-width, default 1122).
- * Zones are mapped through object-fit: cover and object-position, then clipped to what the image box
- * actually shows: the part of a sign that object-cover crops away is not on the page. Any HTML text in
- * the same section that overlaps what remains fails.
+ * Browser side: what a photograph must keep clear. Zones are in the pixels of the source file
+ * (data-zones-width, default 1122), mapped through object-fit: cover and object-position.
+ *
+ * data-text-zones   baked-in text (signs, book covers): no HTML text may land on the visible part, and
+ *                   the frame may not slice through one ("BALZAC CAF" reads as a mistake). A sign is
+ *                   wholly in the picture or wholly out, unless its zone carries a lower share
+ *                   ("x1,y1,x2,y2,0.5") for lettering that can bleed off the edge without harm.
+ * data-subject-zones faces and figures: no HTML text may land on them either, and the frame may not
+ *                   cut through one. "x1,y1,x2,y2" must be wholly in the picture or wholly out of it (a
+ *                   face); "x1,y1,x2,y2,0.55" may be partly cropped as long as that share still shows
+ *                   (a full figure framed head to knees is fine, a person cut at the waist is not).
+ *                   And once a figure is in the picture, every face zone of that photo must be whole:
+ *                   a body with its head cropped away is the worst cut of all.
+ *
+ * object-position is resolved by the browser itself, so a crop written as a math function
+ * (max(-12vw, 100%)) is measured, not skipped: splitting its computed value on spaces gave NaN, and
+ * every comparison against NaN passed.
  */
 export function signsAudit() {
+  // The two components of a computed object-position, keeping spaces inside functions together.
+  const splitPosition = (value) => {
+    const parts = [];
+    let depth = 0;
+    let current = "";
+    for (const ch of value.trim()) {
+      if (ch === "(") depth += 1;
+      if (ch === ")") depth -= 1;
+      if (ch === " " && depth === 0) {
+        if (current) parts.push(current);
+        current = "";
+      } else current += ch;
+    }
+    if (current) parts.push(current);
+    return [parts[0] ?? "50%", parts[1] ?? "50%"];
+  };
+  // Offset in px of the image from its box for one component. Percentages there are of `range` (box
+  // minus rendered image, negative for cover), so the expression is laid out as `top` in a block that
+  // tall; a negative range is laid out at its magnitude with every percentage negated.
+  const resolveOffset = (expr, range) => {
+    const plain = /^-?[\d.]+(px|%)$/.exec(expr);
+    if (plain) return expr.endsWith("%") ? (parseFloat(expr) / 100) * range : parseFloat(expr);
+    const flipped = range < 0 ? expr.replace(/(-?\d*\.?\d+)%/g, (_, n) => `${-Number(n)}%`) : expr;
+    const holder = document.createElement("div");
+    holder.style.cssText = `position:absolute;left:0;top:0;width:1px;height:${Math.abs(range)}px;visibility:hidden`;
+    const dot = document.createElement("div");
+    dot.style.cssText = `position:absolute;left:0;width:1px;height:1px;top:${flipped}`;
+    holder.appendChild(dot);
+    document.body.appendChild(holder);
+    const offset = dot.getBoundingClientRect().top - holder.getBoundingClientRect().top;
+    holder.remove();
+    if (dot.style.top === "") throw new Error(`object-position component not understood: ${expr}`);
+    return offset;
+  };
   const out = [];
-  for (const img of document.querySelectorAll("img[data-text-zones]")) {
+  for (const img of document.querySelectorAll("img[data-text-zones], img[data-subject-zones]")) {
     if (!img.naturalWidth) {
-      out.push("image with text zones not loaded");
+      out.push("image with protected zones not loaded");
       continue;
     }
     const box = img.getBoundingClientRect();
+    if (box.width < 2 || box.height < 2) continue;
     const cs = getComputedStyle(img);
     const scale = Math.max(box.width / img.naturalWidth, box.height / img.naturalHeight);
     const rw = img.naturalWidth * scale;
     const rh = img.naturalHeight * scale;
-    const [px, py] = cs.objectPosition.split(" ").map((v, i) =>
-      v.endsWith("%") ? parseFloat(v) / 100 : parseFloat(v) / ((i === 0 ? box.width - rw : box.height - rh) || 1),
-    );
-    const left = box.left + (box.width - rw) * px;
-    const top = box.top + (box.height - rh) * py;
+    const [ox, oy] = splitPosition(cs.objectPosition);
+    const left = box.left + resolveOffset(ox, box.width - rw);
+    const top = box.top + resolveOffset(oy, box.height - rh);
     const sourceWidth = Number(img.dataset.zonesWidth || 1122);
     const k = (img.naturalWidth / sourceWidth) * scale;
-    const zones = img.dataset.textZones
-      .split(";")
-      .map((z) => {
-        const [x1, y1, x2, y2] = z.split(",").map(Number);
-        return {
-          x1: Math.max(left + x1 * k - 4, box.left),
-          y1: Math.max(top + y1 * k - 4, box.top),
-          x2: Math.min(left + x2 * k + 4, box.right),
-          y2: Math.min(top + y2 * k + 4, box.bottom),
-        };
-      })
-      // A sign cropped out of the frame is not on the page.
-      .filter((z) => z.x2 - z.x1 > 1 && z.y2 - z.y1 > 1);
+    const map = (spec) =>
+      (spec || "")
+        .split(";")
+        .filter(Boolean)
+        .map((z) => {
+          const [x1, y1, x2, y2, min = 1] = z.split(",").map(Number);
+          return { x1: left + x1 * k, y1: top + y1 * k, x2: left + x2 * k, y2: top + y2 * k, min };
+        });
+    // Visible part of a zone, padded so type does not graze it.
+    const visiblePart = (z, pad) => ({
+      x1: Math.max(z.x1 - pad, box.left),
+      y1: Math.max(z.y1 - pad, box.top),
+      x2: Math.min(z.x2 + pad, box.right),
+      y2: Math.min(z.y2 + pad, box.bottom),
+    });
+    const inFrame = (z) => z.x2 - z.x1 > 1 && z.y2 - z.y1 > 1;
+
+    const signZones = map(img.dataset.textZones);
+    for (const z of signZones) {
+      const seen = visiblePart(z, 0);
+      if (!inFrame(seen)) continue;
+      const shown = ((seen.x2 - seen.x1) * (seen.y2 - seen.y1)) / ((z.x2 - z.x1) * (z.y2 - z.y1));
+      if (shown < z.min - 0.02) {
+        out.push(`baked-in text in ${(img.getAttribute("alt") || "a photo").slice(0, 30)} is sliced by the frame (${Math.round(shown * 100)}% of it shows)`);
+      }
+    }
+    const signs = signZones.map((z) => ({ ...visiblePart(z, 4), kind: "baked-in sign text" }));
+    const subjects = map(img.dataset.subjectZones);
+    const figureShows = subjects.some((z) => z.min < 1 && inFrame(visiblePart(z, 0)));
+    for (const z of subjects) {
+      if (z.min >= 1 && figureShows && !inFrame(visiblePart(z, 0))) {
+        out.push(`a figure in ${(img.getAttribute("alt") || "a photo").slice(0, 30)} shows without its face`);
+      }
+      const seen = visiblePart(z, 0);
+      if (!inFrame(seen)) continue; // wholly out of the picture: fine
+      const shown = ((seen.x2 - seen.x1) * (seen.y2 - seen.y1)) / ((z.x2 - z.x1) * (z.y2 - z.y1));
+      if (shown < z.min - 0.005) {
+        const what = z.min >= 1 ? "a face" : "a figure";
+        out.push(`${what} in ${(img.getAttribute("alt") || "a photo").slice(0, 30)} is cut by the frame (${Math.round(shown * 100)}% of it shows)`);
+      }
+    }
+    const zones = [...signs, ...subjects.map((z) => ({ ...visiblePart(z, 8), kind: "a face or figure" }))].filter(inFrame);
+
     const section = img.closest("section") || document.body;
     const walker = document.createTreeWalker(section, NodeFilter.SHOW_TEXT);
     for (let node = walker.nextNode(); node; node = walker.nextNode()) {
@@ -256,7 +331,7 @@ export function signsAudit() {
         if (r.width < 2) continue;
         for (const z of zones) {
           const hit = r.left < z.x2 && r.right > z.x1 && r.top < z.y2 && r.bottom > z.y1;
-          if (hit) out.push(`"${text.slice(0, 30)}" lies on baked-in sign text at ${Math.round(z.x1)},${Math.round(z.y1)}`);
+          if (hit) out.push(`"${text.slice(0, 30)}" lies on ${z.kind} at ${Math.round(z.x1)},${Math.round(z.y1)}`);
         }
       }
     }

@@ -11,14 +11,17 @@
 //             pillars) under 4.5:1 against the pixels actually rendered behind them
 //   signs     HTML text over baked-in sign text of a photo (img[data-text-zones])
 //   reach     from 1024px, a page's form whose first field is not visible in a 768px-tall window
+//   covered   text that is not on top where it is drawn: under a photograph, under the next section,
+//             or cut off by a band too short to show it (asked of the browser, not read from geometry)
 // Runs with prefers-reduced-motion so entrance transforms never skew measurements.
 // Uses a local Chrome/Edge (or BROWSER_PATH), or attaches to CDP_URL.
 import { foregroundPage, openBrowser } from "./lib/browser.mjs";
 import { CONTRAST_MIN, measureContrast, signsAudit } from "./lib/contrast.mjs";
+import { coveredAudit } from "./lib/layers.mjs";
 import { BASE_URL, routePairs } from "./lib/site.mjs";
 
 const WIDTHS = [320, 360, 375, 390, 414, 600, 768, 820, 1024, 1280, 1440, 1920];
-const CHECKS = ["overflow", "overlap", "clipped", "tap", "aspect", "contrast", "signs", "reach"];
+const CHECKS = ["overflow", "overlap", "clipped", "tap", "aspect", "contrast", "signs", "reach", "covered"];
 // GATE_ONLY=home,contact limits a run to some routes while iterating; the full gate runs without it.
 const only = process.env.GATE_ONLY ? process.env.GATE_ONLY.split(",") : null;
 const pages = routePairs()
@@ -31,7 +34,7 @@ const pages = routePairs()
 function audit() {
   const doc = document.documentElement;
   const vw = doc.clientWidth;
-  const out = { overflow: [], overlap: [], clipped: [], tap: [], aspect: [], contrast: [], signs: [], reach: [] };
+  const out = { overflow: [], overlap: [], clipped: [], tap: [], aspect: [], contrast: [], signs: [], reach: [], covered: [] };
   const describe = (el) => {
     const id = el.id ? `#${el.id}` : "";
     const label = el.getAttribute("aria-labelledby") ? `[${el.getAttribute("aria-labelledby")}]` : "";
@@ -163,6 +166,7 @@ try {
       );
       const found = await page.evaluate(audit);
       found.signs = await page.evaluate(signsAudit);
+      found.covered = await coveredAudit(page);
       const contrast = await measureContrast(page);
       found.contrast = contrast.failures;
       if (contrast.worst !== null) worstContrast = Math.min(worstContrast, contrast.worst);

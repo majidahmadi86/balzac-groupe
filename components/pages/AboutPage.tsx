@@ -58,9 +58,12 @@ export function AboutPage({ locale }: { locale: Locale }) {
         body={cafe.paragraphs}
         bodyStyle="paragraphs"
         imageSide="right"
-        // The whole storefront, at its own 4:5. Nothing is laid over it here, so the signage reads
-        // as part of the photograph; the homepage keeps the crop that excludes the upper band.
+        // The whole storefront, at its own 4:5, on phone and desktop alike: a band that only filled the
+        // text's height showed a slice of it and cut the BALZAC lettering at the frame. From 1536px the
+        // box stops at 60rem and anchors low, so the awning reads whole and the upper band sits out of frame.
         aspect="aspect-[4/5]"
+        desktopAspect="md:aspect-[4/5] 2xl:aspect-auto 2xl:h-[60rem]"
+        imagePosition="2xl:object-[50%_100%]"
         image={{ src: "/images/balzacgroupe-hero.jpg", alt: cafe.imageAlt, textZones: STOREFRONT_TEXT_ZONES, zonesWidth: 1122 }}
       />
 
@@ -72,6 +75,8 @@ export function AboutPage({ locale }: { locale: Locale }) {
         bodyStyle="paragraphs"
         imageSide="left"
         aspect="aspect-[4/3]"
+        // A tall column here: the frame anchors on the Jules Verne book, the props run off its edge.
+        imagePosition="md:object-[0%_50%]"
         image={{ src: "/images/balzacgroupe-antiques.jpg", alt: t.home.bands.antiques.imageAlt, textZones: ANTIQUES_TEXT_ZONES, zonesWidth: 1374 }}
         cta={
           <a

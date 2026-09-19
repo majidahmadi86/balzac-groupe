@@ -1,12 +1,28 @@
 import { InquiryForm } from "@/components/forms/InquiryForm";
 import { CtaLink } from "@/components/home/CtaLink";
-import { STOREFRONT_TEXT_ZONES } from "@/components/home/HomePage";
+import { STOREFRONT_TEXT_ZONES, WELCOME_FIGURE_ZONES } from "@/components/home/HomePage";
 import { Hero } from "@/components/home/Hero";
 import { MotionScope } from "@/components/home/MotionScope";
 import { Reveal } from "@/components/home/Reveal";
 import { SplitBand } from "@/components/home/SplitBand";
 import { getDictionary, type Locale } from "@/lib/i18n";
 import { pathFor } from "@/lib/routes";
+
+/**
+ * Where the split hero's frame starts in the storefront-welcome photograph (1122x1402), as object-position.
+ * The hero's height follows the window, so the visible slice of the photo changes shape with it, and no
+ * single percentage keeps the signs whole: somewhere in between it always cuts the awning lettering
+ * (source y 288 to 358). The start y is chosen by how much of the photo can show above its bottom edge:
+ * - 370 or more: from y 370, awning out, or lower when the window is short, so the A-board heading
+ *   (down to y 1085) stays in: max(370, 1100 - visible height);
+ * - 235 to 370: from y 284 or the bottom edge, below the upper sign band and above the awning;
+ * - under 235: from y 95 or less, the upper sign band whole with the rest.
+ * The jumps between those are clamp() steps saturated by a factor of 1000. Lengths are source pixels
+ * times 50vw/1122, the column width; in object-position, -100% is the room left above the photo's
+ * bottom edge. The responsive gate resolves this in the browser and checks every zone at every width.
+ */
+const WELCOME_SPLIT_POSITION =
+  "lg:object-[50%_calc(-1_*_max(0px,_min(max(min(-100%,_12.66vw)_+_clamp(0px,_(-100%_-_16.49vw)_*_1000,_3.83vw)_-_clamp(0px,_(10.47vw_+_100%)_*_1000,_6.24vw),_-100%_-_13.46vw),_-100%)))]";
 
 export function FranchisePage({ locale }: { locale: Locale }) {
   const t = getDictionary(locale);
@@ -15,21 +31,23 @@ export function FranchisePage({ locale }: { locale: Locale }) {
   return (
     <MotionScope>
       <Hero
-        tight
-        // A tight hero fills with type, so the scrim must hold from the label down.
-        scrim="light"
+        compact
+        layout="split"
+        splitHeight="lg:h-[55vh] lg:min-h-[28rem] lg:max-h-[40rem] 2xl:h-[59vh] 2xl:max-h-[52rem]"
         label={page.hero.label}
         titleLines={[page.hero.title]}
-        // Below 1024px the whole shopfront reads and the type sits on navy under it: at phone width a
-        // tight crop of this photograph is all signage, and any type over it would land on a sign.
-        // From 1024px the hero shows the band between the awning and the window lettering, which
-        // carries neither signage nor the figure, and the type sits over the olive tree.
-        stackBelowLg="aspect-[1122/1402]"
+        // The type sits on navy beside the photograph, never on it. A portrait storefront covered in signage
+        // with a visitor at its heart left no clear band for type over it: at 1024px the gap between the
+        // awning and her head is shorter than any hero, and at 1920 the band was a sliver. Split, the photo
+        // shows the whole storefront and her head to toe at every width.
+        // From 1536px it is taller (59vh, so the form still starts in a 768px-tall window). From 1024px
+        // the frame is placed by WELCOME_SPLIT_POSITION.
         image={{
           src: "/images/balzacgroupe-storefront-welcome.jpg",
           alt: page.hero.imageAlt,
-          position: "lg:object-[50%_34%]",
+          position: `object-[50%_88%] ${WELCOME_SPLIT_POSITION}`,
           textZones: STOREFRONT_TEXT_ZONES,
+          subjectZones: WELCOME_FIGURE_ZONES,
           zonesWidth: 1122,
         }}
       />
@@ -69,11 +87,14 @@ export function FranchisePage({ locale }: { locale: Locale }) {
         body={page.concept.paragraphs}
         bodyStyle="paragraphs"
         details={page.concept.details}
+        // Stacked until 1280px: a half-width column there is narrower than the BALZAC CAFÉ sign, so any
+        // crop would slice it. Stacked, the photograph shows whole under the text.
+        splitFrom="xl"
         imageSide="right"
         // Landscape (1322x809): the crop starts at x=620 of the client's file, which carried an English
         // headline set into the image. The sign is declared so no HTML text is ever laid on it.
         aspect="aspect-[16/10]"
-        imagePosition="object-[45%_50%]"
+        imagePosition="object-[56%_50%]"
         image={{
           src: "/images/balzacgroupe-cafe-night.jpg",
           alt: page.concept.imageAlt,

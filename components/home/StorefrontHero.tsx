@@ -38,7 +38,7 @@ export function StorefrontHero({ titleLines, tagline, imageAlt, cta }: Storefron
           quality={HERO_IMAGE_QUALITY}
           sizes="100vw"
           data-crop="art-directed"
-          data-text-zones="110,34,1080,139;345,384,695,449;395,539,560,579;760,414,930,559;390,679,605,724;850,764,1115,1114"
+          data-text-zones="110,42,1080,112;345,384,695,449;395,539,560,579;760,414,930,559;390,679,605,724;875,784,1095,839;850,839,1115,1114,0"
           className="hero-settle object-cover object-center lg:object-[50%_0%]"
         />
 

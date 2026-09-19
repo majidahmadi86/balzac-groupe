@@ -36,8 +36,8 @@ const brandNames = (locale: Locale) =>
   list(["Groupe Balzac", "Balzac Café", "Balzac Antiques", ...(SHOW_IMMOBILIER ? ["Balzac Immobilier"] : [])], locale);
 
 const imageAlt = {
-  en: "A Balzac book, a marble bust and an olive branch in a vase on a mantelpiece",
-  fr: "Livre Balzac, buste en marbre et vase d’olivier sur une cheminée",
+  en: "A marble bust, old books, a brass bell and an olive branch on a console table against a navy wall",
+  fr: "Buste en marbre, livres anciens, cloche de laiton et branche d’olivier sur une console, devant un mur bleu nuit",
 };
 
 export function legalNotice(locale: Locale): LegalDoc {

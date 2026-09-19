@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Hero } from "@/components/home/Hero";
 import { MotionScope } from "@/components/home/MotionScope";
+import { VISION_BUST_ZONE } from "@/components/home/HomePage";
 import { Reveal } from "@/components/home/Reveal";
 import type { Locale } from "@/lib/i18n";
 import type { Inline, LegalDoc } from "@/lib/legal-content";
@@ -34,12 +35,15 @@ export function LegalPage({ locale, doc }: { locale: Locale; doc: LegalDoc }) {
         label={doc.hero.label}
         titleLines={[doc.hero.title]}
         intro={doc.hero.intro}
-        scrim="light"
-        // TEMP mockup crop, replace with client photography.
+        scrim="dark"
+        // The same still life as /vision, framed the same way: stacked below 1024px, type on the wall above.
+        stackBelowLg="aspect-[16/10]"
         image={{
-          src: "/images/temp/temp-vision-interior.jpg",
+          src: "/images/balzacgroupe-vision-console.jpg",
           alt: doc.hero.imageAlt,
-          position: "object-[18%_50%] lg:object-[50%_60%]",
+          position: "object-[100%_50%] lg:object-[50%_55%]",
+          subjectZones: VISION_BUST_ZONE,
+          zonesWidth: 1942,
         }}
       />
 
