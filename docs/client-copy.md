@@ -83,15 +83,15 @@ Our selection is not limited to a single period or category. We look for pieces 
 
 Each object is selected for its authenticity, character, cultural interest and lasting appeal. Balzac Antiques connects collectors, enthusiasts and clients looking for singular pieces that deserve to be discovered, preserved and passed on.
 
-REAL ESTATE · BALZAC IMMOBILIER
+BALZAC IMMOBILIER
 
-PROPERTIES WITH CHARACTER NEAR THE SWISS BORDER.
+A FRENCH PERSPECTIVE ON EXCEPTIONAL LIVING
 
-Balzac Immobilier specialises in distinctive properties located in France, close to the Swiss border.
+Balzac Immobilier offers an international selection of distinctive properties, chosen with a distinctly French sensibility. We seek homes with soul: remarkable residences defined by their architecture, history, setting and the quality of life they inspire.
 
-Our focus is on houses, apartments, renovated farmhouses and other properties chosen for their architecture, authenticity, setting and quality of life.
+Our approach draws on the French art de vivre · an appreciation for beauty, proportion, authenticity and the quiet elegance of places shaped over time. From refined city apartments to country houses and singular estates, every property is selected for its individual character rather than its prestige alone.
 
-We offer personalised guidance throughout the process, from the initial search and selection of properties to negotiations and completion. Particular attention is given to international and cross-border clients who require clear, reliable and attentive support when purchasing property in France.
+We provide discreet, highly personalised guidance throughout the acquisition process, taking the time to understand each client's aspirations and to identify a property that feels both exceptional and deeply personal.
 
 OUR APPROACH
 
@@ -137,15 +137,15 @@ Our selection is not limited to a single period or category. We look for pieces 
 
 Each object is selected for its authenticity, character, cultural interest and lasting appeal. Balzac Antiques connects collectors, enthusiasts and clients looking for singular pieces that deserve to be discovered, preserved and passed on.
 
-REAL ESTATE · BALZAC IMMOBILIER
+BALZAC IMMOBILIER
 
-PROPERTIES WITH CHARACTER NEAR THE SWISS BORDER.
+A FRENCH PERSPECTIVE ON EXCEPTIONAL LIVING
 
-Balzac Immobilier specialises in distinctive properties located in France, close to the Swiss border.
+Balzac Immobilier offers an international selection of distinctive properties, chosen with a distinctly French sensibility. We seek homes with soul: remarkable residences defined by their architecture, history, setting and the quality of life they inspire.
 
-Our focus is on houses, apartments, renovated farmhouses and other properties chosen for their architecture, authenticity, setting and quality of life.
+Our approach draws on the French art de vivre · an appreciation for beauty, proportion, authenticity and the quiet elegance of places shaped over time. From refined city apartments to country houses and singular estates, every property is selected for its individual character rather than its prestige alone.
 
-We offer personalised guidance throughout the process, from the initial search and selection of properties to negotiations and completion. Particular attention is given to international and cross-border clients who require clear, reliable and attentive support when purchasing property in France.
+We provide discreet, highly personalised guidance throughout the acquisition process, taking the time to understand each client's aspirations and to identify a property that feels both exceptional and deeply personal.
 
 OUR APPROACH
 
@@ -188,13 +188,13 @@ Our role is to connect these objects with new collectors and owners who will app
 
 REAL ESTATE
 
-CONNECTING PEOPLE WITH PROPERTIES OF CHARACTER.
+PROPERTIES OF CHARACTER
 
-Balzac Immobilier specialises in distinctive properties located in France, near the Swiss border.
+Inspired by the French art of living, Balzac Immobilier curates an international collection of exceptional properties where architecture, elegance and a distinctive sense of place come together.
 
-We focus on houses, apartments, renovated farmhouses and other properties selected for their architecture, authenticity, setting and quality of life.
+From refined city residences to remarkable country estates, each property is selected for its character and its ability to offer more than a home: a truly exceptional way of life.
 
-Our vision is to offer a personal and selective approach, with clear and attentive guidance throughout the process, particularly for international and cross-border clients looking to purchase a home in France.
+We provide discreet, highly personalised guidance throughout every stage of the acquisition.
 
 OUR COMMITMENT
 
@@ -223,23 +223,5 @@ A FRENCH CULTURAL CAFÉ.
 Balzac Café is a distinctive concept created for entrepreneurs who share an interest in both hospitality and culture.
 
 More than a traditional café, it brings together French culture, art de vivre and a strong sense of place within a concept designed for international development.)
-9. And we replace the texts here by this :
-
-OUR HORIZONS
-
-A TIMELESS IDEA OF FRANCE.
-
-France continues to inspire the world through its art de vivre, but also through its writers, painters, philosophers, literary cafés and unforgettable voices.
-
-Groupe Balzac brings this cultural heritage into the present and shares it with a new generation.
-
-In a world that moves ever faster, we offer a place to pause: to open a book, discover an artist, enjoy a coffee and have a real conversation. Technology connects us, but certain experiences deserve time, attention and human presence.
-
-Our approach is not about looking back. It is about giving timeless ideas a place in contemporary life.
-
-Nearly 90% of our guests are young. Their enthusiasm shows that literature, culture and meaningful encounters still have the power to bring generations and cultures together.
-
-This is the horizon we believe in: a more curious, more open and more human world.
-
 
 Make sure you understand his request completely first and then do all of them properly!

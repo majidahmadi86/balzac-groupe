@@ -70,9 +70,16 @@ export function FranchisePage({ locale }: { locale: Locale }) {
         bodyStyle="paragraphs"
         details={page.concept.details}
         imageSide="right"
-        aspect="aspect-[3/4] sm:aspect-[4/5]"
-        imagePosition="object-[50%_66%]"
-        image={{ src: "/images/balzacgroupe-cafe-interior.jpg", alt: t.home.bands.cafe.imageAlt }}
+        // Landscape (1322x809): the crop starts at x=620 of the client's file, which carried an English
+        // headline set into the image. The sign is declared so no HTML text is ever laid on it.
+        aspect="aspect-[16/10]"
+        imagePosition="object-[45%_50%]"
+        image={{
+          src: "/images/balzacgroupe-cafe-night.jpg",
+          alt: page.concept.imageAlt,
+          textZones: "415,100,1000,205",
+          zonesWidth: 1322,
+        }}
         cta={<CtaLink href={`${pathFor(locale, "franchise")}#form`}>{page.form.label}</CtaLink>}
       />
 

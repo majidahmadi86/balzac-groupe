@@ -17,6 +17,12 @@ type SplitBandProps = {
   tone?: "cream" | "forest";
   /** Mobile aspect ratio class, close to the source crop so nothing important is cut. */
   aspect?: string;
+  /**
+   * From md the image normally fills the band's height, which suits landscape photographs. A portrait
+   * photograph in that box loses most of its height once the column turns wider than it is tall, so it
+   * can set its own aspect here instead: the band then grows with the column rather than cropping it.
+   */
+  desktopAspect?: string;
   /** object-position utilities for the image. */
   imagePosition?: string;
   /** Band height: compact for secondary bands, feature when a band carries more of the page. */
@@ -38,6 +44,7 @@ export function SplitBand({
   imageSide,
   tone = "cream",
   aspect = "aspect-[5/4]",
+  desktopAspect,
   imagePosition = "object-center",
   size = "default",
   bodyStyle = "lines",
@@ -129,7 +136,7 @@ export function SplitBand({
       </div>
 
       <div
-        className={`relative overflow-hidden md:aspect-auto md:min-h-full ${aspect} ${
+        className={`relative overflow-hidden ${desktopAspect ?? "md:aspect-auto md:min-h-full"} ${aspect} ${
           imageSide === "left" ? "md:order-1" : ""
         }`}
       >

@@ -85,31 +85,6 @@ export function VisionPage({ locale }: { locale: Locale }) {
         );
       })}
 
-      {/* Our horizons: the longest block on the site, so it runs as a single measured column */}
-      <section aria-labelledby="horizons-title" className="bg-forest-900 py-16 text-cream sm:py-20 lg:py-28">
-        <div className="site-gutter">
-          <Reveal className="mx-auto max-w-3xl text-center">
-            <p className="label-caps tracking-caps-lg text-gold-light lg:text-xs">{page.horizons.label}</p>
-            <h2
-              id="horizons-title"
-              className="mt-4 text-balance font-display text-[2rem] font-semibold leading-[1.08] text-cream-50 sm:text-[2.5rem] lg:mt-5 lg:text-[3.25rem]"
-            >
-              {page.horizons.title}
-            </h2>
-            <span aria-hidden="true" className="mx-auto mt-8 block h-px w-14 bg-gold-light/70 lg:mt-10" />
-          </Reveal>
-          <Reveal delay={120} className="mx-auto mt-10 max-w-2xl lg:mt-12">
-            <div data-contrast="" className="space-y-5 text-[1.0625rem] leading-[1.7] text-cream/90 lg:text-[1.1875rem]">
-              {page.horizons.paragraphs.map((paragraph) => (
-                <p key={paragraph} className="text-pretty">
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
       {/* The standard held across the three activities */}
       <section aria-labelledby="commitment-title" className="bg-cream py-16 text-navy sm:py-20 lg:py-24">
         <div className="site-gutter grid gap-8 lg:grid-cols-12 lg:gap-12">

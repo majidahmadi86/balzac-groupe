@@ -27,8 +27,10 @@ export function ContactPage({ locale }: { locale: Locale }) {
         scrim="light"
         label={page.hero.label}
         titleLines={[page.hero.title]}
-        // TEMP mockup crop, replace with client photography.
-        image={{ src: "/images/temp/temp-vision-interior.jpg", alt: page.hero.imageAlt, position: "object-[18%_50%] lg:object-[50%_60%]" }}
+        // Phone: the desk itself (letter, pen, sealed envelope, coffee), type over its lower edge on the
+        // scrim. From 1024px the whole width shows, the type sits on the navy wall the photograph leaves
+        // for it, and the band is the desk top.
+        image={{ src: "/images/balzacgroupe-contact-desk.jpg", alt: page.hero.imageAlt, position: "object-[100%_50%] lg:object-[50%_75%]" }}
       />
 
       {/* Intro beside the form from 1024px (first field visible without scrolling); on mobile intro, form, then the houses.

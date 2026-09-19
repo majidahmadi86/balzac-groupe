@@ -1,7 +1,7 @@
 // Copy and source hygiene. No server needed.
 //   npm run check:copy
-// Fails on: em dash or en dash anywhere, emoji anywhere, and any company-form
-// entity name outside lib/legal.ts (the single source of truth).
+// Fails on: em dash or en dash anywhere (the client's copy in docs/ included), emoji anywhere, and
+// any company-form entity name outside lib/legal.ts (the single source of truth).
 import { execSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 
@@ -15,7 +15,8 @@ const SOURCE = /^(app|components|lib)\/.*\.(ts|tsx|css)$/;
 
 const files = execSync("git ls-files --cached --others --exclude-standard", { encoding: "utf8" })
   .split("\n")
-  .filter((f) => f && !BINARY.test(f) && !f.startsWith("docs/"));
+  // docs/ holds the mockups (binary, skipped above) and the client's copy, which is text and checked.
+  .filter((f) => f && !BINARY.test(f));
 
 const failures = [];
 for (const file of files) {

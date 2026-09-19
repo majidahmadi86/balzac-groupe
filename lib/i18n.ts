@@ -159,12 +159,12 @@ const fr = {
         link: "Découvrir Balzac Antiques",
       },
       immobilier: {
-        label: "Immobilier · Balzac Immobilier",
-        title: "Des biens de caractère près de la frontière suisse.",
+        label: "Balzac Immobilier",
+        title: "Un regard français sur une vie d’exception",
         paragraphs: [
-          "Balzac Immobilier est spécialisé dans les biens singuliers situés en France, à proximité de la frontière suisse.",
-          "Nous nous concentrons sur des maisons, des appartements, des fermes rénovées et d’autres biens choisis pour leur architecture, leur authenticité, leur cadre et leur qualité de vie.",
-          "Nous offrons un accompagnement personnalisé tout au long du parcours, de la recherche et de la sélection des biens à la négociation et à la signature. Une attention particulière est portée aux clients internationaux et frontaliers, qui attendent un soutien clair, fiable et attentif pour acheter en France.",
+          "Balzac Immobilier propose une sélection internationale de biens singuliers, choisis avec une sensibilité résolument française. Nous recherchons des maisons qui ont une âme : des demeures remarquables par leur architecture, leur histoire, leur cadre et la qualité de vie qu’elles inspirent.",
+          "Notre approche puise dans l’art de vivre à la française · le goût de la beauté, des proportions, de l’authenticité et de l’élégance discrète des lieux façonnés par le temps. Des appartements raffinés en ville aux maisons de campagne et aux domaines singuliers, chaque bien est choisi pour son caractère propre plutôt que pour son seul prestige.",
+          "Nous offrons un accompagnement discret et hautement personnalisé tout au long de l’acquisition, en prenant le temps de comprendre les aspirations de chaque client et de trouver un bien à la fois exceptionnel et profondément personnel.",
         ],
       },
     },
@@ -216,25 +216,13 @@ const fr = {
       },
       realEstate: {
         label: "Immobilier",
-        title: "Relier les personnes aux biens de caractère.",
+        title: "Des biens de caractère",
         paragraphs: [
-          "Balzac Immobilier est spécialisé dans les biens singuliers situés en France, près de la frontière suisse.",
-          "Nous nous concentrons sur des maisons, des appartements, des fermes rénovées et d’autres biens choisis pour leur architecture, leur authenticité, leur cadre et leur qualité de vie.",
-          "Notre vision est d’offrir une approche personnelle et sélective, avec un accompagnement clair et attentif tout au long du parcours, en particulier pour les clients internationaux et frontaliers qui souhaitent acheter une maison en France.",
+          "Inspiré par l’art de vivre à la française, Balzac Immobilier réunit une collection internationale de biens d’exception, où l’architecture, l’élégance et un sens singulier du lieu se rencontrent.",
+          "Des résidences raffinées en ville aux domaines remarquables à la campagne, chaque bien est choisi pour son caractère et pour sa capacité à offrir plus qu’une maison : un mode de vie véritablement exceptionnel.",
+          "Nous offrons un accompagnement discret et hautement personnalisé à chaque étape de l’acquisition.",
         ],
       },
-    },
-    horizons: {
-      label: "Nos horizons",
-      title: "Une idée intemporelle de la France.",
-      paragraphs: [
-        "La France continue d’inspirer le monde par son art de vivre, mais aussi par ses écrivains, ses peintres, ses philosophes, ses cafés littéraires et ses voix inoubliables.",
-        "Groupe Balzac fait vivre cet héritage culturel au présent et le partage avec une nouvelle génération.",
-        "Dans un monde qui va toujours plus vite, nous offrons un endroit où faire une pause : ouvrir un livre, découvrir un artiste, savourer un café et avoir une vraie conversation. La technologie nous relie, mais certaines expériences méritent du temps, de l’attention et une présence humaine.",
-        "Notre approche ne consiste pas à regarder en arrière. Elle consiste à donner aux idées intemporelles une place dans la vie contemporaine.",
-        "Près de 90 % de nos hôtes sont jeunes. Leur enthousiasme montre que la littérature, la culture et les rencontres qui comptent ont encore le pouvoir de réunir les générations et les cultures.",
-        "C’est l’horizon auquel nous croyons : un monde plus curieux, plus ouvert et plus humain.",
-      ],
     },
     commitment: {
       label: "Notre engagement",
@@ -268,6 +256,7 @@ const fr = {
     concept: {
       label: "Le concept",
       title: "Un café culturel français.",
+      imageAlt: "La façade de Balzac Café le soir, ses tables éclairées derrière les vitrines",
       details: {
         title: "Dans la maison",
         items: ["Librairie", "Galerie", "Café", "Vins fins", "Cinéma et littérature"],
@@ -308,7 +297,7 @@ const fr = {
       label: "Contact",
       title: "Écrivez-nous.",
       intro: "Une question, un projet, une rencontre : nous lisons chaque message.",
-      imageAlt: "Livre Balzac, buste en marbre et vase d’olivier sur une cheminée",
+      imageAlt: "Un bureau ancien : une lettre, un stylo plume, une enveloppe cachetée et une tasse de café",
     },
     intro: {
       title: "Une question, un projet, une rencontre.",
@@ -526,12 +515,12 @@ const en: Dictionary = {
         link: "Discover Balzac Antiques",
       },
       immobilier: {
-        label: "Real estate · Balzac Immobilier",
-        title: "Properties with character near the Swiss border.",
+        label: "Balzac Immobilier",
+        title: "A French perspective on exceptional living",
         paragraphs: [
-          "Balzac Immobilier specialises in distinctive properties located in France, close to the Swiss border.",
-          "Our focus is on houses, apartments, renovated farmhouses and other properties chosen for their architecture, authenticity, setting and quality of life.",
-          "We offer personalised guidance throughout the process, from the initial search and selection of properties to negotiations and completion. Particular attention is given to international and cross-border clients who require clear, reliable and attentive support when purchasing property in France.",
+          "Balzac Immobilier offers an international selection of distinctive properties, chosen with a distinctly French sensibility. We seek homes with soul: remarkable residences defined by their architecture, history, setting and the quality of life they inspire.",
+          "Our approach draws on the French art de vivre · an appreciation for beauty, proportion, authenticity and the quiet elegance of places shaped over time. From refined city apartments to country houses and singular estates, every property is selected for its individual character rather than its prestige alone.",
+          "We provide discreet, highly personalised guidance throughout the acquisition process, taking the time to understand each client’s aspirations and to identify a property that feels both exceptional and deeply personal.",
         ],
       },
     },
@@ -583,25 +572,13 @@ const en: Dictionary = {
       },
       realEstate: {
         label: "Real estate",
-        title: "Connecting people with properties of character.",
+        title: "Properties of character",
         paragraphs: [
-          "Balzac Immobilier specialises in distinctive properties located in France, near the Swiss border.",
-          "We focus on houses, apartments, renovated farmhouses and other properties selected for their architecture, authenticity, setting and quality of life.",
-          "Our vision is to offer a personal and selective approach, with clear and attentive guidance throughout the process, particularly for international and cross-border clients looking to purchase a home in France.",
+          "Inspired by the French art of living, Balzac Immobilier curates an international collection of exceptional properties where architecture, elegance and a distinctive sense of place come together.",
+          "From refined city residences to remarkable country estates, each property is selected for its character and its ability to offer more than a home: a truly exceptional way of life.",
+          "We provide discreet, highly personalised guidance throughout every stage of the acquisition.",
         ],
       },
-    },
-    horizons: {
-      label: "Our horizons",
-      title: "A timeless idea of France.",
-      paragraphs: [
-        "France continues to inspire the world through its art de vivre, but also through its writers, painters, philosophers, literary cafés and unforgettable voices.",
-        "Groupe Balzac brings this cultural heritage into the present and shares it with a new generation.",
-        "In a world that moves ever faster, we offer a place to pause: to open a book, discover an artist, enjoy a coffee and have a real conversation. Technology connects us, but certain experiences deserve time, attention and human presence.",
-        "Our approach is not about looking back. It is about giving timeless ideas a place in contemporary life.",
-        "Nearly 90% of our guests are young. Their enthusiasm shows that literature, culture and meaningful encounters still have the power to bring generations and cultures together.",
-        "This is the horizon we believe in: a more curious, more open and more human world.",
-      ],
     },
     commitment: {
       label: "Our commitment",
@@ -635,6 +612,7 @@ const en: Dictionary = {
     concept: {
       label: "The concept",
       title: "A French cultural café.",
+      imageAlt: "The Balzac Café storefront in the evening, its tables lit behind the windows",
       details: {
         title: "In the house",
         items: ["Bookshop", "Gallery", "Café", "Fine wines", "Cinema and literature"],
@@ -675,7 +653,7 @@ const en: Dictionary = {
       label: "Contact",
       title: "Write to us.",
       intro: "A question, a project, a meeting: we read every message.",
-      imageAlt: "A Balzac book, a marble bust and an olive branch in a vase on a mantelpiece",
+      imageAlt: "An old writing desk with a letter, a fountain pen, a sealed envelope and a cup of coffee",
     },
     intro: {
       title: "A question, a project, a meeting.",

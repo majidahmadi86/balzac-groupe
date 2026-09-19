@@ -21,7 +21,6 @@ const PLACEMENT = {
   4: "/about",
   7: "/vision",
   8: "/franchise",
-  9: "/vision",
 };
 // Item 6 repeats item 4 word for word, and item 2 was superseded by item 4: neither is placed again.
 const NOT_PLACED = [2, 6];

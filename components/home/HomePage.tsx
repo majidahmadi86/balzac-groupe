@@ -60,7 +60,12 @@ export function HomePage({ locale }: { locale: Locale }) {
         imageSide="right"
         size={houseBandSize}
         aspect="aspect-[3/4] sm:aspect-[4/5]"
-        imagePosition="object-[50%_66%]"
+        // The photograph is portrait (2:3). A band pinned at 36rem cropped it to 54% of its height at
+        // 1440 and 40% at 1920, so on desktop its column keeps a 4:5 box and the band grows with it.
+        // From 1536px the box stops growing at 60rem tall rather than outgrowing the screen, while still
+        // filling its column's width (a max-height on the aspect box would narrow it and open a gap).
+        desktopAspect="md:aspect-[4/5] 2xl:aspect-auto 2xl:h-[60rem]"
+        imagePosition="object-[50%_66%] md:object-[50%_45%]"
         image={{ src: "/images/balzacgroupe-cafe-interior.jpg", alt: cafe.imageAlt }}
         cta={<CtaLink href={`${about}#cafe`}>{cafe.cta}</CtaLink>}
       />

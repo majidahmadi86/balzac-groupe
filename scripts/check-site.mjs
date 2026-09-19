@@ -16,6 +16,7 @@
 // 10. No placeholder anywhere: no "To be confirmed", "À compléter", "à confirmer" and no data-pending marker.
 // 11. One social account: every instagram link is the canonical profile URL with no query string, and
 //     no page or asset mentions the accounts that were dropped.
+// 12. Copy the client withdrew stays withdrawn: no built page carries it, in either language.
 // Reports (without failing) which temporary mockup crops are still in use.
 import { BASE_URL, flags, hiddenSlugs, routePairs } from "./lib/site.mjs";
 
@@ -287,6 +288,13 @@ for (const asset of shipped) {
   if (dropped) fail(`${asset} links to ${dropped[0]}`);
 }
 if (!instagramLinks) fail("no instagram link is rendered anywhere");
+
+// 12
+const WITHDRAWN = ["Our horizons", "Nos horizons", "A timeless idea of France", "Une idée intemporelle de la France"];
+for (const [path, html] of shippedPages) {
+  if (typeof html !== "string") continue;
+  for (const phrase of WITHDRAWN) if (html.includes(phrase)) fail(`${path} still carries withdrawn copy: "${phrase}"`);
+}
 
 const tempInUse = new Set();
 for (const pair of pairs) {
